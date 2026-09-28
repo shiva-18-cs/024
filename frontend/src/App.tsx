@@ -14,6 +14,8 @@ import CorrectiveActionsPage from './pages/CorrectiveActionsPage';
 import AIInsightsPage from './pages/AIInsightsPage';
 import ReportsPage from './pages/ReportsPage';
 import GISMapPage from './pages/GISMapPage';
+import ContractorGISPage from './pages/ContractorGISPage';
+import FieldOfficerGISPage from './pages/FieldOfficerGISPage';
 import DocumentsPage from './pages/DocumentsPage';
 import AlertsPage from './pages/AlertsPage';
 import AuditLogsPage from './pages/AuditLogsPage';
@@ -184,8 +186,28 @@ export default function App() {
             path="/gis"
             element={
               <AppLayout>
-                <RoleRouteGuard allowedRoles={['FIELD OFFICER', 'MINE MANAGER', 'CORPORATE MANAGEMENT']}>
+                <RoleRouteGuard allowedRoles={['MINE MANAGER', 'CORPORATE MANAGEMENT']}>
                   <GISMapPage />
+                </RoleRouteGuard>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/contractor/gis"
+            element={
+              <AppLayout>
+                <RoleRouteGuard allowedRoles={['CONTRACTOR', 'CORPORATE MANAGEMENT']}>
+                  <ContractorGISPage />
+                </RoleRouteGuard>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/field-officer/gis"
+            element={
+              <AppLayout>
+                <RoleRouteGuard allowedRoles={['FIELD OFFICER', 'MINE MANAGER', 'CORPORATE MANAGEMENT']}>
+                  <FieldOfficerGISPage />
                 </RoleRouteGuard>
               </AppLayout>
             }

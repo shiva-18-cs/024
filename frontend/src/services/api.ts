@@ -80,6 +80,8 @@ export const mines = {
 export const contractors = {
   list: () => request('/contractors'),
   get: (id: string) => request(`/contractors/${id}`),
+  profile: (id: string) => request(`/contractors/${id}/profile`),
+  myDashboard: () => request('/contractors/me/dashboard'),
   evaluate: (id: string) => request(`/contractors/${id}/evaluate`),
   contracts: (id: string) => request(`/contractors/${id}/contracts`),
   requirements: (id: string) => request(`/contractors/${id}/requirements`),
@@ -109,10 +111,16 @@ export const workers = {
     const qs = params ? `?${new URLSearchParams(params)}` : '';
     return request(`/workers/certifications${qs}`);
   },
+  getCertification: (id: string) => request(`/workers/certifications/${id}`),
   workerCertifications: (workerId: string) => request(`/workers/${workerId}/certifications`),
   addCertification: (data: any) => request('/workers/certifications', { method: 'POST', body: JSON.stringify(data) }),
+  uploadAndOcrCertification: (form: FormData) => uploadFile('/workers/certifications/upload-and-ocr', form),
+  updateExtractedFields: (id: string, data: any) =>
+    request(`/workers/certifications/${id}/extracted-fields`, { method: 'PUT', body: JSON.stringify(data) }),
   verifyCertification: (id: string, data: { decision: string; notes?: string }) =>
     request(`/workers/certifications/${id}/verify`, { method: 'POST', body: JSON.stringify(data) }),
+  expiryTracking: (thresholdDays = 30) => request(`/workers/expiry-tracking?threshold_days=${thresholdDays}`),
+  downloadCertificationUrl: (id: string) => `${API_BASE}/workers/certifications/${id}/download`,
 };
 
 // Inspections
@@ -219,6 +227,14 @@ export const gis = {
   features: (params?: Record<string, string>) => {
     const qs = params ? `?${new URLSearchParams(params)}` : '';
     return request(`/gis/features${qs}`);
+  },
+  contractor: (params?: Record<string, string>) => {
+    const qs = params ? `?${new URLSearchParams(params)}` : '';
+    return request(`/gis/contractor${qs}`);
+  },
+  fieldOfficer: (params?: Record<string, string>) => {
+    const qs = params ? `?${new URLSearchParams(params)}` : '';
+    return request(`/gis/field-officer${qs}`);
   },
 };
 

@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Building2, FileText, Users, ShieldCheck, AlertTriangle,
-  Wrench, Upload, UserPlus, Eye, ArrowRight, Bell, CheckCircle, Clock
+  Wrench, Upload, UserPlus, Eye, ArrowRight, Bell, CheckCircle, Clock, Map
 } from 'lucide-react';
-import { dashboard, correctiveActions as caApi, violations as viosApi } from '../../services/api';
+import { dashboard, contractors as contractorsApi, correctiveActions as caApi, violations as viosApi } from '../../services/api';
 import { KPICard, SectionCard, StatusBadge, ComplianceBar, LoadingState, EmptyState } from '../../components/ui/UIComponents';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatDate, formatDateTime } from '../../utils/helpers';
@@ -13,6 +13,7 @@ export default function ContractorDashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<any>(null);
+  const [myDash, setMyDash] = useState<any>(null);
   const [capasList, setCapasList] = useState<any[]>([]);
   const [violationsList, setViolationsList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -20,10 +21,12 @@ export default function ContractorDashboard() {
   useEffect(() => {
     Promise.all([
       dashboard.stats(),
+      contractorsApi.myDashboard().catch(() => null),
       caApi.list().catch(() => []),
       viosApi.list({ status: 'OPEN' }).catch(() => [])
-    ]).then(([statsData, capasData, viosData]: any) => {
+    ]).then(([statsData, myDashData, capasData, viosData]: any) => {
       setStats(statsData);
+      setMyDash(myDashData);
       setCapasList(capasData || []);
       setViolationsList(viosData || []);
       setLoading(false);
@@ -37,15 +40,17 @@ export default function ContractorDashboard() {
   const rKpis = stats?.role_kpis || {};
   const kpis = stats?.kpis || {};
   const recentAlerts = stats?.recent_alerts || [];
+  const mMetrics = myDash?.metrics || {};
 
-  const totalMines = rKpis.assigned_mines ?? rKpis.total_mines ?? kpis.total_mines ?? 1;
-  const totalContracts = rKpis.total_contracts ?? rKpis.my_contracts ?? kpis.total_contracts ?? 1;
-  const totalWorkers = rKpis.total_workers ?? kpis.total_workers ?? 0;
-  const complianceScore = rKpis.compliance_percent ?? rKpis.compliance_score ?? kpis.compliance_percent ?? 85.0;
-  const openViolations = rKpis.open_violations ?? rKpis.assigned_violations ?? kpis.open_violations ?? 0;
+  const companyName = myDash?.company_name || user?.contractor_name || "Assigned Contractor Organization";
+  const totalMines = myDash?.assigned_mines?.length ?? rKpis.assigned_mines ?? 1;
+  const totalContracts = mMetrics.total_contracts ?? rKpis.total_contracts ?? 1;
+  const totalWorkers = mMetrics.total_workers ?? rKpis.total_workers ?? 0;
+  const complianceScore = myDash?.compliance_score ?? rKpis.compliance_percent ?? 85.0;
+  const openViolations = mMetrics.open_violations ?? rKpis.open_violations ?? 0;
   const highRiskCases = rKpis.high_risk_cases ?? 0;
-  const overdueActions = rKpis.overdue_actions ?? rKpis.overdue_capas ?? kpis.overdue_actions ?? 0;
-  const totalInspections = rKpis.total_inspections ?? 0;
+  const overdueActions = mMetrics.overdue_corrective_actions ?? rKpis.overdue_actions ?? 0;
+  const totalInspections = mMetrics.total_inspections ?? rKpis.total_inspections ?? 0;
 
   return (
     <div className="space-y-6">
@@ -68,6 +73,9 @@ export default function ContractorDashboard() {
 
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap gap-2">
+          <button onClick={() => navigate('/contractor/gis')} className="btn-secondary text-xs">
+            <Map size={13} /> GIS Analysis
+          </button>
           <button onClick={() => navigate('/documents')} className="btn-secondary text-xs">
             <Upload size={13} /> Upload Documents
           </button>

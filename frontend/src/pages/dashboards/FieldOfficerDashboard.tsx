@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ClipboardList, Plus, MapPin, AlertTriangle, Camera,
-  CheckCircle, ArrowRight, Clock, ShieldAlert, Eye
+  CheckCircle, ArrowRight, Clock, ShieldAlert, Eye, Map
 } from 'lucide-react';
 import { dashboard, inspections as inspectionsApi } from '../../services/api';
 import { KPICard, SectionCard, StatusBadge, ComplianceBar, LoadingState, EmptyState } from '../../components/ui/UIComponents';
@@ -60,6 +60,9 @@ export default function FieldOfficerDashboard() {
 
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
+          <button onClick={() => navigate('/field-officer/gis')} className="btn-secondary text-xs">
+            <Map size={13} /> GIS Analysis
+          </button>
           <button onClick={() => navigate('/inspections')} className="btn-primary text-xs">
             <Plus size={14} /> Start Inspection
           </button>

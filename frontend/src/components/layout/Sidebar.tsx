@@ -28,6 +28,7 @@ const ROLE_NAV: Record<string, NavGroup[]> = {
       label: 'Contractor Operations',
       items: [
         { path: '/contractor/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { path: '/contractor/gis', icon: Map, label: 'GIS Analysis' },
         { path: '/contractors', icon: FileText, label: 'Contracts' },
         { path: '/mines', icon: Building2, label: 'Mines' },
         { path: '/documents', icon: ScrollText, label: 'Documents' },
@@ -56,6 +57,7 @@ const ROLE_NAV: Record<string, NavGroup[]> = {
       label: 'Field Operations',
       items: [
         { path: '/field-officer/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { path: '/field-officer/gis', icon: Map, label: 'GIS Analysis' },
         { path: '/mines', icon: Building2, label: 'Assigned Mines' },
         { path: '/inspections', icon: ClipboardList, label: 'Inspections' },
         { path: '/violations', icon: AlertTriangle, label: 'Findings / Violations' },
@@ -69,6 +71,7 @@ const ROLE_NAV: Record<string, NavGroup[]> = {
       label: 'Mine Operations',
       items: [
         { path: '/mine-manager/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { path: '/gis', icon: Map, label: 'GIS Monitoring' },
         { path: '/inspections', icon: ClipboardList, label: 'Inspections' },
         { path: '/reports', icon: FileText, label: 'Mine Reports' },
         { path: '/ai-insights', icon: Brain, label: 'AI Risk Analysis' },
@@ -86,6 +89,7 @@ const ROLE_NAV: Record<string, NavGroup[]> = {
       label: 'Corporate Governance',
       items: [
         { path: '/corporate/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { path: '/gis', icon: Map, label: 'GIS Spatial Radar' },
         { path: '/mines', icon: Building2, label: 'All Mines' },
         { path: '/contractors', icon: FileText, label: 'Contracts' },
         { path: '/reports', icon: FileText, label: 'Reports' },

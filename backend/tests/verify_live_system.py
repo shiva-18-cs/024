@@ -1,6 +1,14 @@
-import requests
+import sys
+import httpx
+
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 
 BASE = 'http://127.0.0.1:8000/api'
+client = httpx.Client(timeout=15.0)
+requests = client
+
+
 
 def run_checks():
     # 1. Test Demo Users
@@ -58,9 +66,27 @@ def run_checks():
     assert cw.status_code == 200
     print(f'✓ Contractor worker isolation: contractor only sees {len(cw.json())} assigned workers')
 
+    # 8. Test Contractor & Field Officer GIS endpoints
+    contractor_gis = requests.get(f'{BASE}/gis/contractor', headers={'Authorization': f'Bearer {contractor_token}'})
+    assert contractor_gis.status_code == 200, f'Contractor GIS failed: {contractor_gis.text}'
+    print(f'✓ Contractor GIS loaded: {len(contractor_gis.json().get("hotspots", []))} hotspots')
+
+    fo_token = tokens['FIELD OFFICER']
+    fo_gis = requests.get(f'{BASE}/gis/field-officer', headers={'Authorization': f'Bearer {fo_token}'})
+    assert fo_gis.status_code == 200, f'Field Officer GIS failed: {fo_gis.text}'
+    print(f'✓ Field Officer GIS loaded: {len(fo_gis.json().get("hotspots", []))} finding hotspots')
+
+    # 9. Verify direct RBAC isolation
+    unauth_fo = requests.get(f'{BASE}/gis/contractor', headers={'Authorization': f'Bearer {fo_token}'})
+    assert unauth_fo.status_code == 403, 'Field Officer should not access Contractor GIS'
+    unauth_contractor = requests.get(f'{BASE}/gis/field-officer', headers={'Authorization': f'Bearer {contractor_token}'})
+    assert unauth_contractor.status_code == 403, 'Contractor should not access Field Officer GIS'
+    print('✓ GIS RBAC cross-role isolation verified (403 Forbidden enforced)')
+
     print('\n======================================================')
     print('ALL INTEGRATION CHECKS PASSED SUCCESSFULLY!')
     print('======================================================')
 
 if __name__ == '__main__':
     run_checks()
+

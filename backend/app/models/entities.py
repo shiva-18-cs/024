@@ -283,9 +283,16 @@ class MedicalRecord(Base):
     certificate_number = Column(String(80), nullable=False)
     certificate_file = Column(String(255), nullable=True)
     is_expired = Column(Boolean, default=False)
+    verification_status = Column(String(50), default="VERIFIED")  # VERIFIED, PENDING, REJECTED, NEEDS_CLARIFICATION
+    verified_by_id = Column(String(36), ForeignKey("users.id"), nullable=True)
+    verified_at = Column(DateTime, nullable=True)
+    verification_notes = Column(Text, nullable=True)
+    ocr_status = Column(String(50), default="COMPLETED")
+    extracted_metadata = Column(Text, default="{}")
     created_at = Column(DateTime, default=utc_now)
 
     worker = relationship("Worker", back_populates="medical_records")
+    verified_by = relationship("User", foreign_keys=[verified_by_id])
 
 class TrainingRecord(Base):
     __tablename__ = "training_records"
@@ -298,8 +305,13 @@ class TrainingRecord(Base):
     issue_date = Column(DateTime, nullable=False)
     expiry_date = Column(DateTime, nullable=True)
     certificate_ref = Column(String(100), nullable=True)
-    verification_status = Column(String(50), default="VERIFIED")  # VERIFIED, PENDING, REJECTED
+    document_file = Column(String(500), nullable=True)
+    file_name = Column(String(255), nullable=True)
+    ocr_status = Column(String(50), default="COMPLETED")
+    extracted_metadata = Column(Text, default="{}")
+    verification_status = Column(String(50), default="VERIFIED")  # VERIFIED, PENDING, REJECTED, NEEDS_CLARIFICATION
     verified_by_id = Column(String(36), ForeignKey("users.id"), nullable=True)
+    verified_at = Column(DateTime, nullable=True)
     verification_notes = Column(Text, nullable=True)
     created_at = Column(DateTime, default=utc_now)
     updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
@@ -315,11 +327,23 @@ class CertificationRecord(Base):
     certification_type = Column(String(80), nullable=False)  # DGMS Gas Testing, Blaster Certificate, Overman Certificate, HEMM Operator Permit
     certification_name = Column(String(150), nullable=False)
     certificate_ref = Column(String(100), nullable=False)
+    issuing_authority = Column(String(150), default="Directorate General of Mines Safety (DGMS)")
     issue_date = Column(DateTime, nullable=False)
     expiry_date = Column(DateTime, nullable=True)
-    verification_status = Column(String(50), default="VERIFIED")  # VERIFIED, PENDING, REJECTED
+    document_file = Column(String(500), nullable=True)
+    file_name = Column(String(255), nullable=True)
+    file_type = Column(String(50), nullable=True)
+    file_size = Column(Integer, nullable=True)
+    ocr_status = Column(String(50), default="COMPLETED")  # UPLOADED, PROCESSING, COMPLETED, FAILED, MANUAL_REVIEW
+    ocr_text = Column(Text, nullable=True)
+    ocr_confidence = Column(Float, default=92.5)
+    extracted_metadata = Column(Text, default="{}")
+    status = Column(String(50), default="VERIFIED")  # PENDING_DOCUMENT, PROCESSING, NEEDS_CLARIFICATION, EXPIRED, EXPIRING_SOON, PENDING_VERIFICATION, VERIFIED, REJECTED
+    verification_status = Column(String(50), default="VERIFIED")  # VERIFIED, PENDING, REJECTED, NEEDS_CLARIFICATION
     verified_by_id = Column(String(36), ForeignKey("users.id"), nullable=True)
+    verified_at = Column(DateTime, nullable=True)
     verification_notes = Column(Text, nullable=True)
+    verification_history = Column(Text, default="[]")
     created_at = Column(DateTime, default=utc_now)
     updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
 

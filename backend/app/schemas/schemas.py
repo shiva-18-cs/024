@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 # ----------------- AUTH & USER -----------------
 class Token(BaseModel):
@@ -31,8 +31,7 @@ class UserOut(UserBase):
     mine_name: Optional[str] = None
     contractor_name: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ----------------- SUBSIDIARY & MINE -----------------
 class SubsidiaryOut(BaseModel):
@@ -42,8 +41,7 @@ class SubsidiaryOut(BaseModel):
     headquarters: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class MineBase(BaseModel):
     name: str
@@ -71,8 +69,7 @@ class MineOut(MineBase):
     active_contractors_count: Optional[int] = 0
     workers_count: Optional[int] = 0
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ----------------- CONTRACTOR & CONTRACTS -----------------
 class ContractorBase(BaseModel):
@@ -99,8 +96,7 @@ class ContractorOut(ContractorBase):
     active_contracts_count: Optional[int] = 0
     pending_actions_count: Optional[int] = 0
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ContractRequirementOut(BaseModel):
     id: str
@@ -114,8 +110,7 @@ class ContractRequirementOut(BaseModel):
     document_id: Optional[str] = None
     notes: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ContractOut(BaseModel):
     id: str
@@ -132,8 +127,7 @@ class ContractOut(BaseModel):
     status: str
     requirements: List[ContractRequirementOut] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ----------------- WORKER, ATTENDANCE, MEDICAL -----------------
 class AttendanceCreate(BaseModel):
@@ -146,8 +140,7 @@ class AttendanceOut(AttendanceCreate):
     id: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class MedicalRecordCreate(BaseModel):
     worker_id: str
@@ -165,8 +158,7 @@ class MedicalRecordOut(MedicalRecordCreate):
     is_expired: bool
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class WorkerBase(BaseModel):
     contractor_id: Optional[str] = None
@@ -207,8 +199,7 @@ class WorkerOut(WorkerBase):
     mine_name: Optional[str] = None
     is_medical_expired: Optional[bool] = False
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ----------------- FIELD INSPECTIONS & EVIDENCE -----------------
 class ChecklistItemIn(BaseModel):
@@ -222,8 +213,7 @@ class ChecklistItemOut(ChecklistItemIn):
     id: str
     severity_weight: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ObservationIn(BaseModel):
     title: str
@@ -236,8 +226,7 @@ class ObservationOut(ObservationIn):
     id: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class GeoEvidenceOut(BaseModel):
     id: str
@@ -249,8 +238,7 @@ class GeoEvidenceOut(BaseModel):
     longitude: float
     captured_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class InspectionCreate(BaseModel):
     mine_id: str
@@ -290,8 +278,7 @@ class InspectionOut(BaseModel):
     observations: List[ObservationOut] = []
     evidence: List[GeoEvidenceOut] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ----------------- WORKFLOW ACTIONS -----------------
 class WorkflowActionRequest(BaseModel):
@@ -321,8 +308,7 @@ class ViolationOut(BaseModel):
     detected_at: datetime
     resolved_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CorrectiveActionCreate(BaseModel):
     violation_id: str
@@ -362,8 +348,7 @@ class CorrectiveActionOut(BaseModel):
     is_overdue: Optional[bool] = False
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CorrectiveActionResolve(BaseModel):
     resolution_notes: str
@@ -391,8 +376,7 @@ class AIPredictionOut(BaseModel):
     recommended_actions: List[str]
     prediction_timestamp: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ----------------- OCR DOCUMENT INTELLIGENCE -----------------
 class OCRResult(BaseModel):
@@ -441,8 +425,7 @@ class ReportOut(BaseModel):
     created_by_name: Optional[str] = None
     report_data: Dict[str, Any] = {}
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ReportRemarksRequest(BaseModel):
     manager_remarks: str
@@ -457,8 +440,7 @@ class ReportReviewOut(BaseModel):
     comments: Optional[str] = None
     reviewed_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ----------------- TRAINING & CERTIFICATIONS -----------------
 class TrainingRecordIn(BaseModel):
@@ -469,20 +451,24 @@ class TrainingRecordIn(BaseModel):
     issue_date: datetime
     expiry_date: Optional[datetime] = None
     certificate_ref: Optional[str] = None
+    document_file: Optional[str] = None
+    file_name: Optional[str] = None
 
 class TrainingRecordOut(TrainingRecordIn):
     id: str
     verification_status: str
     verified_by_name: Optional[str] = None
+    verified_at: Optional[datetime] = None
     verification_notes: Optional[str] = None
+    ocr_status: Optional[str] = "COMPLETED"
+    extracted_metadata: Optional[str] = "{}"
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class TrainingVerifyRequest(BaseModel):
-    decision: str  # VERIFIED, REJECTED
+    decision: str  # VERIFIED, REJECTED, NEEDS_CLARIFICATION
     notes: Optional[str] = None
 
 class CertificationRecordIn(BaseModel):
@@ -490,23 +476,77 @@ class CertificationRecordIn(BaseModel):
     certification_type: str = "DGMS Gas Testing"
     certification_name: str
     certificate_ref: str
+    issuing_authority: Optional[str] = "Directorate General of Mines Safety (DGMS)"
     issue_date: datetime
     expiry_date: Optional[datetime] = None
+    document_file: Optional[str] = None
+    file_name: Optional[str] = None
+    file_type: Optional[str] = None
+    file_size: Optional[int] = None
 
-class CertificationRecordOut(CertificationRecordIn):
+class CertificationExtractedFieldsUpdate(BaseModel):
+    worker_name: Optional[str] = None
+    worker_id: Optional[str] = None
+    certification_name: Optional[str] = None
+    certification_type: Optional[str] = None
+    certificate_number: Optional[str] = None
+    issuing_authority: Optional[str] = None
+    issue_date: Optional[str] = None
+    expiry_date: Optional[str] = None
+    training_date: Optional[str] = None
+    medical_fitness_date: Optional[str] = None
+    validity_period: Optional[str] = None
+
+class CertificationRecordOut(BaseModel):
     id: str
+    worker_id: str
+    worker_name: Optional[str] = None
+    worker_code: Optional[str] = None
+    contractor_name: Optional[str] = None
+    mine_name: Optional[str] = None
+    certification_type: str
+    certification_name: str
+    certificate_ref: str
+    issuing_authority: Optional[str] = "Directorate General of Mines Safety (DGMS)"
+    issue_date: datetime
+    expiry_date: Optional[datetime] = None
+    document_file: Optional[str] = None
+    file_name: Optional[str] = None
+    file_type: Optional[str] = None
+    file_size: Optional[int] = None
+    ocr_status: Optional[str] = "COMPLETED"
+    ocr_text: Optional[str] = None
+    ocr_confidence: Optional[float] = 92.5
+    extracted_metadata: Optional[str] = "{}"
+    status: Optional[str] = "VERIFIED"
     verification_status: str
+    verified_by_id: Optional[str] = None
     verified_by_name: Optional[str] = None
+    verified_at: Optional[datetime] = None
     verification_notes: Optional[str] = None
+    verification_history: Optional[str] = "[]"
+    days_remaining: Optional[int] = None
+    is_expired: Optional[bool] = False
+    is_expiring_soon: Optional[bool] = False
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CertificationVerifyRequest(BaseModel):
-    decision: str  # VERIFIED, REJECTED
+    decision: str  # VERIFIED, REJECTED, NEEDS_CLARIFICATION
     notes: Optional[str] = None
+
+class CertificationUploadResponse(BaseModel):
+    filename: str
+    file_type: str
+    file_size: int
+    file_url: str
+    ocr_status: str
+    ocr_confidence: float
+    extracted_fields: Dict[str, Any]
+    raw_text: Optional[str] = None
+    system_status: str
 
 # ----------------- ALERTS, ESCALATIONS & AUDIT -----------------
 class AlertOut(BaseModel):
@@ -522,8 +562,7 @@ class AlertOut(BaseModel):
     is_escalated: bool
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class EscalationLogOut(BaseModel):
     id: str
@@ -541,8 +580,7 @@ class EscalationLogOut(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class AuditLogOut(BaseModel):
     id: str
@@ -556,6 +594,5 @@ class AuditLogOut(BaseModel):
     ip_address: str
     timestamp: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 

@@ -37,7 +37,8 @@ def test_list_mines():
     assert any(m["code"] == "ECL-OCP-01" for m in mines)
 
 def test_list_contractors():
-    response = client.get("/api/contractors")
+    token = get_auth_token()
+    response = client.get("/api/contractors", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     contractors = response.json()
     assert len(contractors) >= 10
@@ -68,7 +69,8 @@ def test_list_violations_and_corrective_actions():
     assert len(ca_res.json()) >= 10
 
 def test_ai_predictions():
-    ai_res = client.get("/api/ai/predictions")
+    token = get_auth_token()
+    ai_res = client.get("/api/ai/predictions", headers={"Authorization": f"Bearer {token}"})
     assert ai_res.status_code == 200
     preds = ai_res.json()
     assert len(preds) > 0
@@ -76,11 +78,12 @@ def test_ai_predictions():
     assert "contributing_factors" in preds[0]
 
 def test_gis_features():
-    gis_res = client.get("/api/gis/features")
+    token = get_auth_token()
+    gis_res = client.get("/api/gis/features", headers={"Authorization": f"Bearer {token}"})
     assert gis_res.status_code == 200
     data = gis_res.json()
     assert "mines" in data
-    assert "inspections" in data
+    assert "hotspots" in data
 
 def test_dashboard_stats():
     token = get_auth_token()
@@ -111,3 +114,45 @@ def test_worker_training_and_certifications():
     cert_res = client.get("/api/workers/certifications", headers={"Authorization": f"Bearer {token}"})
     assert cert_res.status_code == 200
     assert isinstance(cert_res.json(), list)
+
+def test_contractor_gis_endpoint():
+    # Login as contractor
+    token = get_auth_token(email="contractor.abc@abcmining.com", password="Password@123")
+    res = client.get("/api/gis/contractor", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 200
+    data = res.json()
+    assert "summary" in data
+    assert "mines" in data
+    assert "hotspots" in data
+    assert "total_mines" in data["summary"]
+    assert "compliant_mines" in data["summary"]
+    assert "open_violations" in data["summary"]
+    assert "overdue_capas" in data["summary"]
+
+def test_field_officer_gis_endpoint():
+    # Login as field officer
+    token = get_auth_token(email="field.officer@cil.gov.in", password="Password@123")
+    res = client.get("/api/gis/field-officer", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 200
+    data = res.json()
+    assert "summary" in data
+    assert "mines" in data
+    assert "inspections" in data
+    assert "hotspots" in data
+    assert "assigned_mines" in data["summary"]
+    assert "total_inspections" in data["summary"]
+    assert "geo_tagged_inspections" in data["summary"]
+    assert "open_findings" in data["summary"]
+
+def test_contractor_gis_unauthorized_access():
+    # Login as field officer and attempt to access contractor GIS
+    token = get_auth_token(email="field.officer@cil.gov.in", password="Password@123")
+    res = client.get("/api/gis/contractor", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 403
+
+def test_field_officer_gis_unauthorized_access():
+    # Login as contractor and attempt to access field officer GIS
+    token = get_auth_token(email="contractor.abc@abcmining.com", password="Password@123")
+    res = client.get("/api/gis/field-officer", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 403
+
