@@ -1,19 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClipboardList, Plus, MapPin, CheckCircle, AlertTriangle, Send, Loader, Camera, Wrench, FileText, ArrowRight } from 'lucide-react';
+import { ClipboardList, Plus, MapPin, CheckCircle, AlertTriangle, Send, Loader, Camera, Wrench, FileText, ShieldAlert, Brain, Image as ImageIcon } from 'lucide-react';
 import { inspections as inspectionsApi, mines as minesApi, contractors as contractorsApi } from '../services/api';
 import { SectionCard, StatusBadge, ComplianceBar, LoadingState, EmptyState, Modal } from '../components/ui/UIComponents';
 import { formatDateTime, getWorkflowStageLabel } from '../utils/helpers';
 import { useAuth } from '../contexts/AuthContext';
 
 const SAFETY_CHECKLIST = [
-  { item_key: 'CHK-SAF-01', category: 'Safety', item_title: 'Haul road berm height ≥ tyre height (DGMS Reg 115)' },
+  { item_key: 'CHK-SAF-01', category: 'Safety', item_title: 'Haul road berm height >= tyre height (DGMS Reg 115)' },
   { item_key: 'CHK-SAF-02', category: 'Safety', item_title: 'Reverse horn (AVRA) functional on all HEMM' },
   { item_key: 'CHK-ENV-01', category: 'Environmental', item_title: 'Dust suppression mist / bowser operational' },
   { item_key: 'CHK-LAB-01', category: 'Labour Compliance', item_title: 'Valid Form O PME medical certificates verified' },
-  { item_key: 'CHK-PPE-01', category: 'Personal Safety', item_title: 'Full PPE compliance — hard hat, fluorescent jacket' },
+  { item_key: 'CHK-PPE-01', category: 'Personal Safety', item_title: 'Full PPE compliance - hard hat, fluorescent jacket' },
   { item_key: 'CHK-EXP-01', category: 'Statutory', item_title: 'DGMS licensed Blaster present at all explosive operations' },
   { item_key: 'CHK-FIRE-01', category: 'Fire Safety', item_title: 'Fire extinguishers charged and accessible on equipment' },
+];
+
+const WORKFLOW_STAGES = [
+  { key: 'SUBMITTED', label: 'Submitted' },
+  { key: 'UNDER_MINE_MANAGER_REVIEW', label: 'Mine Manager Review' },
+  { key: 'VIOLATIONS_FLAGGED', label: 'Violations Flagged' },
+  { key: 'MM_VALIDATED', label: 'MM Validated' },
+  { key: 'UNDER_CORPORATE_REVIEW', label: 'Corporate Review' },
+  { key: 'CORP_APPROVED', label: 'Corporate Approved' },
 ];
 
 export default function InspectionsPage() {
@@ -23,18 +32,16 @@ export default function InspectionsPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState<any>(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
   const [minesList, setMinesList] = useState<any[]>([]);
   const [contractorsList, setContractorsList] = useState<any[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitMsg, setSubmitMsg] = useState('');
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
   const [evidenceCaption, setEvidenceCaption] = useState('Field Inspection Geo-Tagged Evidence');
-
-  // Mine Manager review state
   const [mmNotes, setMmNotes] = useState('');
   const [reviewing, setReviewing] = useState(false);
 
-  // New inspection form state
   const [formData, setFormData] = useState({
     mine_id: '',
     contractor_id: '',
@@ -53,7 +60,6 @@ export default function InspectionsPage() {
 
   const isFieldOfficer = user?.role === 'FIELD OFFICER';
   const isMineManager = user?.role === 'MINE MANAGER';
-
 
   useEffect(() => {
     Promise.all([
@@ -78,6 +84,20 @@ export default function InspectionsPage() {
     }
   }, []);
 
+  const openDetail = async (insp: any) => {
+    setSelected(insp);
+    setMmNotes('');
+    setLoadingDetail(true);
+    try {
+      const full: any = await inspectionsApi.get(insp.id);
+      setSelected(full);
+    } catch {
+      // keep partial data
+    } finally {
+      setLoadingDetail(false);
+    }
+  };
+
   const handleCreateInspection = async () => {
     if (!formData.mine_id || !formData.location_tag) {
       alert('Please select a mine and enter location tag.');
@@ -91,8 +111,7 @@ export default function InspectionsPage() {
         observations: observations.filter(o => o.title)
       };
       const newInsp: any = await inspectionsApi.create(payload);
-      
-      // Upload evidence photo if provided
+
       if (evidenceFile) {
         const ef = new FormData();
         ef.append('file', evidenceFile);
@@ -106,7 +125,6 @@ export default function InspectionsPage() {
       setShowForm(false);
       setEvidenceFile(null);
 
-      // Submit to Mine Manager and trigger AI assessment
       const result: any = await inspectionsApi.submit(newInsp.id);
       setInspectionList(prev => prev.map(i => i.id === newInsp.id ? {
         ...i,
@@ -117,7 +135,7 @@ export default function InspectionsPage() {
         ai_risk_category: result.ai_risk_category
       } : i));
 
-      setSubmitMsg(`Inspection submitted to Mine Manager! AI Risk: ${result.ai_risk_category || result.risk_level} (${result.compliance_score}% Compliance)`);
+      setSubmitMsg(`Inspection submitted! AI Risk: ${result.ai_risk_category || result.risk_level} (${result.compliance_score}% Compliance)`);
     } catch (e: any) {
       alert('Failed: ' + e.message);
     } finally {
@@ -136,13 +154,15 @@ export default function InspectionsPage() {
       setInspectionList(prev => prev.map(i => i.id === selected.id ? { ...i, workflow_stage: res.workflow_stage } : i));
       setSelected((s: any) => ({ ...s, workflow_stage: res.workflow_stage }));
       setMmNotes('');
-      alert(dataIsOk ? 'Inspection validated! Automated Compliance Report generated and routed to Corporate.' : 'Inspection returned for correction.');
+      alert(dataIsOk ? 'Inspection validated! Report routed to Corporate.' : 'Inspection returned for correction.');
     } catch (e: any) {
       alert('Review failed: ' + e.message);
     } finally {
       setReviewing(false);
     }
   };
+
+  const stageOrder = WORKFLOW_STAGES.map(s => s.key);
 
   return (
     <div className="space-y-5">
@@ -155,7 +175,7 @@ export default function InspectionsPage() {
           </div>
           <h1 className="text-2xl font-bold text-slate-900">Field Inspections & On-Site Audits</h1>
           <p className="text-slate-500 text-sm mt-0.5">
-            Field Officer inspects & records violations with photos → AI Risk Engine analyzes severity → Mine Manager reviews & issues CAPA
+            Field Officer inspects & records violations with photos &rarr; AI Risk Engine analyzes severity &rarr; Mine Manager reviews & issues CAPA
           </p>
         </div>
         {isFieldOfficer && (
@@ -171,7 +191,7 @@ export default function InspectionsPage() {
             <CheckCircle size={15} className="text-emerald-600" />
             {submitMsg}
           </div>
-          <button onClick={() => setSubmitMsg('')} className="text-xs text-slate-400 hover:text-slate-600">✕</button>
+          <button onClick={() => setSubmitMsg('')} className="text-xs text-slate-400 hover:text-slate-600">x</button>
         </div>
       )}
 
@@ -192,8 +212,10 @@ export default function InspectionsPage() {
               </tr>
             </thead>
             <tbody>
-              {inspectionList.map(insp => (
-                <tr key={insp.id} className="cursor-pointer hover:bg-slate-50 transition-colors" onClick={() => setSelected(insp)}>
+              {inspectionList.length === 0 ? (
+                <tr><td colSpan={9}><EmptyState message="No inspections found" /></td></tr>
+              ) : inspectionList.map(insp => (
+                <tr key={insp.id} className="cursor-pointer hover:bg-slate-50 transition-colors" onClick={() => openDetail(insp)}>
                   <td className="font-mono text-xs text-blue-700 font-bold">{insp.inspection_number}</td>
                   <td className="text-slate-800 text-sm font-medium">{insp.mine_name}</td>
                   <td className="text-slate-500 text-xs">{insp.contractor_name || 'Direct / Multi'}</td>
@@ -202,11 +224,11 @@ export default function InspectionsPage() {
                   <td className="text-xs text-slate-500">{formatDateTime(insp.inspection_date)}</td>
                   <td>
                     <div className="w-24">
-                      <ComplianceBar score={insp.compliance_score} />
+                      <ComplianceBar score={insp.compliance_score ?? 0} />
                     </div>
                   </td>
                   <td>
-                    <StatusBadge status={insp.ai_risk_category || insp.risk_level} />
+                    <StatusBadge status={insp.ai_risk_category || insp.risk_level || 'LOW'} />
                   </td>
                   <td>
                     <StatusBadge status={getWorkflowStageLabel(insp.workflow_stage)} />
@@ -218,7 +240,7 @@ export default function InspectionsPage() {
         </div>
       )}
 
-      {/* New Inspection Modal (Only Field Officer) */}
+      {/* New Inspection Modal */}
       <Modal open={showForm} onClose={() => setShowForm(false)} title="Conduct New Field Inspection" size="lg">
         <div className="space-y-4">
           <p className="text-xs text-slate-500">
@@ -276,7 +298,6 @@ export default function InspectionsPage() {
             </div>
           </div>
 
-          {/* Photo / Geo-Evidence Upload */}
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 space-y-2">
             <div className="text-xs font-bold text-blue-800 flex items-center gap-1.5">
               <Camera size={14} className="text-blue-600" />
@@ -294,7 +315,7 @@ export default function InspectionsPage() {
               <div>
                 <input
                   type="text"
-                  placeholder="Photo caption (e.g. Substandard haul road berm slope)"
+                  placeholder="Photo caption..."
                   value={evidenceCaption}
                   onChange={e => setEvidenceCaption(e.target.value)}
                   className="form-input text-xs"
@@ -303,7 +324,6 @@ export default function InspectionsPage() {
             </div>
           </div>
 
-          {/* Checklist */}
           <div>
             <label className="form-label mb-2">Statutory Inspection Checklist</label>
             <div className="space-y-1.5 max-h-48 overflow-y-auto">
@@ -333,7 +353,6 @@ export default function InspectionsPage() {
             </div>
           </div>
 
-          {/* Observations */}
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="form-label">Identified Violations / Observations</label>
@@ -349,7 +368,7 @@ export default function InspectionsPage() {
               <div key={i} className="grid grid-cols-2 gap-2 mb-2 bg-slate-50 border border-slate-200 rounded-lg p-3">
                 <input
                   className="form-input text-xs"
-                  placeholder="Violation Title (e.g. Substandard Berm Height)"
+                  placeholder="Violation Title"
                   value={obs.title}
                   onChange={e => setObservations(prev => prev.map((o, j) => j === i ? { ...o, title: e.target.value } : o))}
                 />
@@ -377,32 +396,45 @@ export default function InspectionsPage() {
           <div className="flex gap-2 justify-end pt-2 border-t border-slate-200">
             <button onClick={() => setShowForm(false)} className="btn-secondary text-xs">Cancel</button>
             <button onClick={handleCreateInspection} disabled={submitting} className="btn-primary text-xs">
-              {submitting ? <><Loader size={14} className="animate-spin" /> Submitting to Mine Manager...</> : <><Send size={14} /> Submit Inspection Report</>}
+              {submitting ? <><Loader size={14} className="animate-spin" /> Submitting...</> : <><Send size={14} /> Submit Inspection Report</>}
             </button>
           </div>
         </div>
       </Modal>
 
       {/* Inspection Detail Modal */}
-      <Modal open={!!selected} onClose={() => setSelected(null)} title={selected?.inspection_number || 'Inspection Detail'} size="lg">
+      <Modal open={!!selected} onClose={() => { setSelected(null); setLoadingDetail(false); }} title={selected?.inspection_number || 'Inspection Detail'} size="lg">
         {selected && (
           <div className="space-y-4">
+            {/* Status header */}
             <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <StatusBadge status={getWorkflowStageLabel(selected.workflow_stage)} />
-                <StatusBadge status={selected.ai_risk_category || selected.risk_level} />
+                <StatusBadge status={selected.ai_risk_category || selected.risk_level || 'LOW'} />
+                {selected.inspection_type && (
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-bold uppercase">
+                    {selected.inspection_type}
+                  </span>
+                )}
               </div>
-              <span className="text-xs text-slate-500">Score: <strong className="text-slate-900">{selected.compliance_score}%</strong></span>
+              <span className="text-xs text-slate-500">Score: <strong className="text-slate-900">{selected.compliance_score ?? 'N/A'}%</strong></span>
             </div>
 
+            {loadingDetail && (
+              <div className="flex items-center gap-2 text-xs text-blue-600 animate-pulse">
+                <Loader size={13} className="animate-spin" /> Loading full inspection details with evidence & findings...
+              </div>
+            )}
+
+            {/* Core info */}
             <div className="grid grid-cols-2 gap-3 text-sm bg-slate-50 border border-slate-200 rounded-xl p-4">
               {[
                 ['Mine', selected.mine_name],
                 ['Contractor', selected.contractor_name || 'Direct Operations'],
-                ['Field Inspector', selected.officer_name || 'Amitabh Singh (Senior Overman)'],
+                ['Field Inspector', selected.officer_name || 'Field Officer'],
                 ['Inspection Type', selected.inspection_type],
                 ['Inspection Date', formatDateTime(selected.inspection_date)],
-                ['Location Tag', selected.location_tag],
+                ['Location Tag', selected.location_tag || '—'],
               ].map(([k, v]) => (
                 <div key={k as string}>
                   <div className="text-[10px] text-slate-400 uppercase font-semibold">{k}</div>
@@ -411,33 +443,150 @@ export default function InspectionsPage() {
               ))}
             </div>
 
-            {/* AI Risk Assessment Card */}
-            {selected.ai_risk_score !== undefined && (
+            {/* Workflow Stage Progress Tracker */}
+            <div className="bg-violet-50 border border-violet-200 rounded-xl p-3">
+              <div className="text-xs font-bold text-violet-800 mb-2 flex items-center gap-1.5">
+                <ShieldAlert size={13} /> Workflow Stage Progress
+              </div>
+              <div className="flex items-center gap-1 flex-wrap">
+                {WORKFLOW_STAGES.map((stage, idx) => {
+                  const currentIdx = stageOrder.indexOf(selected.workflow_stage);
+                  const thisIdx = stageOrder.indexOf(stage.key);
+                  const isPast = thisIdx < currentIdx;
+                  const isCurrent = stage.key === selected.workflow_stage;
+                  return (
+                    <div key={stage.key} className="flex items-center gap-1">
+                      <span className={`text-[10px] px-2 py-0.5 rounded font-bold border whitespace-nowrap ${
+                        isCurrent ? 'bg-violet-600 text-white border-violet-600' :
+                        isPast ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                        'bg-slate-100 text-slate-400 border-slate-200'
+                      }`}>
+                        {isCurrent ? '► ' : isPast ? '✓ ' : ''}{stage.label}
+                      </span>
+                      {idx < WORKFLOW_STAGES.length - 1 && <span className="text-slate-300 text-xs">›</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* AI Risk Assessment */}
+            {(selected.ai_risk_score !== undefined || selected.ai_risk_category || selected.risk_level) && (
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-blue-800">🤖 AI-Assisted Risk Engine Analysis</span>
-                  <span className="text-base font-bold text-slate-900">{selected.ai_risk_score}/100 Risk Index</span>
+                  <span className="text-xs font-bold text-blue-800 flex items-center gap-1.5">
+                    <Brain size={13} /> AI-Assisted Risk Engine Analysis
+                  </span>
+                  {selected.ai_risk_score !== undefined && (
+                    <span className="text-base font-bold text-slate-900">{selected.ai_risk_score}/100 Risk Index</span>
+                  )}
                 </div>
-                <ul className="space-y-1">
-                  {(selected.ai_factors || []).map((f: string, i: number) => (
-                    <li key={i} className="text-xs text-slate-700 flex items-start gap-1.5">
-                      <span className="text-red-500">•</span> {f}
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex items-center gap-2 mb-2">
+                  <StatusBadge status={selected.ai_risk_category || selected.risk_level || 'LOW'} />
+                  {selected.compliance_score !== undefined && (
+                    <span className="text-xs text-slate-600">Compliance Score: <strong>{selected.compliance_score}%</strong></span>
+                  )}
+                </div>
+                {(selected.ai_factors || []).length > 0 && (
+                  <ul className="space-y-1 mt-2">
+                    {(selected.ai_factors || []).map((f: string, i: number) => (
+                      <li key={i} className="text-xs text-slate-700 flex items-start gap-1.5">
+                        <span className="text-red-500">•</span> {f}
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <p className="text-[10px] text-slate-500 mt-2 italic">
                   AI assists with risk/severity synthesis. Mine Manager decides regulatory corrective action.
                 </p>
               </div>
             )}
 
-            {/* Checklists */}
-            {selected.checklists?.length > 0 && (
+            {/* Findings / Violations */}
+            {selected.observations && selected.observations.length > 0 && (
               <div>
-                <div className="form-label mb-2">Checklist Observations</div>
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle size={14} className="text-orange-600" />
+                  <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                    Findings & Violations ({selected.observations.length})
+                  </h4>
+                </div>
+                <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                  {selected.observations.map((obs: any, i: number) => (
+                    <div key={obs.id || i} className={`p-3 rounded-lg border text-xs ${
+                      obs.severity === 'CRITICAL' ? 'bg-red-50 border-red-200' :
+                      obs.severity === 'HIGH' ? 'bg-orange-50 border-orange-200' :
+                      obs.severity === 'MEDIUM' ? 'bg-amber-50 border-amber-200' :
+                      'bg-slate-50 border-slate-200'
+                    }`}>
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <div className="font-bold text-slate-900">{obs.title}</div>
+                          {obs.description && (
+                            <p className="text-slate-600 mt-0.5 leading-relaxed">{obs.description}</p>
+                          )}
+                        </div>
+                        <StatusBadge status={obs.severity || 'MEDIUM'} />
+                      </div>
+                      {obs.category && (
+                        <div className="mt-1 text-[10px] text-slate-500">
+                          Category: <span className="font-semibold">{obs.category}</span>
+                          {obs.requires_action && <span className="ml-2 text-red-600 font-bold">• Action Required</span>}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Evidence Photos */}
+            {selected.evidence && selected.evidence.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Camera size={14} className="text-teal-600" />
+                  <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                    Geo-Tagged Evidence ({selected.evidence.length} photo{selected.evidence.length !== 1 ? 's' : ''})
+                  </h4>
+                </div>
+                <div className="grid grid-cols-2 gap-3 max-h-60 overflow-y-auto pr-1">
+                  {selected.evidence.map((ev: any, i: number) => (
+                    <div key={ev.id || i} className="border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
+                      {ev.file_path ? (
+                        <img src={ev.file_path} alt={ev.caption || 'Evidence'} className="w-full h-32 object-cover" />
+                      ) : (
+                        <div className="w-full h-32 bg-slate-100 flex flex-col items-center justify-center">
+                          <ImageIcon size={24} className="text-slate-400" />
+                          <span className="text-[10px] text-slate-400 mt-1">Photo on file</span>
+                        </div>
+                      )}
+                      <div className="p-2">
+                        <p className="text-[11px] font-semibold text-slate-800 truncate">{ev.caption || 'Photo Evidence'}</p>
+                        {ev.latitude && ev.longitude && (
+                          <p className="text-[10px] text-slate-500 flex items-center gap-0.5 mt-0.5">
+                            <MapPin size={9} /> {Number(ev.latitude).toFixed(4)}, {Number(ev.longitude).toFixed(4)}
+                          </p>
+                        )}
+                        {ev.captured_at && (
+                          <p className="text-[10px] text-slate-400">{formatDateTime(ev.captured_at)}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Checklists */}
+            {selected.checklists && selected.checklists.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText size={13} className="text-slate-500" />
+                  <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Checklist Observations</span>
+                </div>
                 <div className="space-y-1 max-h-36 overflow-y-auto">
                   {selected.checklists.map((c: any) => (
-                    <div key={c.id} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs border ${c.is_compliant ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
+                    <div key={c.id || c.item_key} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs border ${c.is_compliant ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
                       <span>{c.is_compliant ? '✅' : '❌'}</span>
                       <div className="flex-1">
                         <div className="text-slate-800 font-medium">{c.item_title}</div>
@@ -450,14 +599,14 @@ export default function InspectionsPage() {
               </div>
             )}
 
-            {/* MINE MANAGER REVIEW GATEWAY */}
+            {/* Mine Manager Review Gateway */}
             {isMineManager && selected.workflow_stage === 'UNDER_MINE_MANAGER_REVIEW' && (
               <div className="border-t border-slate-200 pt-4 space-y-3">
                 <div className="text-xs font-bold text-violet-700 uppercase tracking-wide">
                   Mine Manager Review & CAPA Decision Gateway
                 </div>
                 <p className="text-xs text-slate-500">
-                  Validate the field officer's inspection data to generate the statutory compliance PDF report, or issue CAPAs for the flagged violations.
+                  Validate the field officer's inspection data to generate the statutory compliance PDF report, or issue CAPAs for flagged violations.
                 </p>
                 <textarea
                   className="form-input text-xs"
@@ -466,7 +615,7 @@ export default function InspectionsPage() {
                   onChange={e => setMmNotes(e.target.value)}
                   placeholder="Mine Manager validation remarks and statutory instructions..."
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   <button
                     onClick={() => handleManagerReview(true)}
                     disabled={reviewing}

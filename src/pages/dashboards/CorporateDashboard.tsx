@@ -38,10 +38,45 @@ export default function CorporateDashboard() {
 
   const rKpis = stats?.role_kpis || {};
   const kpis = stats?.kpis || {};
-  const monthlyTrend = stats?.monthly_trend || [];
-  const violationsByCat = stats?.violations_by_category || [];
-  const mineCompliance = stats?.mine_compliance || [];
-  const recentAlerts = stats?.recent_alerts || [];
+
+  // Fallback demo data for charts when API returns empty
+  const DEMO_MONTHLY_TREND = [
+    { month: 'Apr', compliance: 82, violations: 14 },
+    { month: 'May', compliance: 84, violations: 12 },
+    { month: 'Jun', compliance: 80, violations: 17 },
+    { month: 'Jul', compliance: 86, violations: 9 },
+    { month: 'Aug', compliance: 88, violations: 7 },
+    { month: 'Sep', compliance: 87, violations: 8 },
+  ];
+  const DEMO_VIOLATIONS_BY_CAT = [
+    { category: 'Safety', count: 18 },
+    { category: 'Environmental', count: 11 },
+    { category: 'Labour', count: 9 },
+    { category: 'Equipment', count: 6 },
+    { category: 'Contractor', count: 4 },
+  ];
+  const DEMO_MINE_COMPLIANCE = [
+    { mine_id: 'ecl-1', mine_name: 'Rajmahal OCP', score: 88, open_violations: 3, risk_level: 'LOW' },
+    { mine_id: 'ecl-2', mine_name: 'Jharna Opencast', score: 74, open_violations: 7, risk_level: 'MEDIUM' },
+    { mine_id: 'bcc-1', mine_name: 'Barora Colliery', score: 91, open_violations: 1, risk_level: 'LOW' },
+    { mine_id: 'ecl-3', mine_name: 'Mugma OCP', score: 62, open_violations: 12, risk_level: 'HIGH' },
+    { mine_id: 'bcc-2', mine_name: 'Sijua Area', score: 85, open_violations: 4, risk_level: 'LOW' },
+  ];
+  const DEMO_ALERTS = [
+    { id: 'a1', title: 'Overdue CAPA — Mugma OCP', message: 'Corrective action deadline passed by 7 days for berm height violation.', severity: 'CRITICAL', escalation_level: 3 },
+    { id: 'a2', title: 'Recurring Safety Violation Pattern', message: 'AVRA alarm non-compliance reported across 3 consecutive inspections at Rajmahal.', severity: 'HIGH', escalation_level: 2 },
+    { id: 'a3', title: 'Labour Compliance Below Threshold', message: 'PME medical compliance at Jharna Opencast dropped to 71% — threshold is 90%.', severity: 'HIGH', escalation_level: 2 },
+  ];
+
+  const rawMonthlyTrend = stats?.monthly_trend || [];
+  const rawViolationsByCat = stats?.violations_by_category || [];
+  const rawMineCompliance = stats?.mine_compliance || [];
+  const rawAlerts = stats?.recent_alerts || [];
+
+  const monthlyTrend = rawMonthlyTrend.length > 0 ? rawMonthlyTrend : DEMO_MONTHLY_TREND;
+  const violationsByCat = rawViolationsByCat.length > 0 ? rawViolationsByCat : DEMO_VIOLATIONS_BY_CAT;
+  const mineCompliance = rawMineCompliance.length > 0 ? rawMineCompliance : DEMO_MINE_COMPLIANCE;
+  const recentAlerts = rawAlerts.length > 0 ? rawAlerts : DEMO_ALERTS;
 
   const totalMines = rKpis.total_mines ?? kpis.total_mines ?? 5;
   const totalContracts = rKpis.total_contracts ?? kpis.total_contracts ?? 10;
@@ -211,6 +246,15 @@ export default function CorporateDashboard() {
           </button>
         </div>
       )}
+
+      {/* Compliance Analytics Section */}
+      <div className="flex items-center gap-2 pb-1 border-b border-slate-200">
+        <TrendingUp size={15} className="text-blue-600" />
+        <h2 className="text-sm font-bold text-slate-800">Compliance Analytics & Mine Performance</h2>
+        {(rawMonthlyTrend.length === 0 || rawViolationsByCat.length === 0) && (
+          <span className="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 font-bold">Demo Data</span>
+        )}
+      </div>
 
       {/* Main Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">

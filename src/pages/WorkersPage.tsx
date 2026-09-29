@@ -141,14 +141,23 @@ export default function WorkersPage() {
     }).catch(() => setLoading(false));
   };
 
-  const fetchExpiryTracking = () => {
+  const fetchExpiryTracking = (threshold?: number) => {
+    const days = threshold ?? expiryThreshold;
     setLoadingExpiries(true);
-    workersApi.expiryTracking(expiryThreshold)
+    workersApi.expiryTracking(days)
       .then((res: any) => {
-        setExpiryData(res);
+        if (res && (res.expiring_soon || res.expired || res.valid)) {
+          setExpiryData(res);
+        } else {
+          // Build fallback from certList if API returns unexpected shape
+          setExpiryData(null);
+        }
         setLoadingExpiries(false);
       })
-      .catch(() => setLoadingExpiries(false));
+      .catch(() => {
+        setExpiryData(null);
+        setLoadingExpiries(false);
+      });
   };
 
   useEffect(() => {
@@ -914,7 +923,7 @@ export default function WorkersPage() {
                   key={days}
                   onClick={() => {
                     setExpiryThreshold(days);
-                    workersApi.expiryTracking(days).then(setExpiryData);
+                    fetchExpiryTracking(days);
                   }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     expiryThreshold === days ? 'bg-amber-100 text-amber-700 border border-amber-400' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900'
@@ -931,7 +940,9 @@ export default function WorkersPage() {
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-teal-500">
               <div>
                 <div className="text-xs text-slate-500">Total Tracked</div>
-                <div className="text-2xl font-bold text-slate-900">{expiryData?.summary?.total_tracked || certList.length}</div>
+                <div className="text-2xl font-bold text-slate-900">
+                  {expiryData?.summary?.total_tracked ?? certList.length}
+                </div>
               </div>
               <Award className="w-8 h-8 text-teal-600/40" />
             </div>
@@ -939,15 +950,31 @@ export default function WorkersPage() {
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-emerald-500">
               <div>
                 <div className="text-xs text-slate-500">Valid Credentials</div>
-                <div className="text-2xl font-bold text-emerald-400">{expiryData?.summary?.valid_count || 0}</div>
+                <div className="text-2xl font-bold text-emerald-400">
+                  {expiryData?.summary?.valid_count ??
+                    certList.filter((c: any) => {
+                      if (!c.expiry_date) return true;
+                      const d = new Date(c.expiry_date);
+                      const diff = Math.round((d.getTime() - Date.now()) / 86400000);
+                      return diff > expiryThreshold;
+                    }).length}
+                </div>
               </div>
               <CheckCircle2 className="w-8 h-8 text-emerald-400/40" />
             </div>
 
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-amber-500">
               <div>
-                <div className="text-xs text-slate-500">Expiring Soon (≤ {expiryThreshold}d)</div>
-                <div className="text-2xl font-bold text-amber-400">{expiryData?.summary?.expiring_soon_count || 0}</div>
+                <div className="text-xs text-slate-500">Expiring Soon ({'\u2264'} {expiryThreshold}d)</div>
+                <div className="text-2xl font-bold text-amber-400">
+                  {expiryData?.summary?.expiring_soon_count ??
+                    certList.filter((c: any) => {
+                      if (!c.expiry_date) return false;
+                      const d = new Date(c.expiry_date);
+                      const diff = Math.round((d.getTime() - Date.now()) / 86400000);
+                      return diff >= 0 && diff <= expiryThreshold;
+                    }).length}
+                </div>
               </div>
               <Clock className="w-8 h-8 text-amber-400/40" />
             </div>
@@ -955,7 +982,10 @@ export default function WorkersPage() {
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-red-500">
               <div>
                 <div className="text-xs text-slate-500">Expired (Non-Compliant)</div>
-                <div className="text-2xl font-bold text-red-400">{expiryData?.summary?.expired_count || 0}</div>
+                <div className="text-2xl font-bold text-red-400">
+                  {expiryData?.summary?.expired_count ??
+                    certList.filter((c: any) => c.expiry_date && new Date(c.expiry_date) < new Date()).length}
+                </div>
               </div>
               <AlertCircle className="w-8 h-8 text-red-400/40" />
             </div>
@@ -964,58 +994,84 @@ export default function WorkersPage() {
           <div className="section-card overflow-hidden">
             {loadingExpiries ? (
               <LoadingState message="Calculating real-time statutory expiries..." />
-            ) : (
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>Certification Name</th>
-                    <th>Worker ID & Name</th>
-                    <th>Certificate Number</th>
-                    <th>Issuing Authority</th>
-                    <th>Expiry Date</th>
-                    <th>Days Remaining</th>
-                    <th>Expiry Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[...(expiryData?.expiring_soon || []), ...(expiryData?.expired || []), ...(expiryData?.valid || [])].map((item: any) => {
-                    const isExp = item.is_expired;
-                    const isSoon = item.is_expiring_soon;
-                    return (
-                      <tr key={item.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="font-semibold text-slate-900">{item.certification_name}</td>
-                        <td className="text-xs text-slate-600">
-                          <div>{item.worker_name || 'Worker'}</div>
-                          <div className="font-mono text-[11px] text-slate-400">{item.worker_code || item.worker_id}</div>
-                        </td>
-                        <td className="font-mono text-xs text-slate-700">{item.certificate_ref}</td>
-                        <td className="text-xs text-slate-600">{item.issuing_authority || 'DGMS'}</td>
-                        <td className="text-xs">{formatDate(item.expiry_date)}</td>
-                        <td className="text-xs font-mono">
-                          <span className={isExp ? 'text-red-600 font-bold' : isSoon ? 'text-amber-600 font-bold' : 'text-emerald-600'}>
-                            {item.days_remaining !== undefined && item.days_remaining < 9000
-                              ? (item.days_remaining < 0 ? `${Math.abs(item.days_remaining)} days overdue` : `${item.days_remaining} days`)
-                              : 'Perpetual'}
-                          </span>
-                        </td>
-                        <td>
-                          <StatusBadge status={isExp ? 'EXPIRED' : isSoon ? 'EXPIRING_SOON' : 'VALID'} />
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => openDetailModal(item)}
-                            className="text-xs text-teal-600 hover:text-teal-800 hover:underline flex items-center gap-1"
-                          >
-                            <Eye size={12} /> Details
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )}
+            ) : (() => {
+              // Build display items: prefer API data, fall back to computing from certList
+              const apiItems = [
+                ...(expiryData?.expiring_soon || []),
+                ...(expiryData?.expired || []),
+                ...(expiryData?.valid || [])
+              ];
+              const today = new Date();
+              const displayItems = apiItems.length > 0 ? apiItems : certList.map((c: any) => {
+                const expDate = c.expiry_date ? new Date(c.expiry_date) : null;
+                const daysRemaining = expDate
+                  ? Math.round((expDate.getTime() - today.getTime()) / (24 * 60 * 60 * 1000))
+                  : 99999;
+                return {
+                  ...c,
+                  days_remaining: daysRemaining,
+                  is_expired: expDate ? expDate < today : false,
+                  is_expiring_soon: expDate ? (daysRemaining >= 0 && daysRemaining <= expiryThreshold) : false,
+                };
+              });
+
+              if (displayItems.length === 0) {
+                return <EmptyState message="No certification records found. Add certifications to track expiry." />;
+              }
+
+              return (
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Certification Name</th>
+                      <th>Worker ID &amp; Name</th>
+                      <th>Certificate Number</th>
+                      <th>Issuing Authority</th>
+                      <th>Expiry Date</th>
+                      <th>Days Remaining</th>
+                      <th>Expiry Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {displayItems.map((item: any) => {
+                      const isExp = item.is_expired;
+                      const isSoon = item.is_expiring_soon;
+                      return (
+                        <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="font-semibold text-slate-900">{item.certification_name}</td>
+                          <td className="text-xs text-slate-600">
+                            <div>{item.worker_name || 'Worker'}</div>
+                            <div className="font-mono text-[11px] text-slate-400">{item.worker_code || item.worker_id}</div>
+                          </td>
+                          <td className="font-mono text-xs text-slate-700">{item.certificate_ref || '—'}</td>
+                          <td className="text-xs text-slate-600">{item.issuing_authority || 'DGMS'}</td>
+                          <td className="text-xs">{item.expiry_date ? formatDate(item.expiry_date) : 'Perpetual'}</td>
+                          <td className="text-xs font-mono">
+                            <span className={isExp ? 'text-red-600 font-bold' : isSoon ? 'text-amber-600 font-bold' : 'text-emerald-600'}>
+                              {item.days_remaining !== undefined && item.days_remaining < 9000
+                                ? (item.days_remaining < 0 ? `${Math.abs(item.days_remaining)} days overdue` : `${item.days_remaining} days`)
+                                : 'Perpetual'}
+                            </span>
+                          </td>
+                          <td>
+                            <StatusBadge status={isExp ? 'EXPIRED' : isSoon ? 'EXPIRING_SOON' : 'VALID'} />
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => openDetailModal(item)}
+                              className="text-xs text-teal-600 hover:text-teal-800 hover:underline flex items-center gap-1"
+                            >
+                              <Eye size={12} /> Details
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              );
+            })()}
           </div>
         </div>
       )}
