@@ -15,28 +15,25 @@ import { useAuth } from '../contexts/AuthContext';
 import { formatDate, formatDateTime } from '../utils/helpers';
 
 // ---------------------------------------------------------------------------
-// Basemap Options
+// Basemap Options (Zero-Secret-Key Required)
 // ---------------------------------------------------------------------------
 const BASEMAP_TILES = {
-  voyager: {
-    name: 'CartoDB Voyager',
-    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-    attribution: '&copy; OpenStreetMap &copy; CARTO',
-    subdomains: 'abcd',
+  osm: {
+    name: 'OpenStreetMap (OSM)',
+    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors',
     maxZoom: 19,
   },
-  osm: {
-    name: 'OpenStreetMap',
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution: '&copy; OpenStreetMap contributors',
-    subdomains: 'abc',
+  topo: {
+    name: 'World Street / Topo (Esri)',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+    attribution: 'Tiles &copy; Esri',
     maxZoom: 19,
   },
   imagery: {
     name: 'Satellite (Esri)',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     attribution: 'Tiles &copy; Esri',
-    subdomains: 'a',
     maxZoom: 18,
   },
 };
@@ -190,7 +187,7 @@ export default function ContractorGISPage() {
   const [filterSeverity, setFilterSeverity] = useState('ALL');
   const [filterStatus, setFilterStatus]     = useState('ALL');
   const [filterCapa, setFilterCapa]         = useState('ALL');
-  const [activeBasemap, setActiveBasemap]   = useState<'voyager' | 'osm' | 'imagery'>('voyager');
+  const [activeBasemap, setActiveBasemap]   = useState<'osm' | 'topo' | 'imagery'>('osm');
 
   useEffect(() => { loadGISData(); }, [filterMine, filterSeverity, filterStatus, filterCapa]);
 
@@ -263,7 +260,7 @@ export default function ContractorGISPage() {
           </div>
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2.5 mt-1">
             <span className="p-2 rounded-xl bg-teal-100 text-teal-800"><MapPin size={22} /></span>
-            Contractor Geographic Compliance Radar &amp; Site Monitor
+            CONTRACT COMPLIANCE GIS
           </h1>
           <p className="text-slate-600 text-xs mt-0.5">
             Geospatial tracking of mine site compliance, open violation hotspots, active contracts, and overdue corrective action directives.
@@ -346,7 +343,7 @@ export default function ContractorGISPage() {
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex items-center bg-slate-100 rounded-lg p-0.5 text-[11px] border border-slate-200">
-                  {(['voyager', 'osm', 'imagery'] as const).map(bm => (
+                  {(['osm', 'topo', 'imagery'] as const).map(bm => (
                     <button
                       key={bm}
                       onClick={() => setActiveBasemap(bm)}
@@ -356,7 +353,7 @@ export default function ContractorGISPage() {
                           : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
-                      {bm === 'voyager' ? 'Street' : bm === 'osm' ? 'OSM' : 'Satellite'}
+                      {bm === 'osm' ? 'OSM' : bm === 'topo' ? 'World Topo' : 'Satellite'}
                     </button>
                   ))}
                 </div>
