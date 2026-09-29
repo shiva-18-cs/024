@@ -262,53 +262,57 @@ export default function CorporateDashboard() {
         <SectionCard
           title="Cross-Mine Compliance & Violations Trend"
           icon={<TrendingUp size={16} />}
-          className="lg:col-span-2"
+          className="lg:col-span-2 min-w-0"
         >
-          <ResponsiveContainer width="100%" height={240}>
-            <AreaChart data={monthlyTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <defs>
-                <linearGradient id="corpColorCompliance" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#2563eb" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
-                </linearGradient>
-                <linearGradient id="corpColorViolations" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ color: '#475569', fontSize: 11, paddingTop: '10px' }} />
-              <Area type="monotone" dataKey="compliance" stroke="#2563eb" fill="url(#corpColorCompliance)" name="Compliance %" strokeWidth={2} dot={{ fill: '#2563eb', r: 3 }} />
-              <Area type="monotone" dataKey="violations" stroke="#ef4444" fill="url(#corpColorViolations)" name="Violations" strokeWidth={2} dot={{ fill: '#ef4444', r: 3 }} />
-            </AreaChart>
-          </ResponsiveContainer>
+          <div className="w-full h-[240px] min-w-0">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={monthlyTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="corpColorCompliance" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
+                  </linearGradient>
+                  <linearGradient id="corpColorViolations" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ color: '#475569', fontSize: 11, paddingTop: '10px' }} />
+                <Area type="monotone" dataKey="compliance" stroke="#2563eb" fill="url(#corpColorCompliance)" name="Compliance %" strokeWidth={2} dot={{ fill: '#2563eb', r: 3 }} />
+                <Area type="monotone" dataKey="violations" stroke="#ef4444" fill="url(#corpColorViolations)" name="Violations" strokeWidth={2} dot={{ fill: '#ef4444', r: 3 }} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </SectionCard>
 
         {/* Violations by Category Pie */}
-        <SectionCard title="Violations by Category" icon={<AlertTriangle size={16} />}>
-          <ResponsiveContainer width="100%" height={240}>
-            <PieChart>
-              <Pie
-                data={violationsByCat}
-                dataKey="count"
-                nameKey="category"
-                cx="50%"
-                cy="50%"
-                innerRadius={55}
-                outerRadius={85}
-                paddingAngle={3}
-              >
-                {violationsByCat.map((_: any, i: number) => (
-                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ color: '#475569', fontSize: 11 }} />
-            </PieChart>
-          </ResponsiveContainer>
+        <SectionCard title="Violations by Category" icon={<AlertTriangle size={16} />} className="min-w-0">
+          <div className="w-full h-[240px] min-w-0">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={violationsByCat}
+                  dataKey="count"
+                  nameKey="category"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={55}
+                  outerRadius={85}
+                  paddingAngle={3}
+                >
+                  {violationsByCat.map((_: any, i: number) => (
+                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ color: '#475569', fontSize: 11 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </SectionCard>
       </div>
 

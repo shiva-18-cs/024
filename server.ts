@@ -805,7 +805,28 @@ app.post('/api/corrective-actions/:id/close', (req, res) => {
 // AI Insights Routes
 // -------------------------------------------------------------
 app.get('/api/ai/predictions', (req, res) => {
-  res.json(db.ai_predictions || []);
+  const safePredictions = (db.ai_predictions || []).map(p => {
+    let contributing_factors = p.contributing_factors;
+    if (typeof contributing_factors === 'string') {
+      try { contributing_factors = JSON.parse(contributing_factors); } catch { contributing_factors = []; }
+    }
+    let recommended_actions = p.recommended_actions;
+    if (typeof recommended_actions === 'string') {
+      try { recommended_actions = JSON.parse(recommended_actions); } catch { recommended_actions = []; }
+    }
+    let anomaly_details = p.anomaly_details;
+    if (typeof anomaly_details === 'string') {
+      try { anomaly_details = JSON.parse(anomaly_details); } catch { anomaly_details = {}; }
+    }
+    return {
+      ...p,
+      contributing_factors: Array.isArray(contributing_factors) ? contributing_factors : [],
+      recommended_actions: Array.isArray(recommended_actions) ? recommended_actions : [],
+      anomaly_details: typeof anomaly_details === 'object' && anomaly_details ? anomaly_details : {},
+      is_anomaly: Boolean(p.is_anomaly),
+    };
+  });
+  res.json(safePredictions);
 });
 
 app.get('/api/ai/anomalies', (req, res) => {
@@ -940,6 +961,10 @@ app.post('/api/reports/:id/ai-risk-analysis', (req, res) => {
   if (!rep) return res.status(404).json({ detail: 'Report not found' });
   rep.ai_risk_score = 78.5;
   rep.ai_summary = "AI Governance Model evaluated high correlation with previous quarter safety audit incidents. Recommending immediate supervisory intervention on contractor HEMM fleets.";
+  rep.ai_explanation = rep.ai_summary;
+  if (rep.approval_status === 'DRAFT') {
+    rep.approval_status = 'AI_ANALYSIS';
+  }
   res.json(rep);
 });
 

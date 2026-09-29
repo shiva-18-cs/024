@@ -662,10 +662,10 @@ export default function ReportsPage() {
                     </span>
                   </div>
 
-                  {selected.ai_explanation && (
+                  {(selected.ai_explanation || selected.ai_summary) && (
                     <div className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-white dark:bg-slate-900 p-3 rounded-lg border border-indigo-100 dark:border-indigo-900/40">
                       <strong>AI Explanation: </strong>
-                      {selected.ai_explanation}
+                      {selected.ai_explanation || selected.ai_summary}
                     </div>
                   )}
                 </div>
