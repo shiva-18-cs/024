@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Light enterprise neutrals
         coal: {
           50: '#f8fafc',
           100: '#f1f5f9',
@@ -20,12 +21,39 @@ export default {
           900: '#0f172a',
           950: '#080d1a',
         },
+        // Brand: institutional deep blue
         cil: {
-          blue: '#1a56db',
+          blue: '#1d4ed8',
+          light: '#3b82f6',
           dark: '#1e3a8a',
-          gold: '#f59e0b',
+          gold: '#b45309',
+          teal: '#0f766e',
+        },
+        // UI surface colors for light theme
+        surface: {
+          DEFAULT: '#ffffff',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e8edf5',
+          300: '#dde3ed',
+        },
+        // Status semantic colors
+        status: {
+          green: '#15803d',
+          amber: '#b45309',
+          red: '#b91c1c',
+          blue: '#1d4ed8',
         }
-      }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        card: '0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07)',
+        'card-hover': '0 4px 12px 0 rgb(0 0 0 / 0.10), 0 2px 4px -1px rgb(0 0 0 / 0.06)',
+        sidebar: '1px 0 0 0 #e2e8f0',
+        header: '0 1px 0 0 #e2e8f0',
+      },
     },
   },
   plugins: [],

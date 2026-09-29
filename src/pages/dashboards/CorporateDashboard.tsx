@@ -55,16 +55,17 @@ export default function CorporateDashboard() {
   const recurringProblems = rKpis.recurring_problems ?? kpis.recurring_problems ?? 2;
   const reportsAwaitingApproval = rKpis.reports_awaiting_approval ?? rKpis.reports_pending_review ?? pendingReports.length;
 
-  const COLORS = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6'];
+  const COLORS = ['#ef4444', '#f59e0b', '#2563eb', '#10b981', '#8b5cf6'];
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-coal-800 border border-coal-700 rounded-xl px-4 py-3 shadow-xl">
-          <p className="text-coal-300 text-xs font-semibold mb-2">{label}</p>
+        <div className="bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-lg">
+          <p className="text-slate-700 text-xs font-bold mb-1">{label}</p>
           {payload.map((p: any, i: number) => (
-            <p key={i} className="text-xs" style={{ color: p.color }}>
-              {p.name}: <strong>{p.value}</strong>
+            <p key={i} className="text-xs font-medium flex items-center justify-between gap-4" style={{ color: p.color }}>
+              <span>{p.name}:</span>
+              <span className="font-bold font-mono">{p.value}</span>
             </p>
           ))}
         </div>
@@ -79,13 +80,13 @@ export default function CorporateDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">
               Corporate Governance HQ • Coal India Limited
             </span>
-            <span className="text-xs text-coal-400 font-medium">Cross-Mine Oversight</span>
+            <span className="text-xs text-slate-500 font-medium">Cross-Mine Oversight</span>
           </div>
-          <h1 className="text-2xl font-bold text-white mt-1">Corporate Management & Governance Dashboard</h1>
-          <p className="text-coal-500 text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-slate-900 mt-1">Corporate Management & Governance Dashboard</h1>
+          <p className="text-slate-500 text-sm mt-0.5">
             Real-time cross-mine compliance aggregation, statutory sign-offs, high-risk surveillance, and systemic escalations.
           </p>
         </div>
@@ -93,19 +94,19 @@ export default function CorporateDashboard() {
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap gap-2">
           <button onClick={() => navigate('/reports')} className="btn-primary text-xs">
-            <FileText size={13} /> Review Reports ({reportsAwaitingApproval})
+            <FileText size={14} /> Review Reports ({reportsAwaitingApproval})
           </button>
           <button onClick={() => navigate('/violations')} className="btn-secondary text-xs">
-            <AlertTriangle size={13} /> Violations
+            <AlertTriangle size={14} /> Violations
           </button>
           <button onClick={() => navigate('/alerts')} className="btn-secondary text-xs">
-            <Bell size={13} /> Escalations
+            <Bell size={14} /> Escalations
           </button>
           <button onClick={() => navigate('/ai-insights')} className="btn-secondary text-xs">
-            <Brain size={13} /> Risk Analysis
+            <Brain size={14} /> Risk Analysis
           </button>
           <button onClick={() => navigate('/gis')} className="btn-secondary text-xs">
-            <Map size={13} /> GIS Analytics
+            <Map size={14} /> GIS Analytics
           </button>
         </div>
       </div>
@@ -115,92 +116,92 @@ export default function CorporateDashboard() {
         <KPICard
           label="Total Mines"
           value={totalMines}
-          icon={<Building2 size={20} className="text-blue-400" />}
-          iconBg="bg-blue-500/10"
+          icon={<Building2 size={20} className="text-blue-700" />}
+          iconBg="bg-blue-50"
           onClick={() => navigate('/mines')}
         />
         <KPICard
           label="TOTAL CONTRACTS"
           value={totalContracts}
-          icon={<FileText size={20} className="text-teal-400" />}
-          iconBg="bg-teal-500/10"
+          icon={<FileText size={20} className="text-teal-700" />}
+          iconBg="bg-teal-50"
           onClick={() => navigate('/contractors')}
         />
         <KPICard
           label="Overall Compliance"
           value={`${overallCompliance}%`}
-          icon={<ShieldCheck size={20} className="text-emerald-400" />}
-          iconBg="bg-emerald-500/10"
+          icon={<ShieldCheck size={20} className="text-emerald-700" />}
+          iconBg="bg-emerald-50"
         />
         <KPICard
           label="Open Violations"
           value={openViolations}
-          icon={<AlertTriangle size={20} className="text-red-400" />}
-          iconBg="bg-red-500/10"
+          icon={<AlertTriangle size={20} className="text-red-700" />}
+          iconBg="bg-red-50"
           onClick={() => navigate('/violations')}
         />
         <KPICard
           label="Solved Violations"
           value={solvedViolations}
-          icon={<CheckCircle size={20} className="text-emerald-400" />}
-          iconBg="bg-emerald-500/10"
+          icon={<CheckCircle size={20} className="text-emerald-700" />}
+          iconBg="bg-emerald-50"
         />
         <KPICard
           label="Unsolved Violations"
           value={unsolvedViolations}
-          icon={<ShieldAlert size={20} className="text-rose-400" />}
-          iconBg="bg-rose-500/10"
+          icon={<ShieldAlert size={20} className="text-rose-700" />}
+          iconBg="bg-rose-50"
           onClick={() => navigate('/violations')}
         />
         <KPICard
           label="Overdue Issues"
           value={overdueIssues}
-          icon={<Clock size={20} className="text-orange-400" />}
-          iconBg="bg-orange-500/10"
+          icon={<Clock size={20} className="text-orange-700" />}
+          iconBg="bg-orange-50"
           onClick={() => navigate('/corrective-actions')}
         />
         <KPICard
           label="Escalated Issues"
           value={escalatedIssues}
-          icon={<Bell size={20} className="text-amber-400" />}
-          iconBg="bg-amber-500/10"
+          icon={<Bell size={20} className="text-amber-700" />}
+          iconBg="bg-amber-50"
           onClick={() => navigate('/alerts')}
         />
         <KPICard
           label="High Risk Cases"
           value={highRiskCases}
-          icon={<Brain size={20} className="text-purple-400" />}
-          iconBg="bg-purple-500/10"
+          icon={<Brain size={20} className="text-purple-700" />}
+          iconBg="bg-purple-50"
           onClick={() => navigate('/ai-insights')}
         />
         <KPICard
           label="Recurring Problems"
           value={recurringProblems}
-          icon={<AlertTriangle size={20} className="text-yellow-400" />}
-          iconBg="bg-yellow-500/10"
+          icon={<AlertTriangle size={20} className="text-yellow-700" />}
+          iconBg="bg-yellow-50"
           onClick={() => navigate('/violations')}
         />
         <KPICard
           label="Reports Awaiting Approval"
           value={reportsAwaitingApproval}
-          icon={<Clock size={20} className="text-sky-400" />}
-          iconBg="bg-sky-500/10"
+          icon={<Clock size={20} className="text-blue-700" />}
+          iconBg="bg-blue-50"
           onClick={() => navigate('/reports')}
         />
       </div>
 
       {/* Reports Pending Review Alert Banner */}
       {reportsAwaitingApproval > 0 && (
-        <div className="bg-sky-950/40 border border-sky-800/60 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-blue-50/70 border border-blue-200 rounded-lg p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 flex-shrink-0">
-              <FileText size={18} />
+            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 flex-shrink-0">
+              <FileText size={20} />
             </div>
             <div>
-              <div className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-slate-900">
                 {reportsAwaitingApproval} Regulatory Compliance Reports Awaiting Corporate Sign-Off
               </div>
-              <p className="text-xs text-coal-400 mt-0.5">
+              <p className="text-xs text-slate-600 mt-0.5">
                 Statutory monthly reports submitted by Mine Managers require final corporate governance approval.
               </p>
             </div>
@@ -219,24 +220,24 @@ export default function CorporateDashboard() {
           icon={<TrendingUp size={16} />}
           className="lg:col-span-2"
         >
-          <ResponsiveContainer width="100%" height={220}>
-            <AreaChart data={monthlyTrend} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+          <ResponsiveContainer width="100%" height={240}>
+            <AreaChart data={monthlyTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="corpColorCompliance" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0284c7" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#0284c7" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#2563eb" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="corpColorViolations" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ color: '#64748b', fontSize: 11 }} />
-              <Area type="monotone" dataKey="compliance" stroke="#0284c7" fill="url(#corpColorCompliance)" name="Compliance %" strokeWidth={2} dot={{ fill: '#0284c7', r: 3 }} />
+              <Legend wrapperStyle={{ color: '#475569', fontSize: 11, paddingTop: '10px' }} />
+              <Area type="monotone" dataKey="compliance" stroke="#2563eb" fill="url(#corpColorCompliance)" name="Compliance %" strokeWidth={2} dot={{ fill: '#2563eb', r: 3 }} />
               <Area type="monotone" dataKey="violations" stroke="#ef4444" fill="url(#corpColorViolations)" name="Violations" strokeWidth={2} dot={{ fill: '#ef4444', r: 3 }} />
             </AreaChart>
           </ResponsiveContainer>
@@ -244,7 +245,7 @@ export default function CorporateDashboard() {
 
         {/* Violations by Category Pie */}
         <SectionCard title="Violations by Category" icon={<AlertTriangle size={16} />}>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={240}>
             <PieChart>
               <Pie
                 data={violationsByCat}
@@ -261,7 +262,7 @@ export default function CorporateDashboard() {
                 ))}
               </Pie>
               <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 10 }} />
+              <Legend wrapperStyle={{ color: '#475569', fontSize: 11 }} />
             </PieChart>
           </ResponsiveContainer>
         </SectionCard>
@@ -275,21 +276,21 @@ export default function CorporateDashboard() {
           icon={<Building2 size={16} />}
           actions={<button onClick={() => navigate('/mines')} className="btn-ghost text-xs">View All Mines</button>}
         >
-          <div className="space-y-3">
+          <div className="divide-y divide-slate-100">
             {mineCompliance.slice(0, 5).map((mine: any) => (
               <div
                 key={mine.mine_id}
-                className="flex items-center gap-3 cursor-pointer hover:bg-coal-800/30 rounded-lg p-2 -mx-2 transition-colors"
+                className="py-3 px-2 flex items-center gap-3 cursor-pointer hover:bg-slate-50 rounded-md transition-colors"
                 onClick={() => navigate('/mines')}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-coal-200 truncate">{mine.mine_name}</span>
+                    <span className="text-sm font-semibold text-slate-800 truncate">{mine.mine_name}</span>
                     <StatusBadge status={mine.risk_level} />
                   </div>
                   <ComplianceBar score={mine.score} />
                 </div>
-                <div className="text-right text-xs text-coal-500 whitespace-nowrap w-16">
+                <div className="text-right text-xs font-semibold text-slate-500 whitespace-nowrap w-16">
                   {mine.open_violations} open
                 </div>
               </div>
@@ -308,18 +309,18 @@ export default function CorporateDashboard() {
               <EmptyState message="No active systemic alerts." />
             ) : (
               recentAlerts.map((alert: any) => (
-                <div key={alert.id} className="flex items-start gap-3 p-3 bg-coal-800/50 rounded-xl border border-coal-800">
+                <div key={alert.id} className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
                   <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
-                    alert.severity === 'CRITICAL' ? 'bg-red-500' :
-                    alert.severity === 'HIGH' ? 'bg-orange-500' : 'bg-yellow-500'
+                    alert.severity === 'CRITICAL' ? 'bg-red-600' :
+                    alert.severity === 'HIGH' ? 'bg-orange-500' : 'bg-amber-500'
                   }`} />
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-coal-200 truncate">{alert.title}</p>
-                    <p className="text-[10px] text-coal-500 mt-0.5 line-clamp-1">{alert.message}</p>
+                    <p className="text-xs font-bold text-slate-800 truncate">{alert.title}</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{alert.message}</p>
                   </div>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold flex-shrink-0 ${
-                    alert.severity === 'CRITICAL' ? 'bg-red-900/50 text-red-300' :
-                    alert.severity === 'HIGH' ? 'bg-orange-900/50 text-orange-300' : 'bg-yellow-900/50 text-yellow-300'
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold border flex-shrink-0 ${
+                    alert.severity === 'CRITICAL' ? 'bg-red-50 text-red-700 border-red-200' :
+                    alert.severity === 'HIGH' ? 'bg-orange-50 text-orange-700 border-orange-200' : 'bg-amber-50 text-amber-700 border-amber-200'
                   }`}>
                     L{alert.escalation_level}
                   </span>

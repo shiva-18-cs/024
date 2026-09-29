@@ -104,13 +104,12 @@ const ROLE_NAV: Record<string, NavGroup[]> = {
   ]
 };
 
-
-const ROLE_COLORS: Record<string, string> = {
-  'CORPORATE MANAGEMENT': 'from-sky-500 to-blue-700',
-  'MINE MANAGER': 'from-violet-500 to-purple-700',
-  'FIELD OFFICER': 'from-amber-500 to-orange-600',
-  'CONTRACTOR': 'from-teal-500 to-cyan-700',
-  'WORKER MANAGEMENT': 'from-emerald-500 to-green-700',
+const ROLE_BADGE_STYLE: Record<string, { bg: string; text: string; border: string }> = {
+  'CORPORATE MANAGEMENT': { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+  'MINE MANAGER': { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+  'FIELD OFFICER': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200' },
+  'CONTRACTOR': { bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200' },
+  'WORKER MANAGEMENT': { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
 };
 
 export default function Sidebar() {
@@ -143,64 +142,90 @@ export default function Sidebar() {
 
   const userRole = user?.role || 'CORPORATE MANAGEMENT';
   const navGroups = ROLE_NAV[userRole] || ROLE_NAV['CORPORATE MANAGEMENT'];
+  const badgeStyle = ROLE_BADGE_STYLE[userRole] || { bg: 'bg-slate-100', text: 'text-slate-700', border: 'border-slate-200' };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen bg-coal-900 border-r border-coal-800 flex flex-col z-50"
-      style={{ width: 'var(--sidebar-width)' }}>
-      {/* Logo / Brand */}
-      <div className="flex items-center gap-3 px-4 py-4 border-b border-coal-800">
-        <div className="flex-shrink-0 w-9 h-9 bg-gradient-to-br from-cil-blue to-blue-900 rounded-xl flex items-center justify-center shadow-lg">
-          <Shield size={18} className="text-white" />
+    <aside
+      className="fixed left-0 top-0 h-screen bg-white border-r border-slate-200 flex flex-col z-50 select-none shadow-sm"
+      style={{ width: 'var(--sidebar-width)' }}
+    >
+      {/* Brand Header */}
+      <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-200 bg-slate-50/70">
+        <div className="flex-shrink-0 w-9 h-9 bg-blue-700 rounded-lg flex items-center justify-center shadow-sm">
+          <Shield size={20} className="text-white" />
         </div>
-        <div className="min-w-0">
-          <div className="text-sm font-bold text-white leading-tight">CoalGuard</div>
-          <div className="text-[9px] text-coal-500 uppercase tracking-wider leading-tight">Ministry of Coal • CIL</div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-bold text-slate-900 tracking-tight">CoalGuard</span>
+            <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">GOV</span>
+          </div>
+          <div className="text-[10px] font-medium text-slate-500 uppercase tracking-wider truncate">
+            Ministry of Coal • CIL
+          </div>
         </div>
       </div>
 
-      {/* User Profile Card */}
-      <div className="px-3 py-3 border-b border-coal-800">
-        <div className={cn("rounded-lg p-2.5 bg-gradient-to-r", ROLE_COLORS[userRole] || 'from-coal-700 to-coal-800')}>
-          <div className="text-white text-xs font-bold truncate">{user?.full_name || 'User'}</div>
-          <div className="text-white/80 text-[10px] truncate font-semibold">{user?.role}</div>
-          {user?.mine_name && <div className="text-white/70 text-[9px] truncate mt-0.5">📍 {user.mine_name}</div>}
-          {user?.contractor_name && <div className="text-white/70 text-[9px] truncate mt-0.5">🏭 {user.contractor_name}</div>}
+      {/* User & Role Card */}
+      <div className="p-3 border-b border-slate-200 bg-white">
+        <div className={cn("p-2.5 rounded-lg border", badgeStyle.bg, badgeStyle.border)}>
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <span className="text-xs font-bold text-slate-900 truncate">{user?.full_name || 'Authorized Official'}</span>
+            <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase", badgeStyle.text, badgeStyle.bg, badgeStyle.border)}>
+              {user?.role?.split(' ')[0]}
+            </span>
+          </div>
+          <div className={cn("text-[11px] font-semibold tracking-tight truncate", badgeStyle.text)}>
+            {user?.role}
+          </div>
+          {user?.mine_name && (
+            <div className="text-[10px] text-slate-600 truncate mt-1 flex items-center gap-1 font-medium">
+              <span>📍</span> {user.mine_name}
+            </div>
+          )}
+          {user?.contractor_name && (
+            <div className="text-[10px] text-slate-600 truncate mt-1 flex items-center gap-1 font-medium">
+              <span>🏭</span> {user.contractor_name}
+            </div>
+          )}
         </div>
 
-        {/* Quick Role Switcher for Demo */}
+        {/* Role Switcher Demo Control */}
         <button
           onClick={() => setShowRoleSwitch(!showRoleSwitch)}
-          className="mt-2 w-full flex items-center justify-between text-[10px] text-coal-500 hover:text-coal-300 px-1 transition-colors"
+          className="mt-2 w-full flex items-center justify-between text-[11px] font-medium text-slate-600 hover:text-blue-700 px-1 py-1 rounded hover:bg-slate-50 transition-colors"
         >
-          <span className="flex items-center gap-1"><Zap size={10} /> Switch Role (Demo)</span>
-          {showRoleSwitch ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
+          <span className="flex items-center gap-1.5">
+            <Zap size={12} className="text-amber-600" /> Switch Role (Demonstration)
+          </span>
+          {showRoleSwitch ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
         </button>
 
         {showRoleSwitch && (
-          <div className="mt-1 space-y-0.5">
+          <div className="mt-1.5 p-1 bg-slate-50 rounded-lg border border-slate-200 space-y-0.5 max-h-48 overflow-y-auto">
             {allRoles.map(role => (
               <button
                 key={role}
                 onClick={() => handleSwitchRole(role)}
                 className={cn(
-                  "w-full text-left px-2 py-1 rounded text-[10px] transition-colors",
+                  "w-full text-left px-2 py-1.5 rounded text-[11px] font-medium transition-colors flex items-center justify-between",
                   user?.role === role
-                    ? "bg-cil-blue/20 text-cil-blue font-semibold"
-                    : "text-coal-400 hover:bg-coal-800 hover:text-coal-200"
+                    ? "bg-blue-600 text-white font-semibold shadow-xs"
+                    : "text-slate-600 hover:bg-slate-200/70 hover:text-slate-900"
                 )}
               >
-                {role}
+                <span>{role}</span>
+                {user?.role === role && <span className="text-[9px]">Active</span>}
               </button>
             ))}
           </div>
         )}
       </div>
 
-      {/* Role-Specific Navigation */}
+      {/* Navigation Groups */}
       <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-4">
         {navGroups.map((group) => (
           <div key={group.label}>
-            <div className="px-2 mb-1 text-[9px] font-bold text-coal-600 uppercase tracking-widest">
+            <div className="px-3 mb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               {group.label}
             </div>
             <div className="space-y-0.5">
@@ -211,10 +236,10 @@ export default function Sidebar() {
                   end={item.path.includes('/dashboard')}
                   className={({ isActive }) =>
                     cn(
-                      "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150",
+                      "flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-semibold transition-all duration-150",
                       isActive
-                        ? "bg-cil-blue/20 text-cil-light border border-cil-blue/30"
-                        : "text-coal-400 hover:bg-coal-800 hover:text-coal-200"
+                        ? "bg-blue-50 text-blue-700 font-bold border-l-3 border-blue-700 pl-[9px]"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     )
                   }
                 >
@@ -227,13 +252,13 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer Actions */}
-      <div className="px-2 py-3 border-t border-coal-800">
+      {/* Footer / Sign Out */}
+      <div className="p-3 border-t border-slate-200 bg-slate-50/70">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-coal-500 hover:bg-red-900/30 hover:text-red-400 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-semibold text-slate-600 hover:bg-red-50 hover:text-red-700 border border-slate-200 hover:border-red-200 transition-colors"
         >
-          <LogOut size={16} />
+          <LogOut size={14} />
           <span>Sign Out</span>
         </button>
       </div>

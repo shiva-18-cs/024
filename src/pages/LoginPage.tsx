@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Shield, AlertTriangle, Eye, EyeOff, ArrowRight, Users, Zap } from 'lucide-react';
+import { Shield, AlertTriangle, Eye, EyeOff, ArrowRight, Users, Zap, CheckCircle2 } from 'lucide-react';
+import { getRoleDashboardPath } from '../components/auth/RoleRouteGuard';
 
 const DEMO_ROLES = [
-  { role: 'CONTRACTOR', label: 'Contractor (ABC Mining)', username: 'contractor_suresh', icon: '🏗️', color: 'from-teal-500/20 to-cyan-900/20 border-teal-800/60' },
-  { role: 'WORKER MANAGEMENT', label: 'Labour & PME Officer', username: 'worker_officer_priya', icon: '👷', color: 'from-emerald-500/20 to-green-900/20 border-emerald-800/60' },
-  { role: 'FIELD OFFICER', label: 'Senior Safety Inspector', username: 'field_officer_amit', icon: '🔍', color: 'from-amber-500/20 to-orange-900/20 border-amber-800/60' },
-  { role: 'MINE MANAGER', label: 'Mine Manager — Rajmahal OCP', username: 'mine_manager_rajmahal', icon: '⛏️', color: 'from-violet-500/20 to-purple-900/20 border-violet-800/60' },
-  { role: 'CORPORATE MANAGEMENT', label: 'Corporate Management (CIL)', username: 'corporate_officer', icon: '🏛️', color: 'from-sky-500/20 to-blue-900/20 border-sky-800/60' },
+  { role: 'CONTRACTOR', label: 'Contractor (ABC Mining)', username: 'contractor_suresh', icon: '🏗️', badge: 'Contractor' },
+  { role: 'WORKER MANAGEMENT', label: 'Labour & PME Officer', username: 'worker_officer_priya', icon: '👷', badge: 'Labour & PME' },
+  { role: 'FIELD OFFICER', label: 'Senior Safety Inspector', username: 'field_officer_amit', icon: '🔍', badge: 'Inspection' },
+  { role: 'MINE MANAGER', label: 'Mine Manager — Rajmahal OCP', username: 'mine_manager_rajmahal', icon: '⛏️', badge: 'Mine Operations' },
+  { role: 'CORPORATE MANAGEMENT', label: 'Corporate Management (CIL)', username: 'corporate_officer', icon: '🏛️', badge: 'Corporate HQ' },
 ];
-
-import { getRoleDashboardPath } from '../components/auth/RoleRouteGuard';
 
 export default function LoginPage() {
   const { login, switchRole } = useAuth();
@@ -43,7 +42,6 @@ export default function LoginPage() {
       const loggedUser = await login(roleUsername, 'Password@123');
       navigate(getRoleDashboardPath(loggedUser.role));
     } catch (err: any) {
-      // Try role switch as fallback
       try {
         const demoRole = DEMO_ROLES.find(r => r.username === roleUsername);
         if (demoRole) {
@@ -58,153 +56,169 @@ export default function LoginPage() {
     }
   };
 
-
   return (
-    <div className="min-h-screen bg-coal-950 flex">
-      {/* Left: Branding Panel */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-coal-900 via-coal-950 to-coal-900" />
-        <div className="absolute inset-0 opacity-5"
-          style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #0284c7 0%, transparent 50%), radial-gradient(circle at 80% 20%, #6366f1 0%, transparent 50%)' }} />
-
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-16">
-            <div className="w-12 h-12 bg-gradient-to-br from-cil-blue to-blue-900 rounded-2xl flex items-center justify-center shadow-xl">
-              <Shield size={24} className="text-white" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-white">CoalGuard</div>
-              <div className="text-xs text-coal-500 uppercase tracking-widest">Ministry of Coal • CIL</div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h1 className="text-4xl font-bold text-white leading-tight">
-              AI-Based Smart<br />
-              <span className="text-cil-blue">Governance &</span><br />
-              Compliance Platform
-            </h1>
-            <p className="text-coal-400 text-base leading-relaxed max-w-sm">
-              Centralized digital governance for Coal India Limited — integrating field inspections, compliance monitoring, AI risk analytics, and closed-loop corrective action workflows.
-            </p>
-          </div>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+      {/* Top Government Banner */}
+      <div className="bg-slate-900 text-slate-300 text-[11px] px-6 py-2 flex items-center justify-between border-b border-slate-800">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-white">Government of India</span>
+          <span>•</span>
+          <span>Ministry of Coal</span>
+          <span>•</span>
+          <span>Coal India Limited (CIL)</span>
         </div>
-
-        {/* Feature Cards */}
-        <div className="relative z-10 grid grid-cols-2 gap-3">
-          {[
-            { icon: '🔍', label: 'Geo-tagged Inspections' },
-            { icon: '🤖', label: 'AI Risk Assessment' },
-            { icon: '📋', label: 'Automated Reports' },
-            { icon: '⚡', label: 'Real-time Escalations' },
-          ].map(f => (
-            <div key={f.label} className="flex items-center gap-2.5 bg-coal-900/80 border border-coal-800 rounded-xl p-3">
-              <span className="text-xl">{f.icon}</span>
-              <span className="text-xs font-medium text-coal-300">{f.label}</span>
-            </div>
-          ))}
+        <div className="hidden sm:flex items-center gap-2 text-slate-400">
+          <Shield size={12} className="text-emerald-400" />
+          <span>Statutory Compliance & Governance System</span>
         </div>
       </div>
 
-      {/* Right: Login Form */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-sm">
-          {/* Mobile Logo */}
-          <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-9 h-9 bg-cil-blue rounded-xl flex items-center justify-center">
-              <Shield size={18} className="text-white" />
+      {/* Main Container */}
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-12">
+        <div className="w-full max-w-4xl bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+          
+          {/* Left: Branding & Overview */}
+          <div className="lg:col-span-5 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-950 p-8 text-white flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-inner">
+                  <Shield size={22} className="text-white" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold tracking-tight text-white leading-tight">CoalGuard</h2>
+                  <p className="text-[10px] text-blue-200 uppercase tracking-widest">Smart Governance Platform</p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h1 className="text-2xl font-bold leading-snug">
+                  AI-Based Smart Governance & Compliance Monitoring System
+                </h1>
+                <p className="text-xs text-blue-100/90 leading-relaxed">
+                  Enterprise regulatory oversight for coal mines, field inspections, contractor performance, and closed-loop corrective actions.
+                </p>
+              </div>
             </div>
-            <span className="text-lg font-bold text-white">CoalGuard</span>
+
+            <div className="mt-8 space-y-2.5 pt-6 border-t border-white/10">
+              <div className="flex items-center gap-2 text-xs text-blue-100">
+                <CheckCircle2 size={14} className="text-emerald-400 flex-shrink-0" />
+                <span>Statutory DGMS & CMR Compliance</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-blue-100">
+                <CheckCircle2 size={14} className="text-emerald-400 flex-shrink-0" />
+                <span>GIS Spatial Hazard & Bench Monitoring</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-blue-100">
+                <CheckCircle2 size={14} className="text-emerald-400 flex-shrink-0" />
+                <span>AI Automated Risk & Anomaly Scoring</span>
+              </div>
+            </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-1">Sign in</h2>
-          <p className="text-coal-500 text-sm mb-8">Access the Governance & Compliance Platform</p>
-
-          {/* Error */}
-          {error && (
-            <div className="flex items-center gap-2 bg-red-900/30 border border-red-800/60 rounded-lg px-4 py-3 mb-4">
-              <AlertTriangle size={14} className="text-red-400 flex-shrink-0" />
-              <p className="text-red-300 text-sm">{error}</p>
+          {/* Right: Login Form & Role Switcher */}
+          <div className="lg:col-span-7 p-8 flex flex-col justify-center">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-slate-900">Sign in to CoalGuard</h2>
+              <p className="text-xs text-slate-500 mt-1">Authorized personnel and registered contractors portal</p>
             </div>
-          )}
 
-          {/* Login Form */}
-          <form onSubmit={handleLogin} className="space-y-4 mb-6">
-            <div>
-              <label className="form-label">Username or Email</label>
-              <input
-                id="username-input"
-                type="text"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                className="form-input"
-                placeholder="corporate_officer or corporate@cil.gov.in"
-                required
-              />
-            </div>
-            <div>
-              <label className="form-label">Password</label>
-              <div className="relative">
+            {error && (
+              <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                <AlertTriangle size={15} className="text-red-700 flex-shrink-0" />
+                <p className="text-xs text-red-700 font-medium">{error}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="space-y-4 mb-6">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Username or Official Email</label>
                 <input
-                  id="password-input"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="form-input pr-10"
-                  placeholder="Password@123"
+                  id="username-input"
+                  type="text"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  className="w-full bg-white border border-slate-300 rounded-md px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                  placeholder="corporate_officer or corporate@cil.gov.in"
                   required
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-coal-500 hover:text-coal-300"
-                >
-                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                </button>
               </div>
-              <p className="text-[10px] text-coal-600 mt-1">Default password: Password@123</p>
-            </div>
 
-            <button
-              id="login-btn"
-              type="submit"
-              disabled={loading}
-              className="w-full btn-primary justify-center py-2.5 text-sm"
-            >
-              {loading ? (
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>Sign In <ArrowRight size={15} /></>
-              )}
-            </button>
-          </form>
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-semibold text-slate-700">Password</label>
+                </div>
+                <div className="relative">
+                  <input
+                    id="password-input"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-md px-3 py-2 pr-9 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                    placeholder="Password@123"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  >
+                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                  </button>
+                </div>
+                <p className="text-[10px] text-slate-400 mt-1">Default demo credentials: Password@123</p>
+              </div>
 
-          {/* Quick Role Login */}
-          <div className="border-t border-coal-800 pt-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Zap size={13} className="text-coal-500" />
-              <span className="text-xs font-semibold text-coal-500 uppercase tracking-wider">Quick Access — Demo Roles</span>
-            </div>
-            <div className="space-y-2">
-              {DEMO_ROLES.map(r => (
-                <button
-                  key={r.username}
-                  id={`quick-login-${r.role.toLowerCase().replace(/ /g, '-')}`}
-                  onClick={() => handleQuickLogin(r.username)}
-                  disabled={loading}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border bg-gradient-to-r text-left transition-all hover:scale-[1.01] disabled:opacity-50 ${r.color}`}
-                >
-                  <span className="text-lg">{r.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-semibold text-white truncate">{r.label}</div>
-                    <div className="text-[10px] text-coal-400">{r.username}</div>
-                  </div>
-                  <ArrowRight size={12} className="text-coal-500 flex-shrink-0" />
-                </button>
-              ))}
+              <button
+                id="login-btn"
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-blue-700 hover:bg-blue-800 text-white rounded-md text-xs font-bold transition-all shadow-sm disabled:opacity-50"
+              >
+                {loading ? (
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>Sign In to Workspace <ArrowRight size={14} /></>
+                )}
+              </button>
+            </form>
+
+            {/* Quick Demo Access */}
+            <div className="border-t border-slate-200 pt-4">
+              <div className="flex items-center gap-1.5 mb-2.5">
+                <Zap size={13} className="text-amber-600" />
+                <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+                  Quick Access — Demo Roles
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {DEMO_ROLES.map(r => (
+                  <button
+                    key={r.username}
+                    id={`quick-login-${r.role.toLowerCase().replace(/ /g, '-')}`}
+                    onClick={() => handleQuickLogin(r.username)}
+                    disabled={loading}
+                    className="flex items-center justify-between p-2 rounded-md border border-slate-200 bg-slate-50/70 hover:bg-blue-50 hover:border-blue-200 text-left transition-colors"
+                  >
+                    <div className="min-w-0 pr-1">
+                      <div className="text-xs font-bold text-slate-800 truncate flex items-center gap-1.5">
+                        <span>{r.icon}</span>
+                        <span>{r.badge}</span>
+                      </div>
+                      <div className="text-[10px] text-slate-500 font-mono truncate">{r.username}</div>
+                    </div>
+                    <ArrowRight size={12} className="text-slate-400 flex-shrink-0" />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="text-center py-4 text-xs text-slate-500 border-t border-slate-200 bg-white">
+        CoalGuard © {new Date().getFullYear()} Ministry of Coal & Coal India Limited. All rights reserved.
       </div>
     </div>
   );

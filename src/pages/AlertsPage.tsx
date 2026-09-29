@@ -34,7 +34,6 @@ export default function AlertsPage() {
       setAlertList(list);
     } catch (e) {
       console.error('Error fetching alerts', e);
-      // Sample alerts data
       setAlertList([
         {
           id: 'alt-1',
@@ -103,9 +102,7 @@ export default function AlertsPage() {
     for (const a of alertList.filter(x => !x.is_read)) {
       try {
         await alertsApi.markRead(a.id);
-      } catch (e) {
-        // ignore
-      }
+      } catch (e) {}
     }
     setAlertList(prev => prev.map(a => ({ ...a, is_read: true })));
   };
@@ -121,17 +118,20 @@ export default function AlertsPage() {
   const criticalCount = alertList.filter(a => a.severity === 'CRITICAL').length;
 
   return (
-    <div className="space-y-5 animate-fade-in">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-cil-blue/20 text-cil-light">
-              <Bell size={22} />
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 uppercase tracking-wide">
+              Alerts & Incident Watch
             </span>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Bell size={22} className="text-blue-700" />
             Alerts, Escalations & SLA Management
           </h1>
-          <p className="text-coal-400 text-xs mt-1">
+          <p className="text-slate-500 text-sm mt-0.5">
             Real-time compliance triggers, telemetry alerts, multi-tier escalation hierarchy (L1/L2/L3)
           </p>
         </div>
@@ -140,51 +140,51 @@ export default function AlertsPage() {
           {unreadCount > 0 && (
             <button
               onClick={handleMarkAllRead}
-              className="px-3 py-1.5 rounded-lg bg-coal-800 hover:bg-coal-700 text-coal-200 text-xs flex items-center gap-1.5 transition-colors"
+              className="btn-secondary text-xs"
             >
               <Check size={14} />
               <span>Mark All as Read</span>
             </button>
           )}
-          <button onClick={loadAlerts} className="btn-icon">
-            <RefreshCw size={14} />
+          <button onClick={loadAlerts} className="btn-secondary text-xs" title="Refresh">
+            <RefreshCw size={14} /> Refresh
           </button>
         </div>
       </div>
 
       {/* KPI Highlights */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="kpi-card border border-red-900/40 bg-red-950/20">
+        <div className="bg-white border border-red-200 rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <div>
-              <p className="kpi-card-label text-red-400">Critical Threats</p>
-              <p className="kpi-card-value text-red-300">{criticalCount}</p>
+              <p className="text-xs font-semibold text-red-700 uppercase tracking-wider">Critical Threats</p>
+              <p className="text-2xl font-bold text-red-900 mt-1">{criticalCount}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-red-900/50 flex items-center justify-center text-red-400">
+            <div className="w-10 h-10 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center text-red-700">
               <Flame size={20} />
             </div>
           </div>
         </div>
 
-        <div className="kpi-card border border-yellow-900/40 bg-yellow-950/20">
+        <div className="bg-white border border-amber-200 rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <div>
-              <p className="kpi-card-label text-yellow-400">Active Unread Alerts</p>
-              <p className="kpi-card-value text-yellow-300">{unreadCount}</p>
+              <p className="text-xs font-semibold text-amber-700 uppercase tracking-wider">Active Unread Alerts</p>
+              <p className="text-2xl font-bold text-amber-900 mt-1">{unreadCount}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-yellow-900/50 flex items-center justify-center text-yellow-400">
+            <div className="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
               <AlertTriangle size={20} />
             </div>
           </div>
         </div>
 
-        <div className="kpi-card border border-blue-900/40 bg-blue-950/20">
+        <div className="bg-white border border-blue-200 rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <div>
-              <p className="kpi-card-label text-cil-light">Total Escalations Managed</p>
-              <p className="kpi-card-value text-white">{alertList.length}</p>
+              <p className="text-xs font-semibold text-blue-700 uppercase tracking-wider">Total Escalations Managed</p>
+              <p className="text-2xl font-bold text-blue-950 mt-1">{alertList.length}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-blue-900/50 flex items-center justify-center text-cil-light">
+            <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700">
               <ShieldAlert size={20} />
             </div>
           </div>
@@ -192,15 +192,15 @@ export default function AlertsPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-wrap gap-2 items-center justify-between bg-coal-900 border border-coal-800 p-3 rounded-xl text-xs">
-        <div className="flex items-center gap-1">
-          <span className="text-coal-500 mr-1 flex items-center gap-1"><Filter size={12} /> Severity:</span>
+      <div className="flex flex-wrap gap-3 items-center justify-between bg-white border border-slate-200 p-3.5 rounded-lg text-xs shadow-card">
+        <div className="flex items-center gap-1.5">
+          <span className="text-slate-500 font-semibold mr-1 flex items-center gap-1"><Filter size={12} /> Severity:</span>
           {['ALL', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(sev => (
             <button
               key={sev}
               onClick={() => setFilterSeverity(sev)}
-              className={`px-2.5 py-1 rounded-md transition-colors ${
-                filterSeverity === sev ? 'bg-cil-blue text-white' : 'text-coal-400 hover:text-coal-200'
+              className={`px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
+                filterSeverity === sev ? 'bg-blue-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               {sev}
@@ -208,14 +208,14 @@ export default function AlertsPage() {
           ))}
         </div>
 
-        <div className="flex items-center gap-1">
-          <span className="text-coal-500 mr-1">Status:</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-slate-500 font-semibold mr-1">Status:</span>
           {(['ALL', 'UNREAD', 'READ'] as const).map(st => (
             <button
               key={st}
               onClick={() => setFilterStatus(st)}
-              className={`px-2.5 py-1 rounded-md transition-colors ${
-                filterStatus === st ? 'bg-coal-700 text-white' : 'text-coal-400 hover:text-coal-200'
+              className={`px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
+                filterStatus === st ? 'bg-slate-800 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
               {st}
@@ -239,44 +239,44 @@ export default function AlertsPage() {
               return (
                 <div
                   key={alt.id}
-                  className={`p-4 rounded-xl border transition-all duration-200 flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                  className={`p-4 rounded-lg border transition-all duration-150 flex flex-col md:flex-row md:items-center justify-between gap-4 ${
                     !alt.is_read
                       ? isCrit
-                        ? 'bg-red-950/20 border-red-700/60 shadow-lg shadow-red-950/30'
+                        ? 'bg-red-50/60 border-red-300'
                         : isHigh
-                        ? 'bg-orange-950/20 border-orange-700/60'
-                        : 'bg-coal-850 border-cil-blue/30'
-                      : 'bg-coal-950 border-coal-800 opacity-80'
+                        ? 'bg-orange-50/60 border-orange-300'
+                        : 'bg-blue-50/40 border-blue-200'
+                      : 'bg-white border-slate-200 opacity-90'
                   }`}
                 >
                   <div className="flex items-start gap-3 flex-1 min-w-0">
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      isCrit ? 'bg-red-900 text-red-200 animate-pulse' : isHigh ? 'bg-orange-900 text-orange-200' : 'bg-coal-800 text-coal-300'
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                      isCrit ? 'bg-red-100 text-red-700' : isHigh ? 'bg-orange-100 text-orange-700' : 'bg-slate-100 text-slate-700'
                     }`}>
                       {isCrit ? <Flame size={18} /> : <AlertTriangle size={18} />}
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className="font-bold text-white text-sm">{alt.title}</span>
+                        <span className="font-bold text-slate-900 text-sm">{alt.title}</span>
                         <StatusBadge status={alt.severity} />
                         {alt.escalation_level && alt.escalation_level > 0 ? (
-                          <span className="badge bg-purple-900/60 text-purple-300 border border-purple-700 text-[10px]">
+                          <span className="badge bg-purple-50 text-purple-800 border border-purple-200 text-[10px]">
                             L{alt.escalation_level} Escalation
                           </span>
                         ) : null}
                       </div>
 
-                      <p className="text-coal-300 text-xs leading-relaxed">{alt.message}</p>
+                      <p className="text-slate-600 text-xs leading-relaxed">{alt.message}</p>
 
-                      <div className="flex flex-wrap items-center gap-4 mt-2.5 text-[11px] text-coal-500 font-mono">
+                      <div className="flex flex-wrap items-center gap-4 mt-2 text-[11px] text-slate-500 font-mono">
                         {alt.mine_name && <span>📍 {alt.mine_name}</span>}
                         <span className="flex items-center gap-1">
                           <Clock size={12} />
                           {new Date(alt.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {new Date(alt.created_at).toLocaleDateString()}
                         </span>
                         {alt.sla_hours && (
-                          <span className="text-amber-400">⏱ SLA Window: {alt.sla_hours}h</span>
+                          <span className="text-amber-700 font-semibold">⏱ SLA Window: {alt.sla_hours}h</span>
                         )}
                       </div>
                     </div>
@@ -286,15 +286,15 @@ export default function AlertsPage() {
                     {!alt.is_read && (
                       <button
                         onClick={() => handleMarkAsRead(alt.id)}
-                        className="px-3 py-1.5 rounded-lg bg-coal-800 hover:bg-coal-700 text-coal-200 text-xs flex items-center gap-1 transition-colors"
+                        className="btn-secondary text-xs py-1.5"
                       >
-                        <Check size={12} />
+                        <Check size={13} />
                         <span>Acknowledge</span>
                       </button>
                     )}
                     <a
                       href="/corrective-actions"
-                      className="px-3 py-1.5 rounded-lg bg-cil-blue hover:bg-cil-blue/80 text-white text-xs font-semibold transition-colors"
+                      className="btn-primary text-xs py-1.5"
                     >
                       Action CAPA →
                     </a>

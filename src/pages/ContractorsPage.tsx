@@ -14,12 +14,12 @@ function MetricCard({ label, value, sub, color = 'teal', icon: Icon }: {
   label: string; value: string | number; sub?: string; color?: string; icon?: any;
 }) {
   const colorMap: Record<string, string> = {
-    teal: 'bg-teal-500/10 text-teal-400 border-teal-700/40',
-    red: 'bg-red-500/10 text-red-400 border-red-700/40',
-    amber: 'bg-amber-500/10 text-amber-400 border-amber-700/40',
-    emerald: 'bg-emerald-500/10 text-emerald-400 border-emerald-700/40',
-    blue: 'bg-blue-500/10 text-blue-400 border-blue-700/40',
-    purple: 'bg-purple-500/10 text-purple-400 border-purple-700/40',
+    teal: 'bg-teal-50 text-teal-800 border-teal-200',
+    red: 'bg-red-50 text-red-800 border-red-200',
+    amber: 'bg-amber-50 text-amber-800 border-amber-200',
+    emerald: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+    blue: 'bg-blue-50 text-blue-800 border-blue-200',
+    purple: 'bg-purple-50 text-purple-800 border-purple-200',
   };
   return (
     <div className={`rounded-xl border px-4 py-3 ${colorMap[color] || colorMap.teal}`}>
@@ -39,13 +39,13 @@ function TabBtn({ label, active, onClick, badge }: {
     <button
       onClick={onClick}
       className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-        active ? 'bg-teal-600 text-white' : 'text-coal-400 hover:text-white hover:bg-coal-800'
+        active ? 'bg-blue-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
       }`}
     >
       {label}
       {badge !== undefined && badge > 0 && (
         <span className={`text-[10px] rounded-full px-1.5 py-0.5 font-bold ${
-          active ? 'bg-white/20' : 'bg-red-500/30 text-red-300'
+          active ? 'bg-white/20' : 'bg-red-100 text-red-800'
         }`}>{badge}</span>
       )}
     </button>
@@ -79,17 +79,17 @@ function ContractorDetailModal({ contractorId, onClose }: { contractorId: string
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-6 pb-6 px-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-coal-950 border border-coal-800 rounded-2xl w-full max-w-5xl shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-6 pb-6 px-4 bg-slate-900/50 backdrop-blur-xs overflow-y-auto">
+      <div className="bg-white border border-slate-200 rounded-xl w-full max-w-5xl shadow-2xl overflow-hidden">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-coal-800">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center">
               <Building2 size={20} />
             </div>
             <div>
-              <div className="text-lg font-bold text-white">
+              <div className="text-base font-bold text-slate-900">
                 {loading ? 'Loading...' : profile?.company_name || 'Contractor Profile'}
               </div>
               {profile && (

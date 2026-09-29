@@ -459,14 +459,19 @@ export default function WorkersPage() {
   });
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Users className="w-5 h-5 text-teal-400" /> Workforce Governance & Statutory Credentials
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">
+              Workforce Compliance
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+            <Users className="w-6 h-6 text-blue-700" /> Workforce Governance & Statutory Credentials
           </h1>
-          <p className="text-xs text-coal-400 mt-0.5">
+          <p className="text-xs text-slate-500 mt-0.5">
             Form O Medical Fitness, DGMS VTC Safety Training & Competency Certifications
           </p>
         </div>
@@ -494,7 +499,7 @@ export default function WorkersPage() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-coal-800 gap-6 text-sm">
+      <div className="flex border-b border-slate-200 gap-6 text-sm overflow-x-auto">
         {[
           { id: 'workers', label: 'Workforce Roster', icon: Users, count: workerList.length },
           { id: 'medical', label: 'Medical Fitness (Form O)', icon: HeartPulse, count: workerList.filter(w => w.is_medical_expired).length, alert: true },
@@ -508,16 +513,16 @@ export default function WorkersPage() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`pb-3 flex items-center gap-2 font-medium transition-all relative ${
-                isActive ? 'text-teal-400 border-b-2 border-teal-400' : 'text-coal-400 hover:text-coal-200'
+              className={`pb-3 flex items-center gap-2 font-medium transition-all relative whitespace-nowrap ${
+                isActive ? 'text-blue-700 border-b-2 border-blue-700 font-bold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Icon size={16} />
               <span>{t.label}</span>
               {t.count !== undefined && (
                 <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-                  t.alert && t.count > 0 ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                  isActive ? 'bg-teal-500/20 text-teal-300' : 'bg-coal-800 text-coal-400'
+                  t.alert && t.count > 0 ? 'bg-red-100 text-red-800' :
+                  isActive ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-600'
                 }`}>
                   {t.count}
                 </span>
@@ -528,21 +533,21 @@ export default function WorkersPage() {
       </div>
 
       {/* Global Filter & Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-coal-900/60 p-3 rounded-xl border border-coal-800">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3.5 rounded-lg border border-slate-200 shadow-card">
         <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 text-coal-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search worker, cert #, designation..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-coal-950 border border-coal-700/80 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-coal-500 focus:outline-none focus:border-teal-500"
+            className="w-full bg-slate-50 border border-slate-200 rounded-md pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-          <Filter size={14} className="text-coal-400" />
-          <span className="text-xs text-coal-400">Filter:</span>
+          <Filter size={14} className="text-slate-500" />
+          <span className="text-xs text-slate-500 font-semibold">Filter:</span>
           {['ALL', 'PENDING', 'EXPIRED', 'NON_COMPLIANT'].map(f => (
             <button
               key={f}

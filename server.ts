@@ -51,7 +51,7 @@ function getAuthUser(req: Request) {
 // -------------------------------------------------------------
 // Health Check
 // -------------------------------------------------------------
-app.get(['/', '/health', '/api/health'], (req, res) => {
+app.get(['/health', '/api/health'], (req, res) => {
   res.json({
     system: "CoalGuard AI-Based Smart Governance & Compliance System",
     ministry: "Ministry of Coal / Coal India Limited",
@@ -1209,7 +1209,7 @@ async function startServer() {
     });
   }
 
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000;
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`[CoalGuard] Server live and listening on http://0.0.0.0:${PORT}`);
   });

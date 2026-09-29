@@ -13,12 +13,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   if (isLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-coal-950">
+      <div className="h-screen flex items-center justify-center bg-surface-50">
         <div className="text-center">
-          <div className="w-12 h-12 rounded-xl bg-cil-blue/20 flex items-center justify-center mx-auto mb-3">
-            <div className="w-6 h-6 border-2 border-cil-blue border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mx-auto mb-3">
+            <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
           </div>
-          <p className="text-coal-400 text-sm">Initializing CoalGuard...</p>
+          <p className="text-slate-500 text-sm font-medium">Initializing CoalGuard...</p>
         </div>
       </div>
     );
@@ -29,14 +29,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-coal-950">
+    <div className="min-h-screen bg-slate-50">
       <Sidebar />
       <TopNav />
       <main
         className="min-h-screen pt-14"
         style={{ marginLeft: 'var(--sidebar-width)' }}
       >
-        <div className="p-5">
+        <div className="p-6">
           {children}
         </div>
       </main>

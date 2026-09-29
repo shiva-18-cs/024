@@ -58,15 +58,15 @@ export default function ContractorDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30 uppercase">
-              Contractor Portal
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-50 text-teal-800 border border-teal-200 uppercase tracking-wide">
+              Contractor Operations Portal
             </span>
             {user?.contractor_name && (
-              <span className="text-xs text-coal-400 font-medium">🏭 {user.contractor_name}</span>
+              <span className="text-xs text-slate-500 font-medium">🏭 {user.contractor_name}</span>
             )}
           </div>
-          <h1 className="text-2xl font-bold text-white mt-1">Contractor Compliance Dashboard</h1>
-          <p className="text-coal-500 text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-slate-900 mt-1">Contractor Compliance Dashboard</h1>
+          <p className="text-slate-500 text-sm mt-0.5">
             Monitor contractor obligations, worker statutory compliance, assigned violations, and CAPA resolution proofs.
           </p>
         </div>
@@ -74,16 +74,16 @@ export default function ContractorDashboard() {
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap gap-2">
           <button onClick={() => navigate('/contractor/gis')} className="btn-secondary text-xs">
-            <Map size={13} /> GIS Analysis
+            <Map size={14} /> GIS Analysis
           </button>
           <button onClick={() => navigate('/documents')} className="btn-secondary text-xs">
-            <Upload size={13} /> Upload Documents
+            <Upload size={14} /> Upload Documents
           </button>
           <button onClick={() => navigate('/workers')} className="btn-secondary text-xs">
-            <UserPlus size={13} /> Register Workers
+            <UserPlus size={14} /> Register Workers
           </button>
           <button onClick={() => navigate('/corrective-actions')} className="btn-primary text-xs">
-            <Wrench size={13} /> Submit CAPA Proof
+            <Wrench size={14} /> Submit CAPA Proof
           </button>
         </div>
       </div>
@@ -93,54 +93,54 @@ export default function ContractorDashboard() {
         <KPICard
           label="Total Mines"
           value={totalMines}
-          icon={<Building2 size={22} className="text-blue-400" />}
-          iconBg="bg-blue-500/10"
+          icon={<Building2 size={22} className="text-blue-700" />}
+          iconBg="bg-blue-50"
         />
         {/* Strictly TOTAL CONTRACTS label */}
         <KPICard
           label="TOTAL CONTRACTS"
           value={totalContracts}
-          icon={<FileText size={22} className="text-teal-400" />}
-          iconBg="bg-teal-500/10"
+          icon={<FileText size={22} className="text-teal-700" />}
+          iconBg="bg-teal-50"
         />
         <KPICard
           label="Total Workers"
           value={totalWorkers}
-          icon={<Users size={22} className="text-violet-400" />}
-          iconBg="bg-violet-500/10"
+          icon={<Users size={22} className="text-purple-700" />}
+          iconBg="bg-purple-50"
           onClick={() => navigate('/workers')}
         />
         <KPICard
           label="Compliance %"
           value={`${complianceScore}%`}
-          icon={<ShieldCheck size={22} className="text-emerald-400" />}
-          iconBg="bg-emerald-500/10"
+          icon={<ShieldCheck size={22} className="text-emerald-700" />}
+          iconBg="bg-emerald-50"
         />
         <KPICard
           label="Open Violations"
           value={openViolations}
-          icon={<AlertTriangle size={22} className="text-red-400" />}
-          iconBg="bg-red-500/10"
+          icon={<AlertTriangle size={22} className="text-red-700" />}
+          iconBg="bg-red-50"
           onClick={() => navigate('/violations')}
         />
         <KPICard
           label="High Risk Cases"
           value={highRiskCases}
-          icon={<AlertTriangle size={22} className="text-amber-400" />}
-          iconBg="bg-amber-500/10"
+          icon={<AlertTriangle size={22} className="text-amber-700" />}
+          iconBg="bg-amber-50"
         />
         <KPICard
           label="Overdue Actions"
           value={overdueActions}
-          icon={<Clock size={22} className="text-rose-400" />}
-          iconBg="bg-rose-500/10"
+          icon={<Clock size={22} className="text-rose-700" />}
+          iconBg="bg-rose-50"
           onClick={() => navigate('/corrective-actions')}
         />
         <KPICard
           label="Contractor Inspections"
           value={totalInspections}
-          icon={<CheckCircle size={22} className="text-sky-400" />}
-          iconBg="bg-sky-500/10"
+          icon={<CheckCircle size={22} className="text-blue-700" />}
+          iconBg="bg-blue-50"
         />
       </div>
 
@@ -149,7 +149,7 @@ export default function ContractorDashboard() {
         {/* Assigned Corrective Actions */}
         <SectionCard
           title="Assigned Corrective Actions (CAPAs)"
-          icon={<Wrench size={16} className="text-cil-blue" />}
+          icon={<Wrench size={16} className="text-blue-700" />}
           actions={
             <button onClick={() => navigate('/corrective-actions')} className="btn-ghost text-xs">
               View All <ArrowRight size={12} />
@@ -164,15 +164,15 @@ export default function ContractorDashboard() {
                 <div
                   key={ca.id}
                   onClick={() => navigate('/corrective-actions')}
-                  className="flex items-center justify-between p-3 bg-coal-800/40 hover:bg-coal-800/80 border border-coal-700/50 rounded-xl cursor-pointer transition-colors"
+                  className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-lg cursor-pointer transition-colors"
                 >
                   <div className="min-w-0 flex-1 pr-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono text-xs text-coal-400 font-semibold">{ca.action_code}</span>
+                      <span className="font-mono text-xs text-slate-500 font-bold">{ca.action_code}</span>
                       <StatusBadge status={ca.priority} />
                     </div>
-                    <p className="text-xs font-medium text-coal-200 truncate">{ca.title}</p>
-                    <p className="text-[10px] text-coal-500 mt-0.5">Due: {formatDate(ca.due_date)}</p>
+                    <p className="text-xs font-bold text-slate-800 truncate">{ca.title}</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">Due: {formatDate(ca.due_date)}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
                     <StatusBadge status={ca.status} />
@@ -186,7 +186,7 @@ export default function ContractorDashboard() {
         {/* Assigned Violations */}
         <SectionCard
           title="Assigned Statutory Violations"
-          icon={<AlertTriangle size={16} className="text-amber-400" />}
+          icon={<AlertTriangle size={16} className="text-amber-600" />}
           actions={
             <button onClick={() => navigate('/violations')} className="btn-ghost text-xs">
               View All <ArrowRight size={12} />
@@ -201,17 +201,17 @@ export default function ContractorDashboard() {
                 <div
                   key={v.id}
                   onClick={() => navigate('/violations')}
-                  className="flex items-center justify-between p-3 bg-coal-800/40 hover:bg-coal-800/80 border border-coal-700/50 rounded-xl cursor-pointer transition-colors"
+                  className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-lg cursor-pointer transition-colors"
                 >
                   <div className="min-w-0 flex-1 pr-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-coal-700 text-coal-300 font-mono">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono font-bold">
                         {v.category}
                       </span>
                       <StatusBadge status={v.severity} />
                     </div>
-                    <p className="text-xs font-medium text-coal-200 truncate">{v.title}</p>
-                    <p className="text-[10px] text-coal-500 mt-0.5">Ref: {v.regulation_reference || 'DGMS / CMR'}</p>
+                    <p className="text-xs font-bold text-slate-800 truncate">{v.title}</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">Ref: {v.regulation_reference || 'DGMS / CMR'}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
                     <StatusBadge status={v.status} />
@@ -227,7 +227,7 @@ export default function ContractorDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <SectionCard
           title="Active Contractor Alerts"
-          icon={<Bell size={16} className="text-yellow-400" />}
+          icon={<Bell size={16} className="text-amber-600" />}
           className="lg:col-span-2"
           actions={
             <button onClick={() => navigate('/alerts')} className="btn-ghost text-xs">
@@ -240,13 +240,13 @@ export default function ContractorDashboard() {
           ) : (
             <div className="space-y-2">
               {recentAlerts.slice(0, 4).map((a: any) => (
-                <div key={a.id} className="flex items-start gap-3 p-3 bg-coal-800/50 rounded-xl border border-coal-800">
-                  <div className="w-2 h-2 rounded-full mt-1.5 bg-yellow-400 flex-shrink-0" />
+                <div key={a.id} className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
+                  <div className="w-2 h-2 rounded-full mt-1.5 bg-amber-500 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-coal-200 truncate">{a.title}</p>
-                    <p className="text-[10px] text-coal-400 mt-0.5 line-clamp-1">{a.message}</p>
+                    <p className="text-xs font-bold text-slate-800 truncate">{a.title}</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{a.message}</p>
                   </div>
-                  <span className="text-[9px] text-coal-500 font-mono">{formatDateTime(a.created_at)}</span>
+                  <span className="text-[10px] text-slate-400 font-mono">{formatDateTime(a.created_at)}</span>
                 </div>
               ))}
             </div>
@@ -254,39 +254,39 @@ export default function ContractorDashboard() {
         </SectionCard>
 
         {/* Quick Operations Panel */}
-        <SectionCard title="Quick Contractor Actions" icon={<CheckCircle size={16} className="text-emerald-400" />}>
-          <div className="space-y-2">
+        <SectionCard title="Quick Contractor Actions" icon={<CheckCircle size={16} className="text-emerald-700" />}>
+          <div className="space-y-2.5">
             <button
               onClick={() => navigate('/documents')}
-              className="w-full flex items-center justify-between p-3 bg-coal-800/60 hover:bg-coal-800 border border-coal-700/40 rounded-xl text-left transition-colors"
+              className="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100/90 border border-slate-200 rounded-lg text-left transition-colors"
             >
               <div>
-                <div className="text-xs font-bold text-white">Upload Statutory Docs</div>
-                <div className="text-[10px] text-coal-400">License, insurance, environmental permits</div>
+                <div className="text-xs font-bold text-slate-900">Upload Statutory Docs</div>
+                <div className="text-[11px] text-slate-500">License, insurance, environmental permits</div>
               </div>
-              <ArrowRight size={14} className="text-coal-400" />
+              <ArrowRight size={14} className="text-slate-400" />
             </button>
 
             <button
               onClick={() => navigate('/workers')}
-              className="w-full flex items-center justify-between p-3 bg-coal-800/60 hover:bg-coal-800 border border-coal-700/40 rounded-xl text-left transition-colors"
+              className="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100/90 border border-slate-200 rounded-lg text-left transition-colors"
             >
               <div>
-                <div className="text-xs font-bold text-white">Register / Manage Workers</div>
-                <div className="text-[10px] text-coal-400">Add deployed workforce & certificates</div>
+                <div className="text-xs font-bold text-slate-900">Register / Manage Workers</div>
+                <div className="text-[11px] text-slate-500">Add deployed workforce & certificates</div>
               </div>
-              <ArrowRight size={14} className="text-coal-400" />
+              <ArrowRight size={14} className="text-slate-400" />
             </button>
 
             <button
               onClick={() => navigate('/corrective-actions')}
-              className="w-full flex items-center justify-between p-3 bg-coal-800/60 hover:bg-coal-800 border border-coal-700/40 rounded-xl text-left transition-colors"
+              className="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100/90 border border-slate-200 rounded-lg text-left transition-colors"
             >
               <div>
-                <div className="text-xs font-bold text-white">Submit Corrective Proof</div>
-                <div className="text-[10px] text-coal-400">Upload photos & notes for verification</div>
+                <div className="text-xs font-bold text-slate-900">Submit Corrective Proof</div>
+                <div className="text-[11px] text-slate-500">Upload photos & notes for verification</div>
               </div>
-              <ArrowRight size={14} className="text-coal-400" />
+              <ArrowRight size={14} className="text-slate-400" />
             </button>
           </div>
         </SectionCard>

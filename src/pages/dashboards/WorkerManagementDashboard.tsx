@@ -53,12 +53,12 @@ export default function WorkerManagementDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 uppercase tracking-wide">
               Worker Management & PME
             </span>
           </div>
-          <h1 className="text-2xl font-bold text-white mt-1">Labour & Workforce Compliance Dashboard</h1>
-          <p className="text-coal-500 text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-slate-900 mt-1">Labour & Workforce Compliance Dashboard</h1>
+          <p className="text-slate-500 text-sm mt-0.5">
             Manage worker on-boarding, Form O PME medical fitness examinations, mandatory vocational training, and statutory certifications.
           </p>
         </div>
@@ -66,13 +66,13 @@ export default function WorkerManagementDashboard() {
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
           <button onClick={() => navigate('/workers')} className="btn-secondary text-xs">
-            <Users size={13} /> Manage Workers
+            <Users size={14} /> Manage Workers
           </button>
           <button onClick={() => navigate('/workers')} className="btn-secondary text-xs">
-            <UserCheck size={13} /> Verify Worker
+            <UserCheck size={14} /> Verify Worker
           </button>
           <button onClick={() => navigate('/workers')} className="btn-primary text-xs">
-            <HeartPulse size={13} /> Medical Records
+            <HeartPulse size={14} /> Medical Records
           </button>
         </div>
       </div>
@@ -82,55 +82,55 @@ export default function WorkerManagementDashboard() {
         <KPICard
           label="Total Workers"
           value={totalWorkers}
-          icon={<Users size={22} className="text-blue-400" />}
-          iconBg="bg-blue-500/10"
+          icon={<Users size={22} className="text-blue-700" />}
+          iconBg="bg-blue-50"
           onClick={() => navigate('/workers')}
         />
         <KPICard
           label="Verified Workers"
           value={verifiedWorkers}
-          icon={<UserCheck size={22} className="text-emerald-400" />}
-          iconBg="bg-emerald-500/10"
+          icon={<UserCheck size={22} className="text-emerald-700" />}
+          iconBg="bg-emerald-50"
           onClick={() => navigate('/workers')}
         />
         <KPICard
           label="Pending Verification"
           value={pendingVerification}
-          icon={<Clock size={22} className="text-amber-400" />}
-          iconBg="bg-amber-500/10"
+          icon={<Clock size={22} className="text-amber-700" />}
+          iconBg="bg-amber-50"
           onClick={() => navigate('/workers')}
         />
         <KPICard
           label="Medical Fitness (Fit)"
           value={fitWorkers}
-          icon={<HeartPulse size={22} className="text-rose-400" />}
-          iconBg="bg-rose-500/10"
+          icon={<HeartPulse size={22} className="text-rose-700" />}
+          iconBg="bg-rose-50"
         />
         <KPICard
           label="Expiring Medical Records"
           value={expiringMedicals}
-          icon={<AlertTriangle size={22} className="text-orange-400" />}
-          iconBg="bg-orange-500/10"
+          icon={<AlertTriangle size={22} className="text-orange-700" />}
+          iconBg="bg-orange-50"
           onClick={() => navigate('/workers')}
         />
         <KPICard
           label="Expired Medicals"
           value={expiredMedicals}
-          icon={<ShieldAlert size={22} className="text-red-400" />}
-          iconBg="bg-red-500/10"
+          icon={<ShieldAlert size={22} className="text-red-700" />}
+          iconBg="bg-red-50"
           onClick={() => navigate('/workers')}
         />
         <KPICard
           label="Vocational Training Status"
           value={`${certifiedTraining} / ${totalWorkers}`}
-          icon={<Award size={22} className="text-indigo-400" />}
-          iconBg="bg-indigo-500/10"
+          icon={<Award size={22} className="text-purple-700" />}
+          iconBg="bg-purple-50"
         />
         <KPICard
           label="Statutory Compliance %"
           value={`${compliancePercent}%`}
-          icon={<ShieldCheck size={22} className="text-teal-400" />}
-          iconBg="bg-teal-500/10"
+          icon={<ShieldCheck size={22} className="text-teal-700" />}
+          iconBg="bg-teal-50"
         />
       </div>
 
@@ -139,7 +139,7 @@ export default function WorkerManagementDashboard() {
         {/* Pending Verification Queue */}
         <SectionCard
           title="Workers Pending Verification"
-          icon={<UserCheck size={16} className="text-amber-400" />}
+          icon={<UserCheck size={16} className="text-amber-700" />}
           actions={
             <button onClick={() => navigate('/workers')} className="btn-ghost text-xs">
               View All <ArrowRight size={12} />
@@ -154,14 +154,14 @@ export default function WorkerManagementDashboard() {
                 <div
                   key={w.id}
                   onClick={() => navigate('/workers')}
-                  className="flex items-center justify-between p-3 bg-coal-800/40 hover:bg-coal-800 border border-coal-700/40 rounded-xl cursor-pointer transition-colors"
+                  className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-lg cursor-pointer transition-colors"
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-white">{w.first_name} {w.last_name}</span>
-                      <span className="text-[10px] text-coal-400 font-mono">({w.worker_code})</span>
+                      <span className="text-xs font-bold text-slate-900">{w.first_name} {w.last_name}</span>
+                      <span className="text-[10px] text-slate-500 font-mono font-bold">({w.worker_code})</span>
                     </div>
-                    <div className="text-[10px] text-coal-400 mt-0.5">
+                    <div className="text-[11px] text-slate-500 mt-0.5">
                       {w.designation} • {w.contractor_name || 'Direct'} • Mine: {w.mine_name || 'Assigned'}
                     </div>
                   </div>
@@ -175,7 +175,7 @@ export default function WorkerManagementDashboard() {
         {/* Medical / Fitness Attention */}
         <SectionCard
           title="Medical & PME Fitness Watchlist"
-          icon={<HeartPulse size={16} className="text-rose-400" />}
+          icon={<HeartPulse size={16} className="text-rose-700" />}
           actions={
             <button onClick={() => navigate('/workers')} className="btn-ghost text-xs">
               View All <ArrowRight size={12} />
@@ -190,18 +190,18 @@ export default function WorkerManagementDashboard() {
                 <div
                   key={w.id}
                   onClick={() => navigate('/workers')}
-                  className="flex items-center justify-between p-3 bg-coal-800/40 hover:bg-coal-800 border border-coal-700/40 rounded-xl cursor-pointer transition-colors"
+                  className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-lg cursor-pointer transition-colors"
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-white">{w.first_name} {w.last_name}</span>
-                      <span className="text-[10px] text-coal-400 font-mono">({w.worker_code})</span>
+                      <span className="text-xs font-bold text-slate-900">{w.first_name} {w.last_name}</span>
+                      <span className="text-[10px] text-slate-500 font-mono font-bold">({w.worker_code})</span>
                     </div>
-                    <div className="text-[10px] text-red-400 mt-0.5">
+                    <div className="text-[11px] text-red-700 font-medium mt-0.5">
                       Status: {w.medical_fitness_status} • Expiry: {w.medical_expiry_date ? formatDate(w.medical_expiry_date) : 'No Form O Record'}
                     </div>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-red-950/60 text-red-400 border border-red-800/40">
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-red-50 text-red-700 border border-red-200">
                     Attention
                   </span>
                 </div>
@@ -215,35 +215,35 @@ export default function WorkerManagementDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div
           onClick={() => navigate('/workers')}
-          className="p-4 bg-coal-900 border border-coal-800 hover:border-emerald-800/60 rounded-xl cursor-pointer transition-all hover:bg-coal-850"
+          className="p-5 bg-white border border-slate-200 hover:border-emerald-300 rounded-lg shadow-card cursor-pointer transition-all hover:shadow-card-hover"
         >
-          <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-3">
-            <Users size={18} />
+          <div className="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 mb-3">
+            <Users size={20} />
           </div>
-          <h3 className="text-sm font-bold text-white">Worker Registry & Profiles</h3>
-          <p className="text-[11px] text-coal-400 mt-1">Review biometric profiles, contractor assignments, and statutory declarations.</p>
+          <h3 className="text-sm font-bold text-slate-900">Worker Registry & Profiles</h3>
+          <p className="text-xs text-slate-500 mt-1 leading-relaxed">Review biometric profiles, contractor assignments, and statutory declarations.</p>
         </div>
 
         <div
           onClick={() => navigate('/workers')}
-          className="p-4 bg-coal-900 border border-coal-800 hover:border-rose-800/60 rounded-xl cursor-pointer transition-all hover:bg-coal-850"
+          className="p-5 bg-white border border-slate-200 hover:border-rose-300 rounded-lg shadow-card cursor-pointer transition-all hover:shadow-card-hover"
         >
-          <div className="w-9 h-9 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 mb-3">
-            <HeartPulse size={18} />
+          <div className="w-10 h-10 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-700 mb-3">
+            <HeartPulse size={20} />
           </div>
-          <h3 className="text-sm font-bold text-white">Form O Medicals (PME/IME)</h3>
-          <p className="text-[11px] text-coal-400 mt-1">Track DGMS statutory periodic medical examinations and fitness renewals.</p>
+          <h3 className="text-sm font-bold text-slate-900">Form O Medicals (PME/IME)</h3>
+          <p className="text-xs text-slate-500 mt-1 leading-relaxed">Track DGMS statutory periodic medical examinations and fitness renewals.</p>
         </div>
 
         <div
           onClick={() => navigate('/workers')}
-          className="p-4 bg-coal-900 border border-coal-800 hover:border-indigo-800/60 rounded-xl cursor-pointer transition-all hover:bg-coal-850"
+          className="p-5 bg-white border border-slate-200 hover:border-purple-300 rounded-lg shadow-card cursor-pointer transition-all hover:shadow-card-hover"
         >
-          <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-3">
-            <Award size={18} />
+          <div className="w-10 h-10 rounded-lg bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 mb-3">
+            <Award size={20} />
           </div>
-          <h3 className="text-sm font-bold text-white">Vocational Training & Certifications</h3>
-          <p className="text-[11px] text-coal-400 mt-1">Verify Mines Vocational Training Rules 1966 certifications and gas testing permits.</p>
+          <h3 className="text-sm font-bold text-slate-900">Vocational Training & Certifications</h3>
+          <p className="text-xs text-slate-500 mt-1 leading-relaxed">Verify Mines Vocational Training Rules 1966 certifications and gas testing permits.</p>
         </div>
       </div>
     </div>

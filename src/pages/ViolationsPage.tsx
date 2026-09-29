@@ -75,7 +75,6 @@ export default function ViolationsPage() {
       });
       setShowCapaModal(false);
       setSuccessMsg(`CAPA successfully issued for violation ${selected.violation_code}!`);
-      // Update violation status in local state to IN_CORRECTION
       setViolationList(prev => prev.map(v => v.id === selected.id ? { ...v, status: 'IN_CORRECTION' } : v));
       if (selected) setSelected((s: any) => ({ ...s, status: 'IN_CORRECTION' }));
     } catch (e: any) {
@@ -86,20 +85,25 @@ export default function ViolationsPage() {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Violation Register</h1>
-          <p className="text-coal-500 text-sm mt-0.5">Statutory compliance violations & corrective action assignment</p>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-700 border border-red-200 uppercase tracking-wide">
+              Non-Compliance Tracker
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900">Statutory Violation Register</h1>
+          <p className="text-slate-500 text-sm mt-0.5">Statutory compliance violations & corrective action assignment</p>
         </div>
         <div className="flex gap-2">
-          <select className="form-select text-sm w-36" value={filterSeverity} onChange={e => setFilterSeverity(e.target.value)}>
+          <select className="form-select text-xs w-36" value={filterSeverity} onChange={e => setFilterSeverity(e.target.value)}>
             <option value="">All Severities</option>
             <option value="CRITICAL">CRITICAL</option>
             <option value="HIGH">HIGH</option>
             <option value="MEDIUM">MEDIUM</option>
           </select>
-          <select className="form-select text-sm w-36" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+          <select className="form-select text-xs w-36" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
             <option value="">All Statuses</option>
             <option value="OPEN">OPEN</option>
             <option value="IN_CORRECTION">IN CORRECTION</option>
@@ -109,84 +113,89 @@ export default function ViolationsPage() {
       </div>
 
       {successMsg && (
-        <div className="bg-emerald-900/30 border border-emerald-800/60 rounded-xl px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-emerald-300 text-sm font-medium">
-            <CheckCircle size={16} className="text-emerald-400" />
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-emerald-800 text-sm font-semibold">
+            <CheckCircle size={16} className="text-emerald-600" />
             {successMsg}
           </div>
-          <button onClick={() => navigate('/corrective-actions')} className="text-xs text-cil-light underline font-semibold">
+          <button onClick={() => navigate('/corrective-actions')} className="text-xs text-blue-700 hover:text-blue-800 underline font-semibold">
             View in CAPA Manager →
           </button>
         </div>
       )}
 
-      {/* Summary */}
-      <div className="grid grid-cols-4 gap-3">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'CRITICAL', value: counts.CRITICAL, color: 'text-red-400 bg-red-900/20 border-red-800/40' },
-          { label: 'HIGH Risk', value: counts.HIGH, color: 'text-orange-400 bg-orange-900/20 border-orange-800/40' },
-          { label: 'Open', value: counts.OPEN, color: 'text-yellow-400 bg-yellow-900/20 border-yellow-800/40' },
-          { label: 'Resolved', value: counts.RESOLVED, color: 'text-emerald-400 bg-emerald-900/20 border-emerald-800/40' },
+          { label: 'CRITICAL', value: counts.CRITICAL, bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
+          { label: 'HIGH Risk', value: counts.HIGH, bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' },
+          { label: 'Open', value: counts.OPEN, bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+          { label: 'Resolved', value: counts.RESOLVED, bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
         ].map(s => (
-          <div key={s.label} className={`kpi-card border ${s.color}`}>
-            <div className="text-[10px] font-bold uppercase tracking-wider opacity-70">{s.label}</div>
-            <div className="text-2xl font-bold mt-1">{s.value}</div>
+          <div key={s.label} className={`bg-white border rounded-lg p-4 shadow-card ${s.border}`}>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{s.label}</span>
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase ${s.bg} ${s.text} ${s.border}`}>Live</span>
+            </div>
+            <div className={`text-2xl font-bold mt-1 ${s.text}`}>{s.value}</div>
           </div>
         ))}
       </div>
 
       {loading ? <LoadingState /> : violationList.length === 0 ? <EmptyState message="No violations found" /> : (
-        <div className="section-card overflow-hidden">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Violation</th>
-                <th>Category</th>
-                <th>Mine</th>
-                <th>Contractor</th>
-                <th>Severity</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {violationList.map(v => (
-                <tr key={v.id} className="cursor-pointer" onClick={() => setSelected(v)}>
-                  <td className="font-mono text-[10px] text-coal-500">{v.violation_code}</td>
-                  <td>
-                    <div className="text-sm font-semibold text-coal-200 max-w-[220px] truncate">{v.title}</div>
-                    <div className="text-[10px] text-coal-600 truncate max-w-[220px]">{v.regulation_reference}</div>
-                  </td>
-                  <td className="text-xs text-coal-400">{v.category}</td>
-                  <td className="text-xs text-coal-400">{v.mine_name}</td>
-                  <td className="text-xs text-coal-400">{v.contractor_name || '—'}</td>
-                  <td><StatusBadge status={v.severity} /></td>
-                  <td><StatusBadge status={v.status} /></td>
-                  <td>
-                    {isMineManager && v.status === 'OPEN' ? (
-                      <button
-                        onClick={e => { e.stopPropagation(); openCapaModal(v); }}
-                        className="btn-primary text-xs py-1 px-2.5"
-                      >
-                        <Wrench size={12} /> Issue CAPA
-                      </button>
-                    ) : (
-                      <span className="text-[11px] text-coal-500">{v.status === 'RESOLVED' ? 'Resolved' : 'In Correction'}</span>
-                    )}
-                  </td>
+        <div className="bg-white border border-slate-200 rounded-lg shadow-card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Violation</th>
+                  <th>Category</th>
+                  <th>Mine</th>
+                  <th>Contractor</th>
+                  <th>Severity</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {violationList.map(v => (
+                  <tr key={v.id} className="cursor-pointer hover:bg-slate-50 transition-colors" onClick={() => setSelected(v)}>
+                    <td className="font-mono text-xs font-bold text-blue-700">{v.violation_code}</td>
+                    <td>
+                      <div className="text-xs font-bold text-slate-900 max-w-[240px] truncate">{v.title}</div>
+                      <div className="text-[11px] text-slate-500 truncate max-w-[240px]">{v.regulation_reference}</div>
+                    </td>
+                    <td className="text-xs text-slate-600 font-medium">{v.category}</td>
+                    <td className="text-xs text-slate-600">{v.mine_name}</td>
+                    <td className="text-xs text-slate-600">{v.contractor_name || '—'}</td>
+                    <td><StatusBadge status={v.severity} /></td>
+                    <td><StatusBadge status={v.status} /></td>
+                    <td>
+                      {isMineManager && v.status === 'OPEN' ? (
+                        <button
+                          onClick={e => { e.stopPropagation(); openCapaModal(v); }}
+                          className="btn-primary text-xs py-1 px-2.5"
+                        >
+                          <Wrench size={12} /> Issue CAPA
+                        </button>
+                      ) : (
+                        <span className="text-xs font-semibold text-slate-400">{v.status === 'RESOLVED' ? 'Resolved' : 'In Correction'}</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
       {/* Violation Detail Modal */}
-      <Modal open={!!selected && !showCapaModal} onClose={() => setSelected(null)} title={selected?.violation_code || 'Violation'} size="md">
+      <Modal open={!!selected && !showCapaModal} onClose={() => setSelected(null)} title={selected?.violation_code || 'Violation Details'} size="md">
         {selected && (
           <div className="space-y-4">
-            <div className="flex items-center gap-2 flex-wrap justify-between">
+            <div className="flex items-center gap-2 flex-wrap justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <StatusBadge status={selected.severity} />
                 <StatusBadge status={selected.status} />
@@ -200,15 +209,20 @@ export default function ViolationsPage() {
                 </button>
               )}
             </div>
-            <h3 className="text-base font-bold text-white">{selected.title}</h3>
-            <div className="bg-coal-800/60 rounded-xl p-4 space-y-2 text-sm">
-              <div><span className="text-coal-500 text-xs">Statutory Reference:</span><p className="text-coal-200 mt-0.5">{selected.regulation_reference}</p></div>
-              <div><span className="text-coal-500 text-xs">Description:</span><p className="text-coal-200 mt-0.5">{selected.description}</p></div>
-              <div className="grid grid-cols-2 gap-3">
-                <div><span className="text-coal-500 text-xs">Mine:</span><p className="text-coal-200">{selected.mine_name}</p></div>
-                <div><span className="text-coal-500 text-xs">Contractor:</span><p className="text-coal-200">{selected.contractor_name || '—'}</p></div>
-                <div><span className="text-coal-500 text-xs">Detected:</span><p className="text-coal-200">{formatDateTime(selected.detected_at)}</p></div>
-                {selected.resolved_at && <div><span className="text-coal-500 text-xs">Resolved:</span><p className="text-coal-200">{formatDateTime(selected.resolved_at)}</p></div>}
+            <div>
+              <h3 className="text-sm font-bold text-slate-900">{selected.title}</h3>
+              <p className="text-xs text-slate-500 mt-0.5">{selected.regulation_reference}</p>
+            </div>
+            <div className="bg-slate-50 rounded-lg p-4 space-y-2.5 text-xs border border-slate-200">
+              <div>
+                <span className="text-slate-500 font-semibold block mb-0.5">Description:</span>
+                <p className="text-slate-800 leading-relaxed">{selected.description}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+                <div><span className="text-slate-500 font-semibold">Mine:</span><p className="text-slate-800 font-medium">{selected.mine_name}</p></div>
+                <div><span className="text-slate-500 font-semibold">Contractor:</span><p className="text-slate-800 font-medium">{selected.contractor_name || '—'}</p></div>
+                <div><span className="text-slate-500 font-semibold">Detected At:</span><p className="text-slate-800 font-medium">{formatDateTime(selected.detected_at)}</p></div>
+                {selected.resolved_at && <div><span className="text-slate-500 font-semibold">Resolved:</span><p className="text-slate-800 font-medium">{formatDateTime(selected.resolved_at)}</p></div>}
               </div>
             </div>
           </div>
@@ -218,8 +232,8 @@ export default function ViolationsPage() {
       {/* Issue CAPA Direct Modal */}
       <Modal open={showCapaModal} onClose={() => setShowCapaModal(false)} title={`Issue CAPA: ${selected?.violation_code || ''}`} size="md">
         <div className="space-y-4">
-          <div className="text-xs text-coal-400 bg-coal-800/40 p-3 rounded-lg">
-            <strong>Target Violation:</strong> {selected?.title} ({selected?.mine_name})
+          <div className="text-xs text-slate-600 bg-blue-50 border border-blue-200 p-3 rounded-lg">
+            <strong className="text-blue-900">Target Violation:</strong> {selected?.title} ({selected?.mine_name})
           </div>
           <div>
             <label className="form-label">Action / Directive Title</label>
@@ -272,7 +286,7 @@ export default function ViolationsPage() {
               onChange={e => setCapaForm({ ...capaForm, assigned_to: e.target.value })}
             />
           </div>
-          <div className="flex gap-2 justify-end pt-3 border-t border-coal-800">
+          <div className="flex gap-2 justify-end pt-3 border-t border-slate-200">
             <button onClick={() => setShowCapaModal(false)} className="btn-secondary text-xs">
               Cancel
             </button>

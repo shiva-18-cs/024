@@ -6,198 +6,234 @@
 
 @layer base {
   :root {
-    --sidebar-width: 260px;
+    --sidebar-width: 252px;
+    --header-height: 56px;
+    --color-bg: #f5f7fa;
+    --color-surface: #ffffff;
+    --color-border: #e2e8f0;
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #475569;
+    --color-text-muted: #94a3b8;
+    --color-brand: #1d4ed8;
+    --color-brand-hover: #1e40af;
   }
 
-  * {
-    @apply box-border;
-  }
+  * { @apply box-border; }
 
   body {
-    @apply bg-coal-950 text-coal-100 font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    background-color: #f5f7fa;
+    color: #0f172a;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-coal-900;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-coal-700 rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-coal-600;
-  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 }
 
 @layer components {
-  /* KPI Cards */
+
+  /* ─── KPI CARDS ─────────────────────────────────────── */
   .kpi-card {
-    @apply bg-coal-900 border border-coal-800 rounded-xl p-5 hover:border-coal-700 transition-all duration-200;
+    @apply bg-white border border-slate-200 rounded-lg p-4 shadow-card hover:shadow-card-hover transition-all duration-200;
   }
   .kpi-card-value {
-    @apply text-3xl font-bold text-white mt-2;
+    @apply text-2xl font-bold text-slate-900 mt-1;
   }
   .kpi-card-label {
-    @apply text-xs font-medium text-coal-400 uppercase tracking-wider;
+    @apply text-xs font-semibold text-slate-500 uppercase tracking-wider;
   }
   .kpi-card-delta {
     @apply text-xs font-medium mt-1;
   }
 
-  /* Data Tables */
+  /* ─── DATA TABLES ───────────────────────────────────── */
   .data-table {
     @apply w-full text-sm;
   }
   .data-table th {
-    @apply text-left text-xs font-semibold text-coal-400 uppercase tracking-wider px-4 py-3 bg-coal-900 border-b border-coal-800;
+    @apply text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3 bg-slate-50 border-b border-slate-200;
   }
   .data-table td {
-    @apply px-4 py-3 border-b border-coal-800/60 text-coal-200;
+    @apply px-4 py-3 border-b border-slate-100 text-slate-700;
   }
-  .data-table tr:hover td {
-    @apply bg-coal-800/40;
+  .data-table tr:last-child td {
+    @apply border-b-0;
+  }
+  .data-table tbody tr:hover td {
+    @apply bg-slate-50/70;
   }
 
-  /* Status Badges */
+  /* ─── STATUS BADGES ─────────────────────────────────── */
   .badge {
-    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wide;
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold tracking-wide;
   }
   .badge-compliant {
-    @apply badge bg-emerald-900/50 text-emerald-400 border border-emerald-800/60;
+    @apply badge bg-green-50 text-green-700 border border-green-200;
   }
   .badge-non-compliant {
-    @apply badge bg-red-900/50 text-red-400 border border-red-800/60;
+    @apply badge bg-red-50 text-red-700 border border-red-200;
   }
   .badge-pending {
-    @apply badge bg-yellow-900/50 text-yellow-400 border border-yellow-800/60;
+    @apply badge bg-amber-50 text-amber-700 border border-amber-200;
   }
   .badge-under-review {
-    @apply badge bg-blue-900/50 text-blue-400 border border-blue-800/60;
+    @apply badge bg-blue-50 text-blue-700 border border-blue-200;
   }
   .badge-high-risk {
-    @apply badge bg-orange-900/50 text-orange-400 border border-orange-800/60;
+    @apply badge bg-orange-50 text-orange-700 border border-orange-200;
   }
   .badge-critical {
-    @apply badge bg-red-900/60 text-red-300 border border-red-700;
+    @apply badge bg-red-100 text-red-800 border border-red-300 font-bold;
   }
   .badge-resolved {
-    @apply badge bg-teal-900/50 text-teal-400 border border-teal-800/60;
+    @apply badge bg-teal-50 text-teal-700 border border-teal-200;
   }
   .badge-overdue {
-    @apply badge bg-red-900/70 text-red-300 border border-red-700 animate-pulse;
+    @apply badge bg-red-100 text-red-800 border border-red-300;
   }
   .badge-low {
-    @apply badge bg-green-900/50 text-green-400 border border-green-800/60;
+    @apply badge bg-green-50 text-green-700 border border-green-200;
   }
   .badge-medium {
-    @apply badge bg-yellow-900/50 text-yellow-400 border border-yellow-800/60;
+    @apply badge bg-amber-50 text-amber-700 border border-amber-200;
   }
   .badge-approved {
-    @apply badge bg-emerald-900/60 text-emerald-300 border border-emerald-700;
+    @apply badge bg-green-50 text-green-700 border border-green-200;
   }
 
-  /* Buttons */
+  /* ─── BUTTONS ───────────────────────────────────────── */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-cil-blue text-white rounded-lg font-semibold text-sm hover:bg-cil-dark transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-blue-700 text-white rounded-md font-semibold text-sm hover:bg-blue-800 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm;
   }
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-coal-800 text-coal-200 border border-coal-700 rounded-lg font-semibold text-sm hover:bg-coal-700 hover:border-coal-600 transition-all duration-150;
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-md font-semibold text-sm hover:bg-slate-50 hover:border-slate-400 transition-all duration-150 shadow-sm;
   }
   .btn-danger {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-red-700 text-white rounded-lg font-semibold text-sm hover:bg-red-600 transition-all duration-150;
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md font-semibold text-sm hover:bg-red-700 transition-all duration-150 shadow-sm;
   }
   .btn-success {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg font-semibold text-sm hover:bg-emerald-600 transition-all duration-150;
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-green-700 text-white rounded-md font-semibold text-sm hover:bg-green-800 transition-all duration-150 shadow-sm;
   }
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-3 py-1.5 text-coal-400 rounded-lg text-sm hover:bg-coal-800 hover:text-coal-200 transition-all duration-150;
+    @apply inline-flex items-center gap-2 px-3 py-1.5 text-slate-500 rounded-md text-sm hover:bg-slate-100 hover:text-slate-700 transition-all duration-150;
   }
   .btn-icon {
-    @apply inline-flex items-center justify-center w-8 h-8 rounded-lg text-coal-400 hover:bg-coal-800 hover:text-coal-200 transition-all duration-150;
+    @apply inline-flex items-center justify-center w-8 h-8 rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-all duration-150;
   }
 
-  /* Form inputs */
+  /* ─── FORM CONTROLS ─────────────────────────────────── */
   .form-input {
-    @apply w-full bg-coal-800 border border-coal-700 rounded-lg px-3 py-2.5 text-sm text-coal-100 placeholder-coal-500 focus:outline-none focus:border-cil-blue focus:ring-1 focus:ring-cil-blue transition-colors;
+    @apply w-full bg-white border border-slate-300 rounded-md px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors;
   }
   .form-select {
     @apply form-input cursor-pointer;
   }
   .form-label {
-    @apply block text-xs font-semibold text-coal-400 uppercase tracking-wider mb-1.5;
+    @apply block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5;
   }
 
-  /* Section card */
+  /* ─── SECTION CARDS ─────────────────────────────────── */
   .section-card {
-    @apply bg-coal-900 border border-coal-800 rounded-xl;
+    @apply bg-white border border-slate-200 rounded-lg shadow-card;
   }
   .section-card-header {
-    @apply px-5 py-4 border-b border-coal-800 flex items-center justify-between;
+    @apply px-5 py-4 border-b border-slate-100 flex items-center justify-between;
   }
   .section-card-title {
-    @apply text-sm font-semibold text-coal-100 flex items-center gap-2;
+    @apply text-sm font-semibold text-slate-800 flex items-center gap-2;
   }
   .section-card-body {
     @apply p-5;
   }
 
-  /* Risk Score Ring */
-  .risk-ring-low {
-    @apply text-emerald-400;
+  /* ─── RISK RINGS ────────────────────────────────────── */
+  .risk-ring-low    { @apply text-green-600; }
+  .risk-ring-medium { @apply text-amber-600; }
+  .risk-ring-high   { @apply text-orange-600; }
+  .risk-ring-critical { @apply text-red-700; }
+
+  /* ─── PAGE HEADER ───────────────────────────────────── */
+  .page-header {
+    @apply mb-6;
   }
-  .risk-ring-medium {
-    @apply text-yellow-400;
+  .page-header-title {
+    @apply text-2xl font-bold text-slate-900;
   }
-  .risk-ring-high {
-    @apply text-orange-400;
-  }
-  .risk-ring-critical {
-    @apply text-red-400;
+  .page-header-subtitle {
+    @apply text-sm text-slate-500 mt-0.5;
   }
 }
 
-/* Custom Leaflet Map Styling */
+/* ─── LEAFLET MAP — LIGHT THEME ──────────────────────── */
 .leaflet-container {
-  background: #0f172a !important;
+  background: #f1f5f9 !important;
   font-family: 'Inter', sans-serif !important;
 }
 .leaflet-popup-content-wrapper {
-  background: #1e293b !important;
-  color: #e2e8f0 !important;
-  border: 1px solid #334155 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12) !important;
 }
 .leaflet-popup-tip {
-  background: #1e293b !important;
+  background: #ffffff !important;
 }
 .leaflet-popup-close-button {
-  color: #94a3b8 !important;
+  color: #64748b !important;
+}
+.leaflet-control-zoom a {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+.leaflet-control-zoom a:hover {
+  background: #f8fafc !important;
+  color: #1d4ed8 !important;
+}
+.leaflet-bar {
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.10) !important;
+}
+.leaflet-tile-pane {
+  filter: saturate(0.9) brightness(1.05);
 }
 
-/* Smooth page transition */
+/* ─── PAGE TRANSITIONS ───────────────────────────────── */
 .page-enter {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(6px);
 }
 .page-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 200ms, transform 200ms;
+  transition: opacity 180ms ease, transform 180ms ease;
 }
 
-/* Shimmer loading skeleton */
+/* ─── SKELETON LOADER — LIGHT ────────────────────────── */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
 }
 .skeleton {
-  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background: linear-gradient(90deg, #e8edf5 25%, #f1f5f9 50%, #e8edf5 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1.6s infinite;
   border-radius: 6px;
+}
+
+/* ─── SIDEBAR NAV ACTIVE ─────────────────────────────── */
+.nav-item-active {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-right: 3px solid #1d4ed8;
+}
+
+/* ─── FILTER BAR ─────────────────────────────────────── */
+.filter-bar {
+  @apply flex flex-wrap items-center gap-3 p-4 bg-white border border-slate-200 rounded-lg shadow-card mb-4;
 }

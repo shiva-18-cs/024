@@ -47,13 +47,13 @@ export default function FieldOfficerDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 uppercase tracking-wide">
               Field Officer Operations
             </span>
-            <span className="text-xs text-coal-400 font-medium">📍 {assignedMine}</span>
+            <span className="text-xs text-slate-500 font-medium">📍 {assignedMine}</span>
           </div>
-          <h1 className="text-2xl font-bold text-white mt-1">Field Inspections & Audits Dashboard</h1>
-          <p className="text-coal-500 text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-slate-900 mt-1">Field Inspections & Audits Dashboard</h1>
+          <p className="text-slate-500 text-sm mt-0.5">
             Conduct on-site inspections, log safety checklist items, capture geo-tagged evidence, and trigger AI risk evaluations.
           </p>
         </div>
@@ -61,16 +61,16 @@ export default function FieldOfficerDashboard() {
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
           <button onClick={() => navigate('/field-officer/gis')} className="btn-secondary text-xs">
-            <Map size={13} /> GIS Analysis
+            <Map size={14} /> GIS Analysis
           </button>
           <button onClick={() => navigate('/inspections')} className="btn-primary text-xs">
             <Plus size={14} /> Start Inspection
           </button>
           <button onClick={() => navigate('/inspections')} className="btn-secondary text-xs">
-            <ClipboardList size={13} /> My Inspections
+            <ClipboardList size={14} /> My Inspections
           </button>
           <button onClick={() => navigate('/inspections')} className="btn-secondary text-xs">
-            <Camera size={13} /> Inspection Evidence
+            <Camera size={14} /> Inspection Evidence
           </button>
         </div>
       </div>
@@ -80,47 +80,47 @@ export default function FieldOfficerDashboard() {
         <KPICard
           label="Assigned Mine"
           value={assignedMine.split(' ')[0]}
-          icon={<MapPin size={20} className="text-blue-400" />}
-          iconBg="bg-blue-500/10"
+          icon={<MapPin size={20} className="text-blue-700" />}
+          iconBg="bg-blue-50"
         />
         <KPICard
           label="Pending / Draft"
           value={pendingInspections}
-          icon={<Clock size={20} className="text-amber-400" />}
-          iconBg="bg-amber-500/10"
+          icon={<Clock size={20} className="text-amber-700" />}
+          iconBg="bg-amber-50"
           onClick={() => navigate('/inspections')}
         />
         <KPICard
           label="Submitted Audits"
           value={completedInspections}
-          icon={<CheckCircle size={20} className="text-emerald-400" />}
-          iconBg="bg-emerald-500/10"
+          icon={<CheckCircle size={20} className="text-emerald-700" />}
+          iconBg="bg-emerald-50"
           onClick={() => navigate('/inspections')}
         />
         <KPICard
           label="Open Findings"
           value={totalFindings}
-          icon={<AlertTriangle size={20} className="text-orange-400" />}
-          iconBg="bg-orange-500/10"
+          icon={<AlertTriangle size={20} className="text-orange-700" />}
+          iconBg="bg-orange-50"
         />
         <KPICard
           label="High Severity"
           value={highSeverityFindings}
-          icon={<ShieldAlert size={20} className="text-red-400" />}
-          iconBg="bg-red-500/10"
+          icon={<ShieldAlert size={20} className="text-red-700" />}
+          iconBg="bg-red-50"
         />
         <KPICard
           label="Geo Evidence Photos"
           value={totalEvidence}
-          icon={<Camera size={20} className="text-cyan-400" />}
-          iconBg="bg-cyan-500/10"
+          icon={<Camera size={20} className="text-teal-700" />}
+          iconBg="bg-teal-50"
         />
       </div>
 
       {/* Recent Inspections Table */}
       <SectionCard
         title="My Recent Field Inspections"
-        icon={<ClipboardList size={16} className="text-amber-400" />}
+        icon={<ClipboardList size={16} className="text-blue-700" />}
         actions={
           <button onClick={() => navigate('/inspections')} className="btn-ghost text-xs">
             View All Inspections <ArrowRight size={12} />
@@ -148,14 +148,14 @@ export default function FieldOfficerDashboard() {
                   <tr
                     key={insp.id}
                     onClick={() => navigate('/inspections')}
-                    className="cursor-pointer hover:bg-coal-800/40"
+                    className="cursor-pointer hover:bg-slate-50 transition-colors"
                   >
-                    <td className="font-mono text-xs text-coal-400 font-semibold">{insp.inspection_number}</td>
-                    <td className="text-xs text-coal-200">{insp.location_tag || 'Main Pit'}</td>
-                    <td className="text-xs text-coal-300">{insp.inspection_type}</td>
-                    <td className="text-xs text-coal-500">{formatDateTime(insp.inspection_date)}</td>
+                    <td className="font-mono text-xs text-blue-700 font-bold">{insp.inspection_number}</td>
+                    <td className="text-xs text-slate-800 font-medium">{insp.location_tag || 'Main Pit'}</td>
+                    <td className="text-xs text-slate-600">{insp.inspection_type}</td>
+                    <td className="text-xs text-slate-500">{formatDateTime(insp.inspection_date)}</td>
                     <td>
-                      <div className="w-20">
+                      <div className="w-24">
                         <ComplianceBar score={insp.compliance_score} />
                       </div>
                     </td>
@@ -174,22 +174,23 @@ export default function FieldOfficerDashboard() {
       </SectionCard>
 
       {/* Inspection Field Protocol Guidance */}
-      <div className="bg-coal-900 border border-coal-800 rounded-xl p-4">
-        <h3 className="text-xs font-bold text-amber-400 uppercase tracking-wide mb-2">
+      <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-card">
+        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-blue-600" />
           Field Officer Standard Statutory Checklist & Protocol
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-coal-400">
-          <div className="bg-coal-800/40 rounded-lg p-3 border border-coal-700/30">
-            <div className="text-white font-semibold mb-1">1. DGMS Regulation 115</div>
-            <p>Ensure haul road berm height is at least equal to largest tyre radius operating on the bench.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-600">
+          <div className="bg-slate-50 rounded-lg p-3.5 border border-slate-200">
+            <div className="text-slate-900 font-bold mb-1">1. DGMS Regulation 115</div>
+            <p className="leading-relaxed">Ensure haul road berm height is at least equal to largest tyre radius operating on the bench.</p>
           </div>
-          <div className="bg-coal-800/40 rounded-lg p-3 border border-coal-700/30">
-            <div className="text-white font-semibold mb-1">2. Auto Visual Warning (AVRA)</div>
-            <p>Verify audible audio-visual reverse alarm functional on all heavy earthmoving machinery.</p>
+          <div className="bg-slate-50 rounded-lg p-3.5 border border-slate-200">
+            <div className="text-slate-900 font-bold mb-1">2. Auto Visual Warning (AVRA)</div>
+            <p className="leading-relaxed">Verify audible audio-visual reverse alarm functional on all heavy earthmoving machinery.</p>
           </div>
-          <div className="bg-coal-800/40 rounded-lg p-3 border border-coal-700/30">
-            <div className="text-white font-semibold mb-1">3. Environmental Dust Suppression</div>
-            <p>Confirm operational water mist tankers and bowsers deployed along active hauling corridors.</p>
+          <div className="bg-slate-50 rounded-lg p-3.5 border border-slate-200">
+            <div className="text-slate-900 font-bold mb-1">3. Environmental Dust Suppression</div>
+            <p className="leading-relaxed">Confirm operational water mist tankers and bowsers deployed along active hauling corridors.</p>
           </div>
         </div>
       </div>
