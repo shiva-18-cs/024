@@ -131,13 +131,13 @@ export default function UsersPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-cil-blue/20 text-cil-light">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100">
               <Users size={22} />
             </span>
             RBAC Governance & Identity Management
           </h1>
-          <p className="text-coal-400 text-xs mt-1">
+          <p className="text-slate-500 text-sm mt-0.5">
             Ministry of Coal, CIL, Mine Manager, Field Officer, and Contractor Role-Based Access Directory
           </p>
         </div>
@@ -157,24 +157,24 @@ export default function UsersPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-coal-900 border border-coal-800 p-3 rounded-xl">
+      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-white border border-slate-200 p-3 rounded-lg shadow-card">
         <div className="relative flex-1 w-full">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-coal-500" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search by full name, username, or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-coal-950 border border-coal-800 text-white text-xs rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-cil-blue"
+            className="form-input pl-9 text-xs w-full"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Filter size={14} className="text-coal-500" />
+          <Filter size={14} className="text-slate-400" />
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="bg-coal-950 border border-coal-800 text-coal-300 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-cil-blue"
+            className="form-select text-xs"
           >
             <option value="ALL">All Roles</option>
             <option value="CORPORATE MANAGEMENT">CORPORATE MANAGEMENT</option>
@@ -194,55 +194,55 @@ export default function UsersPage() {
           <EmptyState message="No users found matching current filters" />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-coal-300">
-              <thead className="bg-coal-950 text-coal-500 uppercase text-[10px] tracking-wider border-b border-coal-800">
+            <table className="data-table">
+              <thead>
                 <tr>
-                  <th className="py-2.5 px-3">Official / User</th>
-                  <th className="py-2.5 px-3">Role Tier</th>
-                  <th className="py-2.5 px-3">Assigned Asset / Mine</th>
-                  <th className="py-2.5 px-3">Status</th>
-                  <th className="py-2.5 px-3">Last Active</th>
-                  <th className="py-2.5 px-3 text-right">Actions</th>
+                  <th>Official / User</th>
+                  <th>Role Tier</th>
+                  <th>Assigned Asset / Mine</th>
+                  <th>Status</th>
+                  <th>Last Active</th>
+                  <th className="text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-coal-800/60">
+              <tbody>
                 {filtered.map((u) => (
-                  <tr key={u.id} className="hover:bg-coal-800/40 transition-colors">
+                  <tr key={u.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-3">
-                      <div className="font-semibold text-white">{u.full_name}</div>
-                      <div className="text-[10px] text-coal-500 font-mono">{u.email}</div>
+                      <div className="font-semibold text-slate-900 text-sm">{u.full_name}</div>
+                      <div className="text-[10px] text-slate-400 font-mono">{u.email}</div>
                     </td>
 
                     <td className="py-3 px-3">
-                      <span className="badge bg-coal-800 text-coal-200 border border-coal-700 text-[10px] font-semibold">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200">
                         {u.role}
                       </span>
                     </td>
 
                     <td className="py-3 px-3">
-                      <div className="text-coal-200">{u.mine_name || u.contractor_name || 'Ministry / Headquarters'}</div>
+                      <div className="text-slate-700 text-xs font-medium">{u.mine_name || u.contractor_name || 'Ministry / Headquarters'}</div>
                     </td>
 
                     <td className="py-3 px-3">
                       {u.is_active ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-400 text-[10px] font-semibold">
+                        <span className="inline-flex items-center gap-1 text-emerald-700 text-[10px] font-semibold">
                           <CheckCircle size={12} /> Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-red-400 text-[10px] font-semibold">
+                        <span className="inline-flex items-center gap-1 text-red-600 text-[10px] font-semibold">
                           <XCircle size={12} /> Inactive
                         </span>
                       )}
                     </td>
 
-                    <td className="py-3 px-3 text-coal-500 font-mono text-[10px]">
+                    <td className="py-3 px-3 text-slate-400 font-mono text-[10px]">
                       {u.last_login?.includes('T') ? new Date(u.last_login).toLocaleString() : u.last_login || '—'}
                     </td>
 
                     <td className="py-3 px-3 text-right">
                       <button
                         onClick={() => alert(`Provisioned security certificate for ${u.full_name}`)}
-                        className="text-[11px] text-cil-light hover:underline font-semibold"
+                        className="text-[11px] text-blue-700 hover:underline font-semibold"
                       >
                         Audit Permissions
                       </button>
@@ -259,35 +259,35 @@ export default function UsersPage() {
       <Modal open={showAddModal} onClose={() => setShowAddModal(false)} title="Provision New Governance Official">
         <form onSubmit={handleCreateUser} className="space-y-4 text-xs">
           <div>
-            <label className="block text-coal-300 mb-1 font-semibold">Full Name & Designation</label>
+            <label className="form-label">Full Name &amp; Designation</label>
             <input
               type="text"
               placeholder="e.g. Ramesh Varma, Dy. Director"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full bg-coal-950 border border-coal-700 text-white rounded-lg p-2.5 focus:outline-none focus:border-cil-blue"
+              className="form-input text-xs"
               required
             />
           </div>
 
           <div>
-            <label className="block text-coal-300 mb-1 font-semibold">Official Email</label>
+            <label className="form-label">Official Email</label>
             <input
               type="email"
               placeholder="e.g. r.varma@coalindia.in"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-coal-950 border border-coal-700 text-white rounded-lg p-2.5 focus:outline-none focus:border-cil-blue"
+              className="form-input text-xs"
               required
             />
           </div>
 
           <div>
-            <label className="block text-coal-300 mb-1 font-semibold">Assign System Role</label>
+            <label className="form-label">Assign System Role</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full bg-coal-950 border border-coal-700 text-white rounded-lg p-2.5 focus:outline-none focus:border-cil-blue"
+              className="form-select text-xs"
             >
               <option value="CORPORATE MANAGEMENT">CORPORATE MANAGEMENT</option>
               <option value="MINE MANAGER">MINE MANAGER</option>
@@ -301,7 +301,7 @@ export default function UsersPage() {
             <button
               type="button"
               onClick={() => setShowAddModal(false)}
-              className="px-4 py-2 rounded-lg bg-coal-800 text-coal-300 hover:bg-coal-700"
+              className="btn-secondary text-xs"
             >
               Cancel
             </button>
