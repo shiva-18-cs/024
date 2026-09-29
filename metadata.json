@@ -1,0 +1,7 @@
+{
+  "name": "CoalGuard - Smart Governance & Compliance Monitoring System",
+  "description": "AI-Based Smart Governance & Compliance Monitoring System for Coal India Limited and Ministry of Coal",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
