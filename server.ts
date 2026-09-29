@@ -1202,10 +1202,21 @@ async function startServer() {
     console.log('[CoalGuard] Serving production static build from dist/...');
     app.use(express.static(path.resolve(__dirname, 'dist')));
     app.use((req, res, next) => {
-      if (req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path.startsWith('/reports-files')) {
+      if (req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path.startsWith('/reports-files') || req.path === '/health') {
         return next();
       }
-      res.sendFile(path.resolve(__dirname, 'dist/index.html'));
+      const indexPath = path.resolve(__dirname, 'dist/index.html');
+      if (fs.existsSync(indexPath)) {
+        return res.sendFile(indexPath);
+      }
+      res.json({
+        system: "CoalGuard AI-Based Smart Governance & Compliance System",
+        ministry: "Ministry of Coal / Coal India Limited",
+        status: "OPERATIONAL",
+        message: "Backend API is active. Frontend is deployed on Vercel.",
+        health: "/health",
+        api: "/api"
+      });
     });
   }
 
