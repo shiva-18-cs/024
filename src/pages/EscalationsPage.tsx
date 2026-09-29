@@ -61,11 +61,11 @@ export default function EscalationsPage() {
         <div>
           <div className="flex items-center gap-2">
             <ShieldAlert className="w-7 h-7 text-amber-500" />
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+            <h1 className="text-2xl font-extrabold text-slate-900">
               Statutory Escalations Dashboard
             </h1>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm text-slate-600 mt-1">
             Real-time tracking of critical safety violations, overdue CAPAs, and Level 1–3 statutory breaches.
           </p>
         </div>
@@ -73,18 +73,18 @@ export default function EscalationsPage() {
 
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 flex items-center gap-4">
-          <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4 shadow-xs">
+          <div className="p-3 bg-slate-100 text-slate-700 rounded-lg">
             <AlertTriangle className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{escalations.length}</div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">Total Active Escalations</div>
+            <div className="text-2xl font-extrabold text-slate-900">{escalations.length}</div>
+            <div className="text-xs font-semibold text-slate-500">Total Active Escalations</div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-900/40 rounded-xl p-4 flex items-center gap-4">
-          <div className="p-3 bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-lg">
+        <div className="bg-white border border-rose-200 rounded-xl p-4 flex items-center gap-4 shadow-xs">
+          <div className="p-3 bg-rose-50 text-rose-700 rounded-lg">
             <ShieldAlert className="w-6 h-6" />
           </div>
           <div>

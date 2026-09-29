@@ -261,24 +261,24 @@ export default function ReportsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <FileText className="w-7 h-7 text-indigo-500" />
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+            <FileText className="w-7 h-7 text-blue-700" />
+            <h1 className="text-2xl font-extrabold text-slate-900">
               Official Statutory Mine Reports
             </h1>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm text-slate-600 mt-1">
             5-Stage Governance Workflow: Draft &rarr; AI Risk Analysis &rarr; Mine Manager Review &rarr; Finalize &rarr; Corporate Approval.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <button onClick={fetchReports} className="px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 flex items-center gap-1.5">
+          <button onClick={fetchReports} className="px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 flex items-center gap-1.5 transition-colors">
             <RefreshCw className="w-3.5 h-3.5" /> Refresh
           </button>
           {isMineManager && (
             <button
               onClick={() => setShowDraftModal(true)}
-              className="px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-sm"
+              className="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-700 hover:bg-blue-800 text-white flex items-center gap-1.5 shadow-xs transition-colors"
             >
               <Plus className="w-4 h-4" /> Create Report Draft
             </button>
@@ -290,46 +290,46 @@ export default function ReportsPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
           onClick={() => { setActiveTab('DRAFTS'); setStatusFilter('ALL'); }}
-          className={`bg-white dark:bg-slate-900 border rounded-xl p-4 cursor-pointer transition-all ${
-            activeTab === 'DRAFTS' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+          className={`bg-white border rounded-xl p-4 cursor-pointer transition-all shadow-xs ${
+            activeTab === 'DRAFTS' ? 'border-blue-600 ring-2 ring-blue-600/20' : 'border-slate-200 hover:border-slate-300'
           }`}
         >
           <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Drafts / In Preparation</div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{countDrafts}</div>
-          <div className="text-[11px] text-indigo-600 dark:text-indigo-400 mt-1">Mine Manager Stage</div>
+          <div className="text-2xl font-extrabold text-slate-900 mt-1">{countDrafts}</div>
+          <div className="text-[11px] font-semibold text-blue-700 mt-1">Mine Manager Stage</div>
         </div>
 
         <div
           onClick={() => { setActiveTab('UNDER_REVIEW'); setStatusFilter('ALL'); }}
-          className={`bg-white dark:bg-slate-900 border rounded-xl p-4 cursor-pointer transition-all ${
-            activeTab === 'UNDER_REVIEW' ? 'border-sky-500 ring-2 ring-sky-500/20' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+          className={`bg-white border rounded-xl p-4 cursor-pointer transition-all shadow-xs ${
+            activeTab === 'UNDER_REVIEW' ? 'border-sky-600 ring-2 ring-sky-600/20' : 'border-slate-200 hover:border-slate-300'
           }`}
         >
           <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Under Corporate Review</div>
-          <div className="text-2xl font-bold text-sky-600 dark:text-sky-400 mt-1">{countUnderReview}</div>
-          <div className="text-[11px] text-sky-600 dark:text-sky-400 mt-1">Awaiting Sign-off</div>
+          <div className="text-2xl font-extrabold text-sky-700 mt-1">{countUnderReview}</div>
+          <div className="text-[11px] font-semibold text-sky-700 mt-1">Awaiting Sign-off</div>
         </div>
 
         <div
           onClick={() => { setActiveTab('REVISIONS'); setStatusFilter('ALL'); }}
-          className={`bg-white dark:bg-slate-900 border rounded-xl p-4 cursor-pointer transition-all ${
-            activeTab === 'REVISIONS' ? 'border-rose-500 ring-2 ring-rose-500/20' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+          className={`bg-white border rounded-xl p-4 cursor-pointer transition-all shadow-xs ${
+            activeTab === 'REVISIONS' ? 'border-rose-600 ring-2 ring-rose-600/20' : 'border-slate-200 hover:border-slate-300'
           }`}
         >
           <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Revision Required</div>
-          <div className="text-2xl font-bold text-rose-600 dark:text-rose-400 mt-1">{countRejected}</div>
-          <div className="text-[11px] text-rose-600 dark:text-rose-400 mt-1">Corporate Directives Issued</div>
+          <div className="text-2xl font-extrabold text-rose-700 mt-1">{countRejected}</div>
+          <div className="text-[11px] font-semibold text-rose-700 mt-1">Corporate Directives Issued</div>
         </div>
 
         <div
           onClick={() => { setActiveTab('APPROVED'); setStatusFilter('ALL'); }}
-          className={`bg-white dark:bg-slate-900 border rounded-xl p-4 cursor-pointer transition-all ${
-            activeTab === 'APPROVED' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+          className={`bg-white border rounded-xl p-4 cursor-pointer transition-all shadow-xs ${
+            activeTab === 'APPROVED' ? 'border-emerald-600 ring-2 ring-emerald-600/20' : 'border-slate-200 hover:border-slate-300'
           }`}
         >
           <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Corporate Approved</div>
-          <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{countApproved}</div>
-          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1">Statutory Certified</div>
+          <div className="text-2xl font-extrabold text-emerald-700 mt-1">{countApproved}</div>
+          <div className="text-[11px] font-semibold text-emerald-700 mt-1">Statutory Certified</div>
         </div>
       </div>
 
@@ -346,7 +346,7 @@ export default function ReportsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800/80 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">
+              <thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase tracking-wider border-b border-slate-200">
                 <tr>
                   <th className="p-3.5">Report Number</th>
                   <th className="p-3.5">Title / Mine</th>
@@ -356,27 +356,27 @@ export default function ReportsPage() {
                   <th className="p-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-200">
                 {filteredReports.map((r) => {
                   const riskScore = r.ai_risk_score ?? r.report_data?.compliance_score ?? null;
                   return (
                     <tr
                       key={r.id}
                       onClick={() => openReportDetail(r)}
-                      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors"
+                      className="hover:bg-slate-50/80 cursor-pointer transition-colors"
                     >
-                      <td className="p-3.5 font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                      <td className="p-3.5 font-mono text-xs font-bold text-blue-700">
                         {r.report_number}
                       </td>
                       <td className="p-3.5">
-                        <div className="font-semibold text-slate-900 dark:text-white">
+                        <div className="font-bold text-slate-900 text-sm">
                           {r.report_title || 'Statutory Compliance Report'}
                         </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">
+                        <div className="text-xs font-medium text-slate-600 mt-0.5">
                           {r.mine_name || 'Assigned Mine'}
                         </div>
                       </td>
-                      <td className="p-3.5 text-xs text-slate-600 dark:text-slate-400">
+                      <td className="p-3.5 text-xs text-slate-600 font-medium">
                         {formatDateTime(r.generated_at)}
                       </td>
                       <td className="p-3.5">
@@ -384,32 +384,32 @@ export default function ReportsPage() {
                           <span
                             className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
                               riskScore >= 70
-                                ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/80 dark:text-rose-400'
+                                ? 'bg-rose-50 text-rose-800 border border-rose-200'
                                 : riskScore >= 40
-                                ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/80 dark:text-amber-400'
-                                : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-400'
+                                ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                             }`}
                           >
                             Score: {Math.round(riskScore)}/100
                           </span>
                         ) : (
-                          <span className="text-xs text-slate-400">Not Assessed</span>
+                          <span className="text-xs text-slate-400 font-medium">Not Assessed</span>
                         )}
                       </td>
                       <td className="p-3.5">
                         <span
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase ${
                             r.approval_status === 'APPROVED'
-                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
+                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                               : r.approval_status === 'UNDER_CORPORATE_REVIEW'
-                              ? 'bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-800'
+                              ? 'bg-sky-50 text-sky-800 border border-sky-200'
                               : r.approval_status === 'REJECTED'
-                              ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-300 dark:border-rose-800'
+                              ? 'bg-rose-50 text-rose-800 border border-rose-200'
                               : r.approval_status === 'FINALIZED'
-                              ? 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300'
+                              ? 'bg-purple-50 text-purple-800 border border-purple-200'
                               : r.approval_status === 'AI_ANALYSIS'
-                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
-                              : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                              ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                              : 'bg-slate-100 text-slate-800 border border-slate-200'
                           }`}
                         >
                           {getReportStatusLabel(r.approval_status)}
@@ -678,8 +678,8 @@ export default function ReportsPage() {
 
             {/* STEP 3 & 4: MINE MANAGER REMARKS & FINALIZATION */}
             {isMineManager && (
-              <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
-                <h4 className="font-bold text-slate-900 dark:text-white">
+              <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-3 shadow-xs">
+                <h4 className="font-bold text-slate-900">
                   Mine Manager Review & Remarks
                 </h4>
 
@@ -690,14 +690,14 @@ export default function ReportsPage() {
                       value={managerRemarksInput}
                       onChange={(e) => setManagerRemarksInput(e.target.value)}
                       placeholder="Enter Mine Manager review remarks, mitigation instructions, or field validations..."
-                      className="w-full text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
+                      className="w-full text-sm bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
                     />
 
                     <div className="flex flex-wrap items-center gap-2 justify-end">
                       <button
                         onClick={handleSaveRemarks}
                         disabled={submittingAction}
-                        className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200"
+                        className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 transition-colors"
                       >
                         Save Remarks
                       </button>
@@ -705,7 +705,7 @@ export default function ReportsPage() {
                       <button
                         onClick={handleFinalizeReport}
                         disabled={submittingAction}
-                        className="px-4 py-1.5 text-xs font-bold rounded-lg bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-1.5 shadow-sm"
+                        className="px-4 py-1.5 text-xs font-bold rounded-lg bg-blue-700 hover:bg-blue-800 text-white flex items-center gap-1.5 shadow-xs transition-colors"
                       >
                         <ShieldCheck className="w-4 h-4" />
                         Finalize Report
@@ -713,7 +713,7 @@ export default function ReportsPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-xs text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg">
+                  <div className="text-xs text-slate-700 bg-slate-50 border border-slate-200 p-3 rounded-lg">
                     {selected.manager_remarks || 'No manager remarks recorded.'}
                   </div>
                 )}
@@ -722,15 +722,15 @@ export default function ReportsPage() {
 
             {/* STEP 5: SUBMIT TO CORPORATE MANAGEMENT */}
             {isMineManager && selected.approval_status === 'FINALIZED' && (
-              <div className="p-4 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 rounded-xl flex items-center justify-between">
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between shadow-xs">
                 <div>
-                  <h5 className="font-bold text-slate-900 dark:text-white">Ready for Corporate Submission</h5>
-                  <p className="text-xs text-slate-500">Report is finalized with official remarks. Submit to Corporate Governance.</p>
+                  <h5 className="font-bold text-slate-900">Ready for Corporate Submission</h5>
+                  <p className="text-xs text-slate-600">Report is finalized with official remarks. Submit to Corporate Governance.</p>
                 </div>
                 <button
                   onClick={handleSubmitToCorporate}
                   disabled={submittingAction}
-                  className="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 shadow-sm"
+                  className="px-4 py-2 text-xs font-bold rounded-lg bg-blue-700 hover:bg-blue-800 text-white flex items-center gap-1.5 shadow-xs transition-colors"
                 >
                   <Send className="w-4 h-4" />
                   Submit to Corporate
@@ -740,12 +740,12 @@ export default function ReportsPage() {
 
             {/* RESUBMISSION INTERFACE (PART C) */}
             {isMineManager && selected.approval_status === 'REJECTED' && (
-              <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-xl space-y-3">
-                <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <RefreshCw className="w-4 h-4 text-amber-600" />
+              <div className="p-4 bg-amber-50 border border-amber-300 rounded-xl space-y-3 shadow-xs">
+                <h4 className="font-bold text-slate-900 flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4 text-amber-700" />
                   Mine Manager Report Revision & Resubmission
                 </h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="text-xs text-slate-600">
                   Address the corporate revision feedback above, record specific rectifications, and resubmit for statutory review.
                 </p>
 
@@ -754,14 +754,14 @@ export default function ReportsPage() {
                   value={revisionNotesInput}
                   onChange={(e) => setRevisionNotesInput(e.target.value)}
                   placeholder="Detail the corrections made per Corporate Directives..."
-                  className="w-full text-sm bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
+                  className="w-full text-sm bg-white border border-amber-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
 
                 <div className="flex justify-end">
                   <button
                     onClick={handleResubmit}
                     disabled={submittingAction}
-                    className="px-4 py-2 text-xs font-bold rounded-lg bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-1.5 shadow-sm"
+                    className="px-4 py-2 text-xs font-bold rounded-lg bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-1.5 shadow-xs transition-colors"
                   >
                     <Send className="w-4 h-4" />
                     Resubmit to Corporate
@@ -772,12 +772,12 @@ export default function ReportsPage() {
 
             {/* CORPORATE MANAGEMENT GOVERNANCE GATEWAY (PART B) */}
             {isCorp && selected.approval_status === 'UNDER_CORPORATE_REVIEW' && (
-              <div className="p-4 bg-sky-50 dark:bg-sky-950/40 border border-sky-300 dark:border-sky-800 rounded-xl space-y-3">
-                <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-sky-600" />
+              <div className="p-4 bg-sky-50 border border-sky-300 rounded-xl space-y-3 shadow-xs">
+                <h4 className="font-bold text-slate-900 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-sky-700" />
                   Corporate Management Final Governance Gateway
                 </h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">
+                <p className="text-xs text-slate-600">
                   Perform statutory review. Approve to seal official report, or Reject with mandatory revision directives.
                 </p>
 
@@ -786,14 +786,14 @@ export default function ReportsPage() {
                   value={corporateNotesInput}
                   onChange={(e) => setCorporateNotesInput(e.target.value)}
                   placeholder="Official governance review remarks (MANDATORY if rejecting report)..."
-                  className="w-full text-sm bg-white dark:bg-slate-900 border border-sky-300 dark:border-sky-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
+                  className="w-full text-sm bg-white border border-sky-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
 
                 <div className="flex justify-end gap-2 pt-1">
                   <button
                     onClick={() => handleCorporateReview(false)}
                     disabled={submittingAction}
-                    className="px-4 py-2 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-700 text-white flex items-center gap-1.5 shadow-sm"
+                    className="px-4 py-2 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-700 text-white flex items-center gap-1.5 shadow-xs transition-colors"
                   >
                     <XCircle className="w-4 h-4" />
                     Reject / Request Revision
@@ -801,7 +801,7 @@ export default function ReportsPage() {
                   <button
                     onClick={() => handleCorporateReview(true)}
                     disabled={submittingAction}
-                    className="px-4 py-2 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1.5 shadow-sm"
+                    className="px-4 py-2 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1.5 shadow-xs transition-colors"
                   >
                     <CheckCircle className="w-4 h-4" />
                     Approve & Sign-Off
@@ -811,8 +811,8 @@ export default function ReportsPage() {
             )}
 
             {/* AUDIT & DECISION HISTORY TIMELINE (PART M) */}
-            <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
-              <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-3 shadow-xs">
+              <h4 className="font-bold text-slate-900 flex items-center gap-2">
                 <History className="w-4 h-4 text-slate-500" />
                 Statutory Decision & Review History
               </h4>

@@ -496,10 +496,10 @@ export default function ContractorsPage() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-extrabold text-slate-900">
             {isContractor ? 'Contractor Agency Workspace' : 'Contractor Management'}
           </h1>
-          <p className="text-coal-500 text-sm mt-0.5">
+          <p className="text-slate-600 text-sm mt-0.5">
             {isContractor
               ? 'Statutory document uploads, worker onboarding, compliance tracking & assigned CAPA remediation'
               : `${contractorList.length} registered contractor agencies across Coal India subsidiaries`}
@@ -518,35 +518,35 @@ export default function ContractorsPage() {
       </div>
 
       {uploadSuccess && (
-        <div className="bg-emerald-900/30 border border-emerald-800/60 rounded-xl px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-emerald-300 text-sm">
-            <CheckCircle size={16} className="text-emerald-400" />
+        <div className="bg-emerald-50 border border-emerald-300 rounded-xl px-4 py-3 flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-2 text-emerald-800 text-sm font-medium">
+            <CheckCircle size={16} className="text-emerald-600" />
             {uploadSuccess}
           </div>
-          <button onClick={() => setUploadSuccess('')} className="text-xs text-coal-400">x</button>
+          <button onClick={() => setUploadSuccess('')} className="text-xs text-emerald-700 hover:text-emerald-900 font-bold">x</button>
         </div>
       )}
 
       {/* Contractor Self-View Card */}
       {isContractor && myCompany && (
-        <div className="bg-gradient-to-r from-coal-900 via-coal-900 to-teal-950/40 border border-coal-800 rounded-2xl p-5 space-y-4">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-xs">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold text-sm">H</span>
+              <span className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center font-bold text-sm">H</span>
               <div>
-                <h2 className="text-lg font-bold text-white">{myCompany.company_name}</h2>
-                <p className="text-xs text-coal-400">Reg: {myCompany.reg_number}</p>
+                <h2 className="text-lg font-bold text-slate-900">{myCompany.company_name}</h2>
+                <p className="text-xs text-slate-500">Reg: {myCompany.reg_number}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <div className="text-[10px] text-coal-500 uppercase font-semibold">Compliance Rating</div>
-                <div className="text-xl font-bold text-emerald-400">{myCompany.compliance_score}%</div>
+                <div className="text-[10px] text-slate-500 uppercase font-semibold">Compliance Rating</div>
+                <div className="text-xl font-bold text-emerald-600">{myCompany.compliance_score}%</div>
               </div>
               <StatusBadge status={myCompany.risk_level || 'LOW'} />
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-coal-800/70">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-slate-100">
             {([
               ['License Category', myCompany.license_category || 'HEMM'],
               ['Contact Person', myCompany.contact_person],
@@ -554,14 +554,14 @@ export default function ContractorsPage() {
               ['License Expiry', formatDate(myCompany.license_expiry)],
             ] as [string, string][]).map(([k, v]) => (
               <div key={k}>
-                <div className="text-[10px] text-coal-500 uppercase font-semibold">{k}</div>
-                <div className="text-xs text-coal-200 mt-0.5 truncate">{v || '—'}</div>
+                <div className="text-[10px] text-slate-500 uppercase font-semibold">{k}</div>
+                <div className="text-xs text-slate-800 font-medium mt-0.5 truncate">{v || '—'}</div>
               </div>
             ))}
           </div>
           <button
             onClick={() => setDetailId(myCompany.id)}
-            className="btn-ghost text-xs w-full flex items-center justify-center gap-1.5 border border-coal-700/50 rounded-lg py-2"
+            className="btn-ghost text-xs w-full flex items-center justify-center gap-1.5 border border-slate-200 rounded-lg py-2 text-slate-700 hover:bg-slate-50"
           >
             <Eye size={13} /> View My Full Compliance Profile
           </button>
@@ -570,16 +570,16 @@ export default function ContractorsPage() {
 
       {/* CAPA Banner */}
       {isContractor && myCapas.filter(c => ['OPEN', 'ASSIGNED', 'ACTION_REQUIRED', 'NOT_FIXED'].includes(c.status)).length > 0 && (
-        <div className="bg-amber-950/30 border border-amber-800/50 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 border border-amber-200 flex items-center justify-center">
               <Wrench size={18} />
             </div>
             <div>
-              <div className="text-sm font-bold text-amber-300">
+              <div className="text-sm font-bold text-amber-900">
                 Action Required: {myCapas.filter(c => ['OPEN', 'ASSIGNED', 'ACTION_REQUIRED', 'NOT_FIXED'].includes(c.status)).length} Corrective Action(s) Assigned
               </div>
-              <p className="text-xs text-coal-400 mt-0.5">
+              <p className="text-xs text-amber-800 mt-0.5">
                 Review assigned CAPAs, execute on-site fixes, and upload resolution proof for Field Officer verification.
               </p>
             </div>
@@ -592,10 +592,10 @@ export default function ContractorsPage() {
 
       {/* Contractors Table */}
       {loading ? <LoadingState /> : (
-        <div className="section-card overflow-hidden">
-          <div className="px-5 py-3 border-b border-coal-800 flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white">Registered Contractor Agencies</h3>
-            <span className="text-xs text-coal-500">{contractorList.length} total</span>
+        <div className="section-card overflow-hidden bg-white border border-slate-200 rounded-xl shadow-xs">
+          <div className="px-5 py-3.5 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between">
+            <h3 className="text-sm font-bold text-slate-900">Registered Contractor Agencies</h3>
+            <span className="text-xs font-semibold text-slate-500">{contractorList.length} total</span>
           </div>
           <table className="data-table">
             <thead>
@@ -604,45 +604,55 @@ export default function ContractorsPage() {
                 <th>Reg. Number</th>
                 <th>Compliance Score</th>
                 <th>Risk Level</th>
-                <th>Active Contracts</th>
-                <th>Pending Actions</th>
+                <th className="text-center">Active Contracts</th>
+                <th className="text-center">Pending Actions</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {contractorList.map(c => (
-                <tr key={c.id} className="hover:bg-coal-800/30">
-                  <td>
-                    <div className="font-semibold text-coal-100">{c.company_name}</div>
-                    <div className="text-[10px] text-coal-500">{c.contact_person} &bull; {c.email}</div>
+                <tr key={c.id} className="hover:bg-slate-50/80 transition-colors">
+                  <td className="py-3 px-4">
+                    <div className="font-bold text-slate-900 text-sm">{c.company_name}</div>
+                    <div className="text-xs text-slate-600 mt-0.5">{c.contact_person} &bull; {c.email}</div>
                   </td>
-                  <td className="text-coal-400 font-mono text-xs">{c.reg_number}</td>
-                  <td>
+                  <td className="py-3 px-4 text-slate-800 font-mono text-xs font-semibold">{c.reg_number}</td>
+                  <td className="py-3 px-4">
                     <div className="flex items-center gap-2 min-w-[120px]">
                       <ComplianceBar score={c.compliance_score} />
                     </div>
                   </td>
-                  <td><StatusBadge status={c.risk_level} /></td>
-                  <td className="text-center text-coal-300">{c.active_contracts_count}</td>
-                  <td className="text-center">
-                    <span className={c.pending_actions_count > 0 ? 'text-red-400 font-bold' : 'text-coal-500'}>
-                      {c.pending_actions_count}
+                  <td className="py-3 px-4"><StatusBadge status={c.risk_level} /></td>
+                  <td className="py-3 px-4 text-center">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                      {c.active_contracts_count ?? 1} Active
                     </span>
                   </td>
-                  <td><StatusBadge status={c.is_active ? 'ACTIVE' : 'INACTIVE'} /></td>
-                  <td>
-                    <div className="flex items-center gap-1">
+                  <td className="py-3 px-4 text-center">
+                    {(c.pending_actions_count ?? 0) > 0 ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                        {c.pending_actions_count} Pending
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        0 Nil
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-3 px-4"><StatusBadge status={c.is_active ? 'ACTIVE' : 'INACTIVE'} /></td>
+                  <td className="py-3 px-4">
+                    <div className="flex items-center gap-1.5">
                       <button
                         id={`view-contractor-${c.id}`}
-                        className="btn-primary text-xs py-1 px-2 flex items-center gap-1"
+                        className="btn-primary text-xs py-1 px-2.5 flex items-center gap-1"
                         onClick={() => setDetailId(c.id)}
                         title="View Full Contractor Profile"
                       >
                         <Eye size={12} /> View
                       </button>
                       <button
-                        className="btn-ghost p-1.5"
+                        className="btn-ghost p-1.5 text-slate-500 hover:text-slate-800"
                         onClick={() => runEvaluation(c.id)}
                         title="Run AI Compliance Evaluation"
                       >
