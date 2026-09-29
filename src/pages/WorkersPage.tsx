@@ -553,7 +553,7 @@ export default function WorkersPage() {
               key={f}
               onClick={() => setFilterType(f)}
               className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                filterType === f ? 'bg-teal-500/20 text-teal-300 border border-teal-500/40' : 'bg-coal-800 text-coal-400 hover:text-coal-200'
+                filterType === f ? 'bg-teal-500/20 text-teal-700 border border-teal-500/40' : 'bg-slate-100 text-slate-600 hover:text-slate-600'
               }`}
             >
               {f.replace('_', ' ')}
@@ -562,7 +562,7 @@ export default function WorkersPage() {
           <button
             onClick={fetchAllData}
             title="Refresh"
-            className="p-1.5 bg-coal-800 hover:bg-coal-700 text-coal-300 rounded-lg transition-colors ml-2"
+            className="p-1.5 bg-slate-100 hover:bg-slate-100 text-slate-600 rounded-lg transition-colors ml-2"
           >
             <RefreshCw size={14} />
           </button>
@@ -591,15 +591,15 @@ export default function WorkersPage() {
               </thead>
               <tbody>
                 {filteredWorkers.map(w => (
-                  <tr key={w.id} className="hover:bg-coal-800/40 transition-colors">
+                  <tr key={w.id} className="hover:bg-slate-50 transition-colors">
                     <td>
-                      <div className="font-semibold text-white">{w.first_name} {w.last_name}</div>
-                      <div className="font-mono text-[11px] text-coal-400">{w.worker_code}</div>
+                      <div className="font-semibold text-slate-900">{w.first_name} {w.last_name}</div>
+                      <div className="font-mono text-[11px] text-slate-500">{w.worker_code}</div>
                     </td>
-                    <td className="text-xs text-coal-300">{w.designation}</td>
-                    <td className="text-xs text-coal-400">
+                    <td className="text-xs text-slate-600">{w.designation}</td>
+                    <td className="text-xs text-slate-600">
                       <div>{w.contractor_name || 'Direct'}</div>
-                      <div className="text-[11px] text-coal-500">{w.mine_name}</div>
+                      <div className="text-[11px] text-slate-400">{w.mine_name}</div>
                     </td>
                     <td>
                       <StatusBadge status={w.is_medical_expired ? 'EXPIRED' : (w.medical_fitness_status || 'FIT')} />
@@ -613,7 +613,7 @@ export default function WorkersPage() {
                     <td>
                       <button
                         onClick={() => openWorker(w)}
-                        className="text-xs text-teal-400 hover:text-teal-300 font-medium hover:underline"
+                        className="text-xs text-teal-600 hover:text-teal-800 font-medium hover:underline"
                       >
                         View Full Profile
                       </button>
@@ -647,12 +647,12 @@ export default function WorkersPage() {
                 return (
                   <tr key={w.id}>
                     <td>
-                      <div className="font-semibold text-white">{w.first_name} {w.last_name}</div>
-                      <div className="font-mono text-[11px] text-coal-400">{w.worker_code}</div>
+                      <div className="font-semibold text-slate-900">{w.first_name} {w.last_name}</div>
+                      <div className="font-mono text-[11px] text-slate-500">{w.worker_code}</div>
                     </td>
-                    <td className="text-xs text-coal-300">{w.designation}</td>
-                    <td className="text-xs text-coal-400">{w.contractor_name || 'Direct'}</td>
-                    <td className="text-xs text-coal-400">{formatDate(w.joining_date)}</td>
+                    <td className="text-xs text-slate-600">{w.designation}</td>
+                    <td className="text-xs text-slate-600">{w.contractor_name || 'Direct'}</td>
+                    <td className="text-xs text-slate-600">{formatDate(w.joining_date)}</td>
                     <td className="text-xs">
                       <span className={expInfo.color}>
                         {w.medical_expiry_date ? formatDate(w.medical_expiry_date) : 'Pending Schedule'}
@@ -662,7 +662,7 @@ export default function WorkersPage() {
                       <StatusBadge status={expInfo.status} />
                     </td>
                     <td>
-                      <button onClick={() => openWorker(w)} className="text-xs text-teal-400 hover:underline">
+                      <button onClick={() => openWorker(w)} className="text-xs text-teal-600 hover:underline">
                         View Records
                       </button>
                     </td>
@@ -679,8 +679,8 @@ export default function WorkersPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-bold text-white">DGMS Mines Vocational Training Rules Records</h2>
-              <p className="text-xs text-coal-400">Vocational Training Centers (VTC), refresher safety training, and statutory gas testing</p>
+              <h2 className="text-sm font-bold text-slate-900">DGMS Mines Vocational Training Rules Records</h2>
+              <p className="text-xs text-slate-500">Vocational Training Centers (VTC), refresher safety training, and statutory gas testing</p>
             </div>
             {(isContractor || isWorkerOfficer) && (
               <button
@@ -717,14 +717,14 @@ export default function WorkersPage() {
                     const exp = getExpiryStatus(t.expiry_date);
                     return (
                       <tr key={t.id}>
-                        <td className="font-semibold text-coal-200">{t.training_name}</td>
-                        <td className="text-xs text-coal-400">{t.training_type}</td>
-                        <td className="font-mono text-xs text-coal-300">{t.worker_id?.slice(0, 8)}...</td>
-                        <td className="text-xs text-coal-400">{formatDate(t.issue_date)}</td>
+                        <td className="font-semibold text-slate-900">{t.training_name}</td>
+                        <td className="text-xs text-slate-600">{t.training_type}</td>
+                        <td className="font-mono text-xs text-slate-600">{t.worker_id?.slice(0, 8)}...</td>
+                        <td className="text-xs text-slate-600">{formatDate(t.issue_date)}</td>
                         <td className="text-xs">
                           <span className={exp.color}>{t.expiry_date ? formatDate(t.expiry_date) : 'Perpetual'}</span>
                         </td>
-                        <td className="font-mono text-xs text-coal-400">{t.certificate_ref || '—'}</td>
+                        <td className="font-mono text-xs text-slate-500">{t.certificate_ref || '—'}</td>
                         <td>
                           <StatusBadge status={t.verification_status || 'PENDING'} />
                         </td>
@@ -736,7 +736,7 @@ export default function WorkersPage() {
                                 setTrainingDecision(t.verification_status === 'REJECTED' ? 'REJECTED' : 'VERIFIED');
                                 setTrainingNotes(t.verification_notes || '');
                               }}
-                              className="text-xs text-teal-400 hover:text-teal-300 underline font-medium"
+                              className="text-xs text-teal-600 hover:text-teal-800 underline font-medium"
                             >
                               Verify
                             </button>
@@ -755,12 +755,12 @@ export default function WorkersPage() {
       {/* TAB 4: STATUTORY COMPETENCY CERTIFICATIONS (CORE ENHANCEMENT) */}
       {!loading && activeTab === 'certifications' && (
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-coal-900/60 p-4 rounded-xl border border-coal-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div>
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-teal-400" /> Statutory Competency Certifications
+              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-teal-600" /> Statutory Competency Certifications
               </h2>
-              <p className="text-xs text-coal-400 mt-0.5">
+              <p className="text-xs text-slate-600 mt-0.5">
                 DGMS Blaster Certificates, HEMM Heavy Equipment Licenses, First Aid & Gas Testing
               </p>
             </div>
@@ -798,32 +798,32 @@ export default function WorkersPage() {
                   {filteredCerts.map(c => {
                     const exp = getExpiryStatus(c.expiry_date);
                     return (
-                      <tr key={c.id} className="hover:bg-coal-800/30 transition-colors">
+                      <tr key={c.id} className="hover:bg-slate-50 transition-colors">
                         <td>
-                          <div className="font-semibold text-white flex items-center gap-1.5">
+                          <div className="font-semibold text-slate-900 flex items-center gap-1.5">
                             {c.certification_name}
                             {c.document_file && (
-                              <span title="Document Attached" className="text-teal-400">
+                              <span title="Document Attached" className="text-teal-600">
                                 <FileText size={13} />
                               </span>
                             )}
                           </div>
                           {c.worker_name && (
-                            <div className="text-[11px] text-coal-400">Holder: {c.worker_name}</div>
+                            <div className="text-[11px] text-slate-500">Holder: {c.worker_name}</div>
                           )}
                         </td>
-                        <td className="text-xs font-mono text-coal-300">{c.certification_type}</td>
-                        <td className="font-mono text-xs text-coal-400">
+                        <td className="text-xs font-mono text-slate-600">{c.certification_type}</td>
+                        <td className="font-mono text-xs text-slate-500">
                           {c.worker_code || c.worker_id?.slice(0, 8)}...
                         </td>
-                        <td className="font-mono text-xs font-bold text-coal-200">{c.certificate_ref}</td>
-                        <td className="text-xs text-coal-400">{formatDate(c.issue_date)}</td>
+                        <td className="font-mono text-xs font-bold text-slate-700">{c.certificate_ref}</td>
+                        <td className="text-xs text-slate-600">{formatDate(c.issue_date)}</td>
                         <td className="text-xs">
                           <div className={exp.color}>
                             {c.expiry_date ? formatDate(c.expiry_date) : 'Perpetual'}
                           </div>
                           {c.expiry_date && (
-                            <div className="text-[10px] text-coal-500 font-mono">
+                            <div className="text-[10px] text-slate-400 font-mono">
                               {c.days_remaining !== undefined && c.days_remaining < 9000
                                 ? (c.days_remaining < 0 ? `${Math.abs(c.days_remaining)}d overdue` : `${c.days_remaining}d remaining`)
                                 : ''}
@@ -844,7 +844,7 @@ export default function WorkersPage() {
                             {/* 1. View Action */}
                             <button
                               onClick={() => openDetailModal(c)}
-                              className="px-2 py-1 bg-coal-800 hover:bg-coal-700 text-coal-300 hover:text-white rounded text-xs flex items-center gap-1 transition-colors"
+                              className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 rounded text-xs flex items-center gap-1 transition-colors"
                               title="View full certificate details & OCR data"
                             >
                               <Eye size={12} /> View
@@ -854,7 +854,7 @@ export default function WorkersPage() {
                             {isWorkerOfficer ? (
                               <button
                                 onClick={() => openVerifyModal(c)}
-                                className="px-2.5 py-1 bg-teal-500/20 hover:bg-teal-500/30 text-teal-300 border border-teal-500/30 rounded text-xs font-semibold flex items-center gap-1 transition-colors"
+                                className="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-300 rounded text-xs font-semibold flex items-center gap-1 transition-colors"
                                 title="Open Verify Certification Decision Modal"
                               >
                                 <ShieldCheck size={12} /> Verify
@@ -862,7 +862,7 @@ export default function WorkersPage() {
                             ) : (
                               <button
                                 onClick={() => openDetailModal(c)}
-                                className="px-2 py-1 bg-coal-800/80 text-coal-400 hover:text-coal-200 rounded text-xs flex items-center gap-1"
+                                className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800 rounded text-xs flex items-center gap-1"
                                 title="View verification status"
                               >
                                 Status
@@ -874,7 +874,7 @@ export default function WorkersPage() {
                               href={workersApi.downloadCertificationUrl(c.id)}
                               target="_blank"
                               rel="noreferrer"
-                              className="px-2 py-1 bg-coal-800 hover:bg-coal-700 text-coal-300 hover:text-white rounded text-xs flex items-center gap-1 transition-colors"
+                              className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 rounded text-xs flex items-center gap-1 transition-colors"
                               title="Download statutory certificate document"
                             >
                               <Download size={12} />
@@ -894,21 +894,21 @@ export default function WorkersPage() {
       {/* TAB 5: CENTRAL EXPIRY TRACKING MATRIX */}
       {!loading && activeTab === 'expiries' && (
         <div className="space-y-4">
-          <div className="bg-coal-900/60 border border-coal-800 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-amber-500/10 text-amber-400 rounded-lg">
+              <div className="p-3 bg-amber-50 text-amber-600 rounded-lg">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">Central Statutory Expiry & Recertification Matrix</h3>
-                <p className="text-xs text-coal-400">
+                <h3 className="text-sm font-bold text-slate-900">Central Statutory Expiry & Recertification Matrix</h3>
+                <p className="text-xs text-slate-500">
                   Deterministic detection of expired credentials and upcoming expiries (within {expiryThreshold} days) calculated from real system dates.
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-coal-400">Expiry Threshold:</span>
+              <span className="text-xs text-slate-600">Expiry Threshold:</span>
               {[15, 30, 60, 90].map(days => (
                 <button
                   key={days}
@@ -917,7 +917,7 @@ export default function WorkersPage() {
                     workersApi.expiryTracking(days).then(setExpiryData);
                   }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
-                    expiryThreshold === days ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-coal-800 text-coal-400 hover:text-coal-200'
+                    expiryThreshold === days ? 'bg-amber-100 text-amber-700 border border-amber-400' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   {days} Days
@@ -930,15 +930,15 @@ export default function WorkersPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-teal-500">
               <div>
-                <div className="text-xs text-coal-400">Total Tracked</div>
-                <div className="text-2xl font-bold text-white">{expiryData?.summary?.total_tracked || certList.length}</div>
+                <div className="text-xs text-slate-500">Total Tracked</div>
+                <div className="text-2xl font-bold text-slate-900">{expiryData?.summary?.total_tracked || certList.length}</div>
               </div>
-              <Award className="w-8 h-8 text-teal-400/40" />
+              <Award className="w-8 h-8 text-teal-600/40" />
             </div>
 
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-emerald-500">
               <div>
-                <div className="text-xs text-coal-400">Valid Credentials</div>
+                <div className="text-xs text-slate-500">Valid Credentials</div>
                 <div className="text-2xl font-bold text-emerald-400">{expiryData?.summary?.valid_count || 0}</div>
               </div>
               <CheckCircle2 className="w-8 h-8 text-emerald-400/40" />
@@ -946,7 +946,7 @@ export default function WorkersPage() {
 
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-amber-500">
               <div>
-                <div className="text-xs text-coal-400">Expiring Soon (≤ {expiryThreshold}d)</div>
+                <div className="text-xs text-slate-500">Expiring Soon (≤ {expiryThreshold}d)</div>
                 <div className="text-2xl font-bold text-amber-400">{expiryData?.summary?.expiring_soon_count || 0}</div>
               </div>
               <Clock className="w-8 h-8 text-amber-400/40" />
@@ -954,7 +954,7 @@ export default function WorkersPage() {
 
             <div className="section-card p-4 flex items-center justify-between border-l-4 border-l-red-500">
               <div>
-                <div className="text-xs text-coal-400">Expired (Non-Compliant)</div>
+                <div className="text-xs text-slate-500">Expired (Non-Compliant)</div>
                 <div className="text-2xl font-bold text-red-400">{expiryData?.summary?.expired_count || 0}</div>
               </div>
               <AlertCircle className="w-8 h-8 text-red-400/40" />
@@ -983,17 +983,17 @@ export default function WorkersPage() {
                     const isExp = item.is_expired;
                     const isSoon = item.is_expiring_soon;
                     return (
-                      <tr key={item.id} className="hover:bg-coal-800/30 transition-colors">
-                        <td className="font-semibold text-white">{item.certification_name}</td>
-                        <td className="text-xs text-coal-300">
+                      <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="font-semibold text-slate-900">{item.certification_name}</td>
+                        <td className="text-xs text-slate-600">
                           <div>{item.worker_name || 'Worker'}</div>
-                          <div className="font-mono text-[11px] text-coal-500">{item.worker_code || item.worker_id}</div>
+                          <div className="font-mono text-[11px] text-slate-400">{item.worker_code || item.worker_id}</div>
                         </td>
-                        <td className="font-mono text-xs text-coal-200">{item.certificate_ref}</td>
-                        <td className="text-xs text-coal-400">{item.issuing_authority || 'DGMS'}</td>
+                        <td className="font-mono text-xs text-slate-700">{item.certificate_ref}</td>
+                        <td className="text-xs text-slate-600">{item.issuing_authority || 'DGMS'}</td>
                         <td className="text-xs">{formatDate(item.expiry_date)}</td>
                         <td className="text-xs font-mono">
-                          <span className={isExp ? 'text-red-400 font-bold' : isSoon ? 'text-amber-400 font-bold' : 'text-emerald-400'}>
+                          <span className={isExp ? 'text-red-600 font-bold' : isSoon ? 'text-amber-600 font-bold' : 'text-emerald-600'}>
                             {item.days_remaining !== undefined && item.days_remaining < 9000
                               ? (item.days_remaining < 0 ? `${Math.abs(item.days_remaining)} days overdue` : `${item.days_remaining} days`)
                               : 'Perpetual'}
@@ -1005,7 +1005,7 @@ export default function WorkersPage() {
                         <td>
                           <button
                             onClick={() => openDetailModal(item)}
-                            className="text-xs text-teal-400 hover:underline flex items-center gap-1"
+                            className="text-xs text-teal-600 hover:text-teal-800 hover:underline flex items-center gap-1"
                           >
                             <Eye size={12} /> Details
                           </button>
@@ -1032,53 +1032,53 @@ export default function WorkersPage() {
         {certVerifyModalItem && (
           <div className="space-y-4">
             {/* Header / Summary Box */}
-            <div className="bg-coal-950 p-4 rounded-xl border border-coal-800 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
               <div>
-                <span className="text-coal-500 block">Certification Name:</span>
-                <span className="font-bold text-white text-sm">{certVerifyModalItem.certification_name}</span>
+                <span className="text-slate-500 block">Certification Name:</span>
+                <span className="font-bold text-slate-900 text-sm">{certVerifyModalItem.certification_name}</span>
               </div>
               <div>
-                <span className="text-coal-500 block">Certificate Number:</span>
-                <span className="font-mono font-bold text-teal-400">{certVerifyModalItem.certificate_ref}</span>
+                <span className="text-slate-500 block">Certificate Number:</span>
+                <span className="font-mono font-bold text-teal-600">{certVerifyModalItem.certificate_ref}</span>
               </div>
               <div>
-                <span className="text-coal-500 block">Worker Holder:</span>
-                <span className="font-semibold text-white">
+                <span className="text-slate-500 block">Worker Holder:</span>
+                <span className="font-semibold text-slate-900">
                   {certVerifyModalItem.worker_name || 'Worker'} ({certVerifyModalItem.worker_code || certVerifyModalItem.worker_id?.slice(0, 8)})
                 </span>
               </div>
               <div>
-                <span className="text-coal-500 block">Current Status:</span>
+                <span className="text-slate-500 block">Current Status:</span>
                 <StatusBadge status={certVerifyModalItem.verification_status || 'PENDING'} />
               </div>
             </div>
 
             {/* Dates & Authority */}
-            <div className="grid grid-cols-3 gap-3 text-xs bg-coal-900/60 p-3 rounded-lg border border-coal-800/80">
+            <div className="grid grid-cols-3 gap-3 text-xs bg-slate-50 p-3 rounded-lg border border-slate-200">
               <div>
-                <span className="text-coal-400">Certification Type:</span>
-                <span className="font-mono text-white block font-semibold">{certVerifyModalItem.certification_type}</span>
+                <span className="text-slate-500">Certification Type:</span>
+                <span className="font-mono text-slate-900 block font-semibold">{certVerifyModalItem.certification_type}</span>
               </div>
               <div>
-                <span className="text-coal-400">Issue Date:</span>
-                <span className="text-white block font-semibold">{formatDate(certVerifyModalItem.issue_date)}</span>
+                <span className="text-slate-500">Issue Date:</span>
+                <span className="text-slate-900 block font-semibold">{formatDate(certVerifyModalItem.issue_date)}</span>
               </div>
               <div>
-                <span className="text-coal-400">Expiry Date:</span>
-                <span className="text-white block font-semibold">{formatDate(certVerifyModalItem.expiry_date)}</span>
+                <span className="text-slate-500">Expiry Date:</span>
+                <span className="text-slate-900 block font-semibold">{formatDate(certVerifyModalItem.expiry_date)}</span>
               </div>
             </div>
 
             {/* Uploaded Document Info */}
-            <div className="bg-coal-900/80 p-3 rounded-xl border border-coal-800 flex items-center justify-between">
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-teal-500/10 text-teal-400 rounded-lg">
+                <div className="p-2.5 bg-teal-50 text-teal-600 rounded-lg">
                   <FileText size={20} />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-white">{certVerifyModalItem.file_name || `${certVerifyModalItem.certificate_ref}.pdf`}</div>
-                  <div className="text-[11px] text-coal-400">
-                    {certVerifyModalItem.file_type || 'PDF'} • OCR Status: <span className="text-teal-400 font-semibold">{certVerifyModalItem.ocr_status || 'COMPLETED'}</span>
+                  <div className="text-xs font-bold text-slate-900">{certVerifyModalItem.file_name || `${certVerifyModalItem.certificate_ref}.pdf`}</div>
+                  <div className="text-[11px] text-slate-600">
+                    {certVerifyModalItem.file_type || 'PDF'} • OCR Status: <span className="text-teal-600 font-semibold">{certVerifyModalItem.ocr_status || 'COMPLETED'}</span>
                     {certVerifyModalItem.ocr_confidence && ` • Confidence: ${certVerifyModalItem.ocr_confidence}%`}
                   </div>
                 </div>
@@ -1096,15 +1096,15 @@ export default function WorkersPage() {
             {/* OCR Extracted Data Matrix */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <h4 className="text-xs font-bold text-coal-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles size={13} className="text-teal-400" /> OCR Extracted Data Verification
+                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles size={13} className="text-teal-600" /> OCR Extracted Data Verification
                 </h4>
-                <span className="text-[10px] text-coal-500">Extracted from original uploaded document</span>
+                <span className="text-[10px] text-slate-400">Extracted from original uploaded document</span>
               </div>
 
-              <div className="border border-coal-800 rounded-lg overflow-hidden max-h-44 overflow-y-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-coal-950 text-coal-400 border-b border-coal-800">
+              <div className="border border-slate-200 rounded-lg overflow-hidden max-h-44 overflow-y-auto">
+                <table className="w-full text-left text-xs bg-white">
+                  <thead className="bg-slate-100 text-slate-600 border-b border-slate-200">
                     <tr>
                       <th className="p-2">Field</th>
                       <th className="p-2">Extracted Value</th>
@@ -1112,7 +1112,7 @@ export default function WorkersPage() {
                       <th className="p-2">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-coal-800/60 bg-coal-900/40">
+                  <tbody className="divide-y divide-slate-100 bg-white">
                     {(() => {
                       let meta: any = {};
                       try {
@@ -1142,25 +1142,25 @@ export default function WorkersPage() {
                         const isDetected = val && val !== 'Not detected';
 
                         return (
-                          <tr key={fd.key} className="hover:bg-coal-800/30">
-                            <td className="p-2 font-medium text-coal-300">{fd.label}</td>
-                            <td className="p-2 text-white font-mono text-[11px]">
+                          <tr key={fd.key} className="hover:bg-slate-100/50">
+                            <td className="p-2 font-medium text-slate-600">{fd.label}</td>
+                            <td className="p-2 text-slate-900 font-mono text-[11px]">
                               {val || <span className="text-amber-400 italic">Not detected / Manual verification required</span>}
                             </td>
-                            <td className="p-2 text-coal-400">
+                            <td className="p-2 text-slate-500">
                               {conf > 0 ? (
-                                <span className={`font-mono ${conf >= 90 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                                <span className={`font-mono ${conf >= 90 ? 'text-emerald-600' : 'text-amber-600'}`}>
                                   {conf}%
                                 </span>
                               ) : '—'}
                             </td>
                             <td className="p-2">
                               {isDetected ? (
-                                <span className="px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded text-[10px]">
+                                <span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-[10px]">
                                   Detected
                                 </span>
                               ) : (
-                                <span className="px-1.5 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded text-[10px]">
+                                <span className="px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded text-[10px]">
                                   Manual Review
                                 </span>
                               )}
@@ -1177,10 +1177,10 @@ export default function WorkersPage() {
             {/* Verification History */}
             {certVerifyModalItem.verification_history && (
               <div>
-                <h4 className="text-xs font-bold text-coal-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                   <History size={13} /> Verification Audit History
                 </h4>
-                <div className="bg-coal-950 p-2.5 rounded-lg border border-coal-800/80 max-h-28 overflow-y-auto space-y-1.5 text-xs">
+                <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 max-h-28 overflow-y-auto space-y-1.5 text-xs">
                   {(() => {
                     let hist: any[] = [];
                     try {
@@ -1191,15 +1191,15 @@ export default function WorkersPage() {
                       hist = [];
                     }
                     if (hist.length === 0) {
-                      return <div className="text-coal-500 text-[11px]">No prior verification history recorded.</div>;
+                      return <div className="text-slate-400 text-[11px]">No prior verification history recorded.</div>;
                     }
                     return hist.map((h, idx) => (
-                      <div key={idx} className="flex items-start justify-between border-b border-coal-900 pb-1 last:border-0">
+                      <div key={idx} className="flex items-start justify-between border-b border-slate-200 pb-1 last:border-0">
                         <div>
-                          <span className="font-semibold text-white">{h.verifier_name || 'Verifier'}</span>: {h.notes || h.decision}
+                          <span className="font-semibold text-slate-900">{h.verifier_name || 'Verifier'}</span>: {h.notes || h.decision}
                         </div>
-                        <div className="text-right text-[10px] text-coal-500 shrink-0 ml-2">
-                          <span className={`px-1 rounded mr-1 ${h.decision === 'VERIFIED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}`}>
+                        <div className="text-right text-[10px] text-slate-400 shrink-0 ml-2">
+                          <span className={`px-1 rounded mr-1 ${h.decision === 'VERIFIED' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
                             {h.decision}
                           </span>
                           {formatDate(h.timestamp)}
@@ -1212,8 +1212,8 @@ export default function WorkersPage() {
             )}
 
             {/* Interactive Decision Form */}
-            <div className="bg-coal-900/90 p-4 rounded-xl border border-teal-500/30 space-y-3">
-              <label className="text-xs font-bold text-teal-300 uppercase tracking-wider block">
+            <div className="bg-slate-50 p-4 rounded-xl border border-teal-200 space-y-3">
+              <label className="text-xs font-bold text-teal-700 uppercase tracking-wider block">
                 Official Verification Decision
               </label>
 
@@ -1233,7 +1233,7 @@ export default function WorkersPage() {
                     className={`py-2.5 px-3 rounded-lg border text-xs font-bold transition-all text-center ${
                       certVerifyDecision === opt.id
                         ? `${opt.color} ring-2 ring-teal-400/40 shadow-lg`
-                        : 'border-coal-700 bg-coal-800 text-coal-400 hover:text-white'
+                        : 'border-slate-200 bg-white text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     {opt.label}
@@ -1249,7 +1249,7 @@ export default function WorkersPage() {
                       <span className="text-red-400 font-bold ml-1">*(MANDATORY)</span>
                     )}
                   </span>
-                  <span className="text-[10px] text-coal-500">Logged in statutory audit log</span>
+                  <span className="text-[10px] text-slate-400">Logged in statutory audit log</span>
                 </label>
                 <textarea
                   rows={3}
@@ -1274,7 +1274,7 @@ export default function WorkersPage() {
                 )}
               </div>
 
-              <div className="flex gap-2 justify-end pt-2 border-t border-coal-800">
+              <div className="flex gap-2 justify-end pt-2 border-t border-slate-200">
                 <button
                   onClick={() => setCertVerifyModalItem(null)}
                   className="btn-secondary text-xs"
@@ -1306,10 +1306,10 @@ export default function WorkersPage() {
       >
         {certDetailItem && (
           <div className="space-y-4 text-xs">
-            <div className="bg-coal-950 p-4 rounded-xl border border-coal-800 flex items-center justify-between">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold text-white">{certDetailItem.certification_name}</h3>
-                <p className="text-coal-400">{certDetailItem.certification_type} • {certDetailItem.issuing_authority || 'DGMS'}</p>
+                <h3 className="text-base font-bold text-slate-900">{certDetailItem.certification_name}</h3>
+                <p className="text-slate-600">{certDetailItem.certification_type} • {certDetailItem.issuing_authority || 'DGMS'}</p>
               </div>
               <div className="flex items-center gap-2">
                 <StatusBadge status={certDetailItem.verification_status || 'PENDING'} />
@@ -1318,45 +1318,45 @@ export default function WorkersPage() {
             </div>
 
             {/* Grid Attributes */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-coal-900/60 p-4 rounded-xl border border-coal-800">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
               <div>
-                <span className="text-coal-500 block">Certificate Number:</span>
-                <span className="font-mono font-bold text-teal-400 text-sm">{certDetailItem.certificate_ref}</span>
+                <span className="text-slate-500 block">Certificate Number:</span>
+                <span className="font-mono font-bold text-teal-600 text-sm">{certDetailItem.certificate_ref}</span>
               </div>
               <div>
-                <span className="text-coal-500 block">Worker / Holder:</span>
-                <span className="font-semibold text-white">
+                <span className="text-slate-500 block">Worker / Holder:</span>
+                <span className="font-semibold text-slate-900">
                   {certDetailItem.worker_name || 'Worker'} ({certDetailItem.worker_code || certDetailItem.worker_id})
                 </span>
               </div>
               <div>
-                <span className="text-coal-500 block">Issuing Authority:</span>
-                <span className="text-coal-200">{certDetailItem.issuing_authority || 'DGMS'}</span>
+                <span className="text-slate-500 block">Issuing Authority:</span>
+                <span className="text-slate-700">{certDetailItem.issuing_authority || 'DGMS'}</span>
               </div>
               <div>
-                <span className="text-coal-500 block">Issue Date:</span>
-                <span className="text-white">{formatDate(certDetailItem.issue_date)}</span>
+                <span className="text-slate-500 block">Issue Date:</span>
+                <span className="text-slate-900">{formatDate(certDetailItem.issue_date)}</span>
               </div>
               <div>
-                <span className="text-coal-500 block">Expiry Date:</span>
-                <span className="text-white">{formatDate(certDetailItem.expiry_date)}</span>
+                <span className="text-slate-500 block">Expiry Date:</span>
+                <span className="text-slate-900">{formatDate(certDetailItem.expiry_date)}</span>
               </div>
               <div>
-                <span className="text-coal-500 block">Verified By:</span>
-                <span className="text-teal-300 font-semibold">{certDetailItem.verified_by_name || 'Statutory Registrar'}</span>
+                <span className="text-slate-500 block">Verified By:</span>
+                <span className="text-teal-700 font-semibold">{certDetailItem.verified_by_name || 'Statutory Registrar'}</span>
               </div>
             </div>
 
             {/* Document Details & Download */}
-            <div className="bg-coal-900/80 p-3 rounded-xl border border-coal-800 flex items-center justify-between">
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-teal-500/10 text-teal-400 rounded-lg">
+                <div className="p-2.5 bg-teal-50 text-teal-600 rounded-lg">
                   <File size={20} />
                 </div>
                 <div>
-                  <div className="font-bold text-white">{certDetailItem.file_name || `${certDetailItem.certificate_ref}.pdf`}</div>
-                  <div className="text-coal-400 text-[11px]">
-                    Type: {certDetailItem.file_type || 'PDF'} • OCR Engine: <span className="text-emerald-400">Tesseract/PyPDF</span> • Confidence: {certDetailItem.ocr_confidence || 93.5}%
+                  <div className="font-bold text-slate-900">{certDetailItem.file_name || `${certDetailItem.certificate_ref}.pdf`}</div>
+                  <div className="text-slate-600 text-[11px]">
+                    Type: {certDetailItem.file_type || 'PDF'} • OCR Engine: <span className="text-emerald-600">Tesseract/PyPDF</span> • Confidence: {certDetailItem.ocr_confidence || 93.5}%
                   </div>
                 </div>
               </div>
@@ -1373,14 +1373,14 @@ export default function WorkersPage() {
             {/* OCR Extracted Text Preview */}
             {certDetailItem.ocr_text && (
               <div>
-                <h4 className="font-bold text-coal-400 uppercase tracking-wider mb-1">OCR Raw Extracted Text Preview</h4>
-                <div className="p-3 bg-coal-950 font-mono text-[11px] text-coal-300 rounded-lg border border-coal-800 max-h-32 overflow-y-auto whitespace-pre-wrap">
+                <h4 className="font-bold text-slate-600 uppercase tracking-wider mb-1">OCR Raw Extracted Text Preview</h4>
+                <div className="p-3 bg-slate-50 font-mono text-[11px] text-slate-700 rounded-lg border border-slate-200 max-h-32 overflow-y-auto whitespace-pre-wrap">
                   {certDetailItem.ocr_text}
                 </div>
               </div>
             )}
 
-            <div className="flex justify-end pt-2 border-t border-coal-800">
+            <div className="flex justify-end pt-2 border-t border-slate-200">
               <button onClick={() => setCertDetailItem(null)} className="btn-secondary text-xs">
                 Close
               </button>
@@ -1394,7 +1394,7 @@ export default function WorkersPage() {
       {/* ========================================================================= */}
       <Modal open={showAddCertModal} onClose={() => setShowAddCertModal(false)} title="Record Competency Certification & Multi-Format OCR" size="lg">
         <div className="space-y-4 text-xs">
-          <p className="text-coal-400 text-xs">
+          <p className="text-slate-500 text-xs">
             Upload statutory certification document (PDF, JPG, JPEG, PNG, TIFF). The AI/OCR engine extracts fields automatically.
           </p>
 
@@ -1407,7 +1407,7 @@ export default function WorkersPage() {
             className={`border-2 border-dashed rounded-xl p-5 text-center transition-all ${
               dragActive ? 'border-teal-400 bg-teal-500/10' :
               certUploadedFile ? 'border-emerald-500/50 bg-emerald-500/5' :
-              'border-coal-700 bg-coal-900/40 hover:border-coal-600'
+              'border-slate-300 bg-slate-50 hover:border-slate-400'
             }`}
           >
             <input
@@ -1424,11 +1424,11 @@ export default function WorkersPage() {
 
             {!certUploadedFile ? (
               <div className="space-y-2">
-                <div className="w-10 h-10 mx-auto rounded-full bg-teal-500/10 text-teal-400 flex items-center justify-center">
+                <div className="w-10 h-10 mx-auto rounded-full bg-teal-500/10 text-teal-600 flex items-center justify-center">
                   <Upload size={20} />
                 </div>
-                <div className="font-semibold text-white">Drag & drop certification document here, or browse</div>
-                <p className="text-[11px] text-coal-400">
+                <div className="font-semibold text-slate-900">Drag & drop certification document here, or browse</div>
+                <p className="text-[11px] text-slate-600">
                   Supports: <strong>PDF, JPG, JPEG, PNG, TIFF, TIF, Scanned Images</strong> (up to 25MB)
                 </p>
                 <button
@@ -1440,12 +1440,12 @@ export default function WorkersPage() {
                 </button>
               </div>
             ) : (
-              <div className="flex items-center justify-between bg-coal-950 p-3 rounded-lg border border-coal-800">
+              <div className="flex items-center justify-between bg-slate-50 p-3 rounded-lg border border-slate-200">
                 <div className="flex items-center gap-3 text-left">
-                  <FileText className="w-8 h-8 text-teal-400" />
+                  <FileText className="w-8 h-8 text-teal-600" />
                   <div>
-                    <div className="font-bold text-white">{certUploadedFile.name}</div>
-                    <div className="text-[11px] text-coal-400">
+                    <div className="font-bold text-slate-900">{certUploadedFile.name}</div>
+                    <div className="text-[11px] text-slate-600">
                       {(certUploadedFile.size / 1024).toFixed(1)} KB • {certUploadedFile.type || 'Document'}
                     </div>
                   </div>
@@ -1476,14 +1476,14 @@ export default function WorkersPage() {
           </div>
 
           {ocrError && (
-            <div className="p-2.5 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-300 text-xs flex items-center gap-2">
+            <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-xs flex items-center gap-2">
               <AlertCircle size={14} />
               <span>{ocrError}</span>
             </div>
           )}
 
           {/* Form Fields (Auto-filled by OCR, Editable) */}
-          <div className="space-y-3 bg-coal-900/60 p-4 rounded-xl border border-coal-800">
+          <div className="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div>
               <label className="form-label text-xs">Select Worker</label>
               <select
@@ -1573,7 +1573,7 @@ export default function WorkersPage() {
             </div>
           </div>
 
-          <div className="flex gap-2 justify-end pt-3 border-t border-coal-800">
+          <div className="flex gap-2 justify-end pt-3 border-t border-slate-200">
             <button onClick={() => setShowAddCertModal(false)} className="btn-secondary text-xs">
               Cancel
             </button>
@@ -1658,7 +1658,7 @@ export default function WorkersPage() {
               onChange={e => setNewTraining({ ...newTraining, certificate_ref: e.target.value })}
             />
           </div>
-          <div className="flex gap-2 justify-end pt-3 border-t border-coal-800">
+          <div className="flex gap-2 justify-end pt-3 border-t border-slate-200">
             <button onClick={() => setShowAddTrainingModal(false)} className="btn-secondary text-xs">
               Cancel
             </button>
@@ -1675,7 +1675,7 @@ export default function WorkersPage() {
       <Modal open={!!trainingVerifyItem} onClose={() => setTrainingVerifyItem(null)} title="Verify Training Record" size="md">
         {trainingVerifyItem && (
           <div className="space-y-3">
-            <p className="text-xs text-coal-400">
+            <p className="text-xs text-slate-500">
               Confirm or reject training validity for <strong>{trainingVerifyItem.training_name}</strong>.
             </p>
             <div>
@@ -1700,7 +1700,7 @@ export default function WorkersPage() {
                 placeholder="Notes regarding verification..."
               />
             </div>
-            <div className="flex gap-2 justify-end pt-2 border-t border-coal-800">
+            <div className="flex gap-2 justify-end pt-2 border-t border-slate-200">
               <button onClick={() => setTrainingVerifyItem(null)} className="btn-secondary text-xs">
                 Cancel
               </button>
@@ -1718,16 +1718,16 @@ export default function WorkersPage() {
       <Modal open={!!selected} onClose={() => setSelected(null)} title={`${selected?.first_name} ${selected?.last_name}`} size="lg">
         {selected && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-coal-800">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-200">
               <div className="flex items-center gap-2">
                 <StatusBadge status={selected.verification_status || 'PENDING'} />
                 <StatusBadge status={selected.compliance_status || 'COMPLIANT'} />
                 {selected.is_medical_expired && <StatusBadge status="EXPIRED" />}
               </div>
-              <span className="font-mono text-xs text-coal-400">{selected.worker_code}</span>
+              <span className="font-mono text-xs text-slate-500">{selected.worker_code}</span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm bg-coal-800/40 rounded-xl p-4">
+            <div className="grid grid-cols-2 gap-3 text-sm bg-slate-50 rounded-xl p-4 border border-slate-200">
               {[
                 ['Full Name', `${selected.first_name} ${selected.last_name}`],
                 ['Designation', selected.designation],
@@ -1739,23 +1739,23 @@ export default function WorkersPage() {
                 ['Overall Compliance', selected.compliance_status],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between">
-                  <span className="text-xs text-coal-400">{k}:</span>
-                  <span className="text-xs font-medium text-white">{v}</span>
+                  <span className="text-xs text-slate-500">{k}:</span>
+                  <span className="text-xs font-medium text-slate-900">{v}</span>
                 </div>
               ))}
             </div>
 
             {/* Certifications Sub-table in Worker Profile */}
             <div>
-              <h4 className="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
-                <FileCheck size={14} className="text-teal-400" /> Attached Competency Certifications ({workerCerts.length})
+              <h4 className="text-xs font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+                <FileCheck size={14} className="text-teal-600" /> Attached Competency Certifications ({workerCerts.length})
               </h4>
               {workerCerts.length === 0 ? (
-                <div className="text-xs text-coal-500 bg-coal-950 p-3 rounded-lg">No statutory certificates recorded for this worker.</div>
+                <div className="text-xs text-slate-400 bg-slate-50 p-3 rounded-lg border border-slate-100">No statutory certificates recorded for this worker.</div>
               ) : (
-                <div className="border border-coal-800 rounded-lg overflow-hidden">
-                  <table className="w-full text-xs">
-                    <thead className="bg-coal-950 text-coal-400">
+                <div className="border border-slate-200 rounded-lg overflow-hidden">
+                  <table className="w-full text-xs bg-white">
+                    <thead className="bg-slate-100 text-slate-600">
                       <tr>
                         <th className="p-2 text-left">Certificate</th>
                         <th className="p-2 text-left">Cert #</th>
@@ -1763,11 +1763,11 @@ export default function WorkersPage() {
                         <th className="p-2 text-left">Status</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-coal-800">
+                    <tbody className="divide-y divide-slate-100">
                       {workerCerts.map(c => (
                         <tr key={c.id}>
-                          <td className="p-2 text-white font-medium">{c.certification_name}</td>
-                          <td className="p-2 font-mono text-teal-300">{c.certificate_ref}</td>
+                          <td className="p-2 text-slate-900 font-medium">{c.certification_name}</td>
+                          <td className="p-2 font-mono text-teal-600">{c.certificate_ref}</td>
                           <td className="p-2">{formatDate(c.expiry_date)}</td>
                           <td className="p-2"><StatusBadge status={c.verification_status} /></td>
                         </tr>
@@ -1779,8 +1779,8 @@ export default function WorkersPage() {
             </div>
 
             {isWorkerOfficer && (
-              <div className="bg-coal-900/60 p-4 rounded-xl border border-coal-800 space-y-3">
-                <h4 className="text-xs font-bold text-teal-300 uppercase">Worker Compliance Decision</h4>
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <h4 className="text-xs font-bold text-teal-700 uppercase">Worker Compliance Decision</h4>
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleVerifyWorker('VERIFIED')}
@@ -1792,7 +1792,7 @@ export default function WorkersPage() {
                   <button
                     onClick={() => handleVerifyWorker('REJECTED')}
                     disabled={verifying}
-                    className="px-3 py-1.5 bg-red-500/20 text-red-300 border border-red-500/30 rounded text-xs font-semibold hover:bg-red-500/30 transition-colors"
+                    className="px-3 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded text-xs font-semibold hover:bg-red-100 transition-colors"
                   >
                     Reject Worker
                   </button>
@@ -1800,7 +1800,7 @@ export default function WorkersPage() {
               </div>
             )}
 
-            <div className="flex justify-end pt-2 border-t border-coal-800">
+            <div className="flex justify-end pt-2 border-t border-slate-200">
               <button onClick={() => setSelected(null)} className="btn-secondary text-xs">
                 Close Profile
               </button>
@@ -1814,7 +1814,7 @@ export default function WorkersPage() {
       {/* ========================================================================= */}
       <Modal open={showRegisterModal} onClose={() => setShowRegisterModal(false)} title="Register Worker" size="md">
         <div className="space-y-3">
-          <p className="text-xs text-coal-400">
+          <p className="text-xs text-slate-500">
             Submit worker details for statutory onboarding and medical compliance verification.
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -1940,7 +1940,7 @@ export default function WorkersPage() {
             </div>
           </div>
 
-          <div className="flex gap-2 justify-end pt-3 border-t border-coal-800">
+          <div className="flex gap-2 justify-end pt-3 border-t border-slate-200">
             <button onClick={() => setShowRegisterModal(false)} className="btn-secondary text-xs">
               Cancel
             </button>

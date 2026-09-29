@@ -61,7 +61,7 @@ export default function LoginPage() {
       {/* Top Government Banner */}
       <div className="bg-slate-900 text-slate-300 text-[11px] px-6 py-2 flex items-center justify-between border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-white">Government of India</span>
+          <span className="font-semibold text-slate-900">Government of India</span>
           <span>•</span>
           <span>Ministry of Coal</span>
           <span>•</span>

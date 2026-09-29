@@ -146,47 +146,47 @@ export default function GISMapPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
+            <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-800 border border-sky-200 uppercase">
               Role: {user?.role || 'Corporate'}
             </span>
-            <span className="text-xs text-coal-400 font-medium">
+            <span className="text-xs text-slate-600 font-medium">
               Geospatial Telemetry & Hotspot Intelligence
             </span>
           </div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5 mt-1">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2.5 mt-1">
             <span className="p-2 rounded-xl bg-cil-blue/20 text-cil-light">
               <MapPin size={22} />
             </span>
             Mine Hazard Hotspots & GIS Spatial Monitoring
           </h1>
-          <p className="text-coal-400 text-xs mt-0.5">
+          <p className="text-slate-600 text-xs mt-0.5">
             Geographically anchored inspection findings, photographic evidence, and hazard density across active coal sectors.
           </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <div className="flex items-center gap-1 bg-coal-900 border border-coal-800 rounded-lg p-1 text-xs">
+          <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg p-1 text-xs">
             <button
               onClick={() => setActiveLayer('all')}
-              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'all' ? 'bg-cil-blue text-white font-semibold' : 'text-coal-400 hover:text-coal-200'}`}
+              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'all' ? 'bg-cil-blue text-white font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
             >
               All Hotspots ({hotspotsList.length})
             </button>
             <button
               onClick={() => setActiveLayer('high_risk')}
-              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'high_risk' ? 'bg-red-600 text-white font-semibold' : 'text-coal-400 hover:text-coal-200'}`}
+              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'high_risk' ? 'bg-red-600 text-white font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
             >
               Critical / High ({criticalCount})
             </button>
             <button
               onClick={() => setActiveLayer('open')}
-              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'open' ? 'bg-amber-600 text-white font-semibold' : 'text-coal-400 hover:text-coal-200'}`}
+              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'open' ? 'bg-amber-600 text-white font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
             >
               Open Hazards ({openCount})
             </button>
             <button
               onClick={() => setActiveLayer('resolved')}
-              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'resolved' ? 'bg-emerald-600 text-white font-semibold' : 'text-coal-400 hover:text-coal-200'}`}
+              className={`px-3 py-1 rounded-md transition-colors ${activeLayer === 'resolved' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
             >
               Resolved ({resolvedCount})
             </button>
@@ -198,14 +198,14 @@ export default function GISMapPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-coal-900 border border-coal-800 p-3 rounded-xl text-xs">
+      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-slate-50 border border-slate-200 p-3 rounded-xl text-xs">
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Filter size={14} className="text-coal-500" />
-          <span className="text-coal-400 font-semibold">Scope Filter:</span>
+          <Filter size={14} className="text-slate-500" />
+          <span className="text-slate-600 font-semibold">Scope Filter:</span>
           <select
             value={filterMine}
             onChange={(e) => setFilterMine(e.target.value)}
-            className="bg-coal-950 border border-coal-700 text-coal-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cil-blue"
+            className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cil-blue"
           >
             <option value="ALL">All Authorized Mines ({minesList.length})</option>
             {minesList.map((m) => (
@@ -220,7 +220,7 @@ export default function GISMapPage() {
           <select
             value={filterSeverity}
             onChange={(e) => setFilterSeverity(e.target.value)}
-            className="bg-coal-950 border border-coal-700 text-coal-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cil-blue"
+            className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cil-blue"
           >
             <option value="ALL">All Severities</option>
             <option value="CRITICAL">Critical</option>
@@ -232,7 +232,7 @@ export default function GISMapPage() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-coal-950 border border-coal-700 text-coal-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cil-blue"
+            className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cil-blue"
           >
             <option value="ALL">All Statuses</option>
             <option value="OPEN">Open Only</option>
@@ -246,20 +246,20 @@ export default function GISMapPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Map Vector Visualization */}
         <div className="lg:col-span-2 space-y-3">
-          <div className="bg-coal-900 border border-coal-800 rounded-2xl p-4 shadow-xl overflow-hidden relative">
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-xl overflow-hidden relative">
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-xs font-semibold text-coal-300">
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
                 <Layers size={14} className="text-cil-blue" />
                 <span>Active Mine Hazard Heatmap & GIS Hotspot Layer ({filteredHotspots.length} Plotted Points)</span>
               </div>
-              <div className="flex items-center gap-2 text-[10px] text-coal-400 font-mono">
+              <div className="flex items-center gap-2 text-[10px] text-slate-600 font-mono">
                 <Compass size={12} className="text-cil-light" />
                 <span>DATUM: WGS 84 / UTM 44N</span>
               </div>
             </div>
 
             {/* Interactive Radar Spatial Canvas */}
-            <div className="relative w-full h-[540px] bg-coal-950 rounded-xl border border-coal-800/80 overflow-hidden flex items-center justify-center">
+            <div className="relative w-full h-[540px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden flex items-center justify-center">
               {/* Grid Background */}
               <div
                 className="absolute inset-0 opacity-15"
@@ -279,7 +279,7 @@ export default function GISMapPage() {
               </svg>
 
               {loading ? (
-                <div className="text-center text-coal-400">
+                <div className="text-center text-slate-600">
                   <div className="w-8 h-8 border-2 border-cil-blue border-t-transparent rounded-full animate-spin mx-auto mb-2" />
                   <span>Loading GIS Hotspots & Spatial Coordinates...</span>
                 </div>
@@ -298,12 +298,12 @@ export default function GISMapPage() {
                         onClick={() => { setSelectedMine(m); setSelectedHotspot(null); }}
                         className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10"
                       >
-                        <div className="w-12 h-12 rounded-2xl bg-coal-900/90 border border-slate-600/80 flex items-center justify-center text-slate-300 shadow-md group-hover:scale-110 group-hover:border-cil-blue transition-transform">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-600/80 flex items-center justify-center text-slate-300 shadow-md group-hover:scale-110 group-hover:border-cil-blue transition-transform">
                           <Building2 size={18} />
                         </div>
-                        <div className="absolute left-1/2 -translate-x-1/2 top-14 hidden group-hover:block bg-coal-900 border border-coal-700 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap shadow-xl z-30 pointer-events-none">
+                        <div className="absolute left-1/2 -translate-x-1/2 top-14 hidden group-hover:block bg-white border border-slate-300 text-slate-900 text-[10px] rounded px-2 py-1 whitespace-nowrap shadow-xl z-30 pointer-events-none">
                           <div className="font-bold">{m.properties.name}</div>
-                          <div className="text-coal-400">{m.properties.subsidiary} • Score: {m.properties.compliance_score}%</div>
+                          <div className="text-slate-600">{m.properties.subsidiary} • Score: {m.properties.compliance_score}%</div>
                         </div>
                       </div>
                     );
@@ -352,12 +352,12 @@ export default function GISMapPage() {
                         </div>
 
                         {/* Tooltip on hover */}
-                        <div className="absolute left-1/2 -translate-x-1/2 top-10 hidden group-hover:block bg-coal-900 border border-coal-700 text-white text-[11px] rounded-lg px-2.5 py-1.5 whitespace-nowrap shadow-2xl z-30 pointer-events-none">
+                        <div className="absolute left-1/2 -translate-x-1/2 top-10 hidden group-hover:block bg-white border border-slate-300 text-slate-900 text-[11px] rounded-lg px-2.5 py-1.5 whitespace-nowrap shadow-2xl z-30 pointer-events-none">
                           <div className="font-bold flex items-center gap-1.5">
                             <span className={`w-2 h-2 rounded-full ${isCrit ? 'bg-red-500' : 'bg-amber-500'}`} />
                             {h.properties.hazard_title}
                           </div>
-                          <div className="text-coal-400 text-[10px] mt-0.5">
+                          <div className="text-slate-600 text-[10px] mt-0.5">
                             {h.properties.mine_name} • {h.properties.severity} • {h.properties.status}
                           </div>
                         </div>
@@ -366,22 +366,22 @@ export default function GISMapPage() {
                   })}
 
                   {/* Compass / Legend Overlay */}
-                  <div className="absolute bottom-4 left-4 bg-coal-900/95 border border-coal-800 rounded-xl p-3 backdrop-blur-md text-xs space-y-1.5 shadow-xl">
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-coal-400">Hotspot Severity Legend</div>
-                    <div className="flex items-center gap-2 text-coal-300">
+                  <div className="absolute bottom-4 left-4 bg-slate-50 border border-slate-200 rounded-xl p-3 backdrop-blur-md text-xs space-y-1.5 shadow-xl">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Hotspot Severity Legend</div>
+                    <div className="flex items-center gap-2 text-slate-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
                       <span>Critical / High Severity Hazard</span>
                     </div>
-                    <div className="flex items-center gap-2 text-coal-300">
+                    <div className="flex items-center gap-2 text-slate-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
                       <span>Medium Severity Finding</span>
                     </div>
-                    <div className="flex items-center gap-2 text-coal-300">
+                    <div className="flex items-center gap-2 text-slate-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                       <span>Resolved / Mitigated Action</span>
                     </div>
-                    <div className="flex items-center gap-2 text-coal-300">
-                      <span className="w-3 h-3 rounded-md bg-coal-800 border border-slate-600" />
+                    <div className="flex items-center gap-2 text-slate-700">
+                      <span className="w-3 h-3 rounded-md bg-slate-100 border border-slate-600" />
                       <span>Mine Anchor Facility</span>
                     </div>
                   </div>
@@ -400,9 +400,9 @@ export default function GISMapPage() {
             {selectedHotspot ? (
               <div className="space-y-4 text-xs">
                 {/* Header card */}
-                <div className="p-3 bg-coal-950 rounded-xl border border-coal-800 space-y-1.5">
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-coal-500 text-[10px] font-semibold">
+                    <span className="font-mono text-slate-500 text-[10px] font-semibold">
                       {selectedHotspot.properties.violation_code || selectedHotspot.properties.id.slice(0, 8)}
                     </span>
                     <div className="flex items-center gap-1.5">
@@ -410,25 +410,25 @@ export default function GISMapPage() {
                       <StatusBadge status={selectedHotspot.properties.status} />
                     </div>
                   </div>
-                  <div className="text-white font-bold text-sm">
+                  <div className="text-slate-900 font-bold text-sm">
                     {selectedHotspot.properties.hazard_title}
                   </div>
-                  <div className="text-coal-400 text-[11px]">
-                    📍 Mine: <strong className="text-coal-200">{selectedHotspot.properties.mine_name}</strong>
+                  <div className="text-slate-600 text-[11px]">
+                    📍 Mine: <strong className="text-slate-900">{selectedHotspot.properties.mine_name}</strong>
                   </div>
-                  <div className="text-coal-400 text-[11px]">
-                    🏷️ Location Tag: <span className="text-coal-300 font-medium">{selectedHotspot.properties.location_tag}</span>
+                  <div className="text-slate-600 text-[11px]">
+                    🏷️ Location Tag: <span className="text-slate-700 font-medium">{selectedHotspot.properties.location_tag}</span>
                   </div>
                 </div>
 
                 {/* Regulation & Description */}
-                <div className="space-y-1 bg-coal-950 p-2.5 rounded-lg border border-coal-800">
-                  <div className="text-coal-500 text-[10px] uppercase font-semibold">DGMS Statutory Reference</div>
+                <div className="space-y-1 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                  <div className="text-slate-500 text-[10px] uppercase font-semibold">DGMS Statutory Reference</div>
                   <div className="text-indigo-400 font-mono text-[11px] font-semibold">
                     {selectedHotspot.properties.regulation_reference}
                   </div>
                   {selectedHotspot.properties.description && (
-                    <div className="text-coal-300 text-[11px] mt-1 pt-1 border-t border-coal-800">
+                    <div className="text-slate-700 text-[11px] mt-1 pt-1 border-t border-slate-200">
                       {selectedHotspot.properties.description}
                     </div>
                   )}
@@ -436,15 +436,15 @@ export default function GISMapPage() {
 
                 {/* Inspection & Inspector Context */}
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <div className="bg-coal-950 p-2.5 rounded-lg border border-coal-800">
-                    <span className="text-coal-500 text-[10px]">Field Inspector</span>
-                    <div className="text-coal-200 font-semibold mt-0.5">
+                  <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <span className="text-slate-500 text-[10px]">Field Inspector</span>
+                    <div className="text-slate-900 font-semibold mt-0.5">
                       {selectedHotspot.properties.inspector_name || 'Amitabh Singh'}
                     </div>
                   </div>
-                  <div className="bg-coal-950 p-2.5 rounded-lg border border-coal-800">
-                    <span className="text-coal-500 text-[10px]">Inspection Date</span>
-                    <div className="text-coal-200 font-semibold mt-0.5">
+                  <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <span className="text-slate-500 text-[10px]">Inspection Date</span>
+                    <div className="text-slate-900 font-semibold mt-0.5">
                       {formatDate(selectedHotspot.properties.inspection_date || selectedHotspot.properties.created_at)}
                     </div>
                   </div>
@@ -453,18 +453,18 @@ export default function GISMapPage() {
                 {/* Geotagged Evidence Photos */}
                 {selectedHotspot.properties.evidence_photos && selectedHotspot.properties.evidence_photos.length > 0 && (
                   <div className="space-y-2">
-                    <div className="text-coal-400 font-semibold text-[11px] flex items-center gap-1.5">
+                    <div className="text-slate-600 font-semibold text-[11px] flex items-center gap-1.5">
                       <Camera size={13} className="text-cil-blue" />
                       <span>Geotagged On-Site Photographic Evidence ({selectedHotspot.properties.evidence_photos.length})</span>
                     </div>
                     <div className="space-y-2">
                       {selectedHotspot.properties.evidence_photos.map((ev, idx) => (
-                        <div key={ev.id || idx} className="p-2.5 bg-coal-950 rounded-lg border border-coal-800 space-y-1">
-                          <div className="font-semibold text-coal-200 text-[11px]">{ev.caption}</div>
-                          <div className="text-coal-500 font-mono text-[10px]">
+                        <div key={ev.id || idx} className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+                          <div className="font-semibold text-slate-900 text-[11px]">{ev.caption}</div>
+                          <div className="text-slate-500 font-mono text-[10px]">
                             GPS: {ev.latitude?.toFixed(4)}° N, {ev.longitude?.toFixed(4)}° E
                           </div>
-                          <div className="text-coal-500 text-[9px]">Captured: {formatDateTime(ev.captured_at)}</div>
+                          <div className="text-slate-500 text-[9px]">Captured: {formatDateTime(ev.captured_at)}</div>
                         </div>
                       ))}
                     </div>
@@ -473,17 +473,17 @@ export default function GISMapPage() {
 
                 {/* Linked Corrective Action (CAPA) */}
                 {selectedHotspot.properties.linked_capa && (
-                  <div className="p-3 bg-amber-950/30 border border-amber-800/40 rounded-xl space-y-1.5">
+                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-amber-400 font-bold text-[11px] flex items-center gap-1">
+                      <span className="text-amber-800 font-bold text-[11px] flex items-center gap-1">
                         <Wrench size={12} /> Linked CAPA Directive
                       </span>
                       <StatusBadge status={selectedHotspot.properties.linked_capa.status} />
                     </div>
-                    <div className="font-semibold text-coal-200 text-[11px]">
+                    <div className="font-semibold text-slate-900 text-[11px]">
                       {selectedHotspot.properties.linked_capa.title}
                     </div>
-                    <div className="text-coal-400 text-[10px]">
+                    <div className="text-slate-600 text-[10px]">
                       Deadline: <strong>{formatDate(selectedHotspot.properties.linked_capa.due_date)}</strong>
                     </div>
                   </div>
@@ -498,14 +498,14 @@ export default function GISMapPage() {
                       </span>
                       <StatusBadge status={selectedHotspot.properties.linked_report.approval_status} />
                     </div>
-                    <div className="font-semibold text-coal-200 text-[11px]">
+                    <div className="font-semibold text-slate-900 text-[11px]">
                       {selectedHotspot.properties.linked_report.report_number} — {selectedHotspot.properties.linked_report.report_title}
                     </div>
                   </div>
                 )}
 
                 {/* Action Links */}
-                <div className="pt-2 border-t border-coal-800 flex flex-col gap-2">
+                <div className="pt-2 border-t border-slate-200 flex flex-col gap-2">
                   <button
                     onClick={() => navigate('/inspections')}
                     className="w-full btn-secondary text-xs py-2 rounded-lg flex items-center justify-center gap-1.5"
@@ -522,24 +522,24 @@ export default function GISMapPage() {
               </div>
             ) : selectedMine ? (
               <div className="space-y-4 text-xs">
-                <div className="p-3 bg-coal-950 rounded-xl border border-coal-800">
-                  <div className="font-bold text-white text-sm">{selectedMine.properties.name}</div>
-                  <div className="text-coal-400 text-[11px]">{selectedMine.properties.subsidiary} ({selectedMine.properties.code})</div>
-                  <div className="text-coal-500 text-[10px] mt-1">{selectedMine.properties.district}, {selectedMine.properties.state}</div>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="font-bold text-slate-900 text-sm">{selectedMine.properties.name}</div>
+                  <div className="text-slate-600 text-[11px]">{selectedMine.properties.subsidiary} ({selectedMine.properties.code})</div>
+                  <div className="text-slate-500 text-[10px] mt-1">{selectedMine.properties.district}, {selectedMine.properties.state}</div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-coal-950 p-2.5 rounded-lg border border-coal-800">
-                    <span className="text-coal-500 text-[10px]">Compliance Index</span>
+                  <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <span className="text-slate-500 text-[10px]">Compliance Index</span>
                     <div className="text-emerald-400 font-bold text-sm mt-0.5">{selectedMine.properties.compliance_score}%</div>
                   </div>
-                  <div className="bg-coal-950 p-2.5 rounded-lg border border-coal-800">
-                    <span className="text-coal-500 text-[10px]">Open Hazards</span>
+                  <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <span className="text-slate-500 text-[10px]">Open Hazards</span>
                     <div className="text-red-400 font-bold text-sm mt-0.5">{selectedMine.properties.open_violations}</div>
                   </div>
                 </div>
 
-                <div className="p-3 bg-coal-950 rounded-xl border border-coal-800 font-mono text-[11px] text-coal-300">
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 font-mono text-[11px] text-slate-700">
                   <div>LAT: {selectedMine.geometry.coordinates[1].toFixed(6)}° N</div>
                   <div>LNG: {selectedMine.geometry.coordinates[0].toFixed(6)}° E</div>
                   <div>RADIUS: 4.5 km Active Mine Boundary</div>
@@ -553,7 +553,7 @@ export default function GISMapPage() {
                 </button>
               </div>
             ) : (
-              <div className="text-coal-500 text-center py-10">
+              <div className="text-slate-500 text-center py-10">
                 Click any hazard hotspot pin on the map to inspect the linked inspection, photographic evidence, and CAPA.
               </div>
             )}
