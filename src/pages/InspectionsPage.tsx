@@ -148,8 +148,13 @@ export default function InspectionsPage() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Field Inspections & On-Site Audits</h1>
-          <p className="text-coal-500 text-sm mt-0.5">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">
+              DGMS Field Inspection
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900">Field Inspections & On-Site Audits</h1>
+          <p className="text-slate-500 text-sm mt-0.5">
             Field Officer inspects & records violations with photos → AI Risk Engine analyzes severity → Mine Manager reviews & issues CAPA
           </p>
         </div>
@@ -161,12 +166,12 @@ export default function InspectionsPage() {
       </div>
 
       {submitMsg && (
-        <div className="bg-emerald-900/30 border border-emerald-800/60 rounded-xl px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-emerald-300 text-sm font-medium">
-            <CheckCircle size={15} className="text-emerald-400" />
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-emerald-800 text-sm font-semibold">
+            <CheckCircle size={15} className="text-emerald-600" />
             {submitMsg}
           </div>
-          <button onClick={() => setSubmitMsg('')} className="text-xs text-coal-400">✕</button>
+          <button onClick={() => setSubmitMsg('')} className="text-xs text-slate-400 hover:text-slate-600">✕</button>
         </div>
       )}
 
@@ -188,13 +193,13 @@ export default function InspectionsPage() {
             </thead>
             <tbody>
               {inspectionList.map(insp => (
-                <tr key={insp.id} className="cursor-pointer hover:bg-coal-800/40" onClick={() => setSelected(insp)}>
-                  <td className="font-mono text-xs text-coal-400 font-semibold">{insp.inspection_number}</td>
-                  <td className="text-coal-200 text-sm font-medium">{insp.mine_name}</td>
-                  <td className="text-coal-400 text-xs">{insp.contractor_name || 'Direct / Multi'}</td>
-                  <td className="text-xs text-coal-300">{insp.inspection_type}</td>
-                  <td className="text-xs text-coal-400">{insp.officer_name || 'Field Officer'}</td>
-                  <td className="text-xs text-coal-400">{formatDateTime(insp.inspection_date)}</td>
+                <tr key={insp.id} className="cursor-pointer hover:bg-slate-50 transition-colors" onClick={() => setSelected(insp)}>
+                  <td className="font-mono text-xs text-blue-700 font-bold">{insp.inspection_number}</td>
+                  <td className="text-slate-800 text-sm font-medium">{insp.mine_name}</td>
+                  <td className="text-slate-500 text-xs">{insp.contractor_name || 'Direct / Multi'}</td>
+                  <td className="text-xs text-slate-600">{insp.inspection_type}</td>
+                  <td className="text-xs text-slate-500">{insp.officer_name || 'Field Officer'}</td>
+                  <td className="text-xs text-slate-500">{formatDateTime(insp.inspection_date)}</td>
                   <td>
                     <div className="w-24">
                       <ComplianceBar score={insp.compliance_score} />
@@ -216,7 +221,7 @@ export default function InspectionsPage() {
       {/* New Inspection Modal (Only Field Officer) */}
       <Modal open={showForm} onClose={() => setShowForm(false)} title="Conduct New Field Inspection" size="lg">
         <div className="space-y-4">
-          <p className="text-xs text-coal-400">
+          <p className="text-xs text-slate-500">
             Record observations, verify statutory checklists, register violations, and upload geo-tagged photo evidence.
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -272,9 +277,9 @@ export default function InspectionsPage() {
           </div>
 
           {/* Photo / Geo-Evidence Upload */}
-          <div className="bg-coal-800/40 border border-coal-700/50 rounded-xl p-3 space-y-2">
-            <div className="text-xs font-bold text-coal-300 flex items-center gap-1.5">
-              <Camera size={14} className="text-cil-blue" />
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 space-y-2">
+            <div className="text-xs font-bold text-blue-800 flex items-center gap-1.5">
+              <Camera size={14} className="text-blue-600" />
               On-Site Photo Evidence & Geo-Tagging
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -303,17 +308,17 @@ export default function InspectionsPage() {
             <label className="form-label mb-2">Statutory Inspection Checklist</label>
             <div className="space-y-1.5 max-h-48 overflow-y-auto">
               {checklist.map((item, idx) => (
-                <div key={item.item_key} className="flex items-center gap-3 bg-coal-800/50 rounded-lg px-3 py-2 text-xs">
+                <div key={item.item_key} className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
                   <input
                     type="checkbox"
                     id={`chk-${idx}`}
                     checked={item.is_compliant}
                     onChange={e => setChecklist(prev => prev.map((c, i) => i === idx ? { ...c, is_compliant: e.target.checked } : c))}
-                    className="accent-cil-blue w-4 h-4 cursor-pointer"
+                    className="accent-blue-600 w-4 h-4 cursor-pointer"
                   />
                   <div className="flex-1">
-                    <label htmlFor={`chk-${idx}`} className="text-xs text-coal-200 cursor-pointer">{item.item_title}</label>
-                    <div className="text-[9px] text-coal-500">{item.category}</div>
+                    <label htmlFor={`chk-${idx}`} className="text-xs text-slate-700 cursor-pointer font-medium">{item.item_title}</label>
+                    <div className="text-[9px] text-slate-400">{item.category}</div>
                   </div>
                   {!item.is_compliant && (
                     <input
@@ -341,7 +346,7 @@ export default function InspectionsPage() {
               </button>
             </div>
             {observations.map((obs, i) => (
-              <div key={i} className="grid grid-cols-2 gap-2 mb-2 bg-coal-800/40 rounded-lg p-3">
+              <div key={i} className="grid grid-cols-2 gap-2 mb-2 bg-slate-50 border border-slate-200 rounded-lg p-3">
                 <input
                   className="form-input text-xs"
                   placeholder="Violation Title (e.g. Substandard Berm Height)"
@@ -369,7 +374,7 @@ export default function InspectionsPage() {
             ))}
           </div>
 
-          <div className="flex gap-2 justify-end pt-2 border-t border-coal-800">
+          <div className="flex gap-2 justify-end pt-2 border-t border-slate-200">
             <button onClick={() => setShowForm(false)} className="btn-secondary text-xs">Cancel</button>
             <button onClick={handleCreateInspection} disabled={submitting} className="btn-primary text-xs">
               {submitting ? <><Loader size={14} className="animate-spin" /> Submitting to Mine Manager...</> : <><Send size={14} /> Submit Inspection Report</>}
@@ -382,15 +387,15 @@ export default function InspectionsPage() {
       <Modal open={!!selected} onClose={() => setSelected(null)} title={selected?.inspection_number || 'Inspection Detail'} size="lg">
         {selected && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-coal-800">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-200">
               <div className="flex items-center gap-2">
                 <StatusBadge status={getWorkflowStageLabel(selected.workflow_stage)} />
                 <StatusBadge status={selected.ai_risk_category || selected.risk_level} />
               </div>
-              <span className="text-xs text-coal-400">Score: <strong className="text-white">{selected.compliance_score}%</strong></span>
+              <span className="text-xs text-slate-500">Score: <strong className="text-slate-900">{selected.compliance_score}%</strong></span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm bg-coal-800/40 rounded-xl p-4">
+            <div className="grid grid-cols-2 gap-3 text-sm bg-slate-50 border border-slate-200 rounded-xl p-4">
               {[
                 ['Mine', selected.mine_name],
                 ['Contractor', selected.contractor_name || 'Direct Operations'],
@@ -400,27 +405,27 @@ export default function InspectionsPage() {
                 ['Location Tag', selected.location_tag],
               ].map(([k, v]) => (
                 <div key={k as string}>
-                  <div className="text-[10px] text-coal-500 uppercase font-semibold">{k}</div>
-                  <div className="text-coal-200 text-sm mt-0.5">{v}</div>
+                  <div className="text-[10px] text-slate-400 uppercase font-semibold">{k}</div>
+                  <div className="text-slate-800 text-sm mt-0.5 font-medium">{v}</div>
                 </div>
               ))}
             </div>
 
             {/* AI Risk Assessment Card */}
             {selected.ai_risk_score !== undefined && (
-              <div className="bg-blue-950/30 border border-blue-800/40 rounded-xl p-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-blue-400">🤖 AI-Assisted Risk Engine Analysis</span>
-                  <span className="text-base font-bold text-white">{selected.ai_risk_score}/100 Risk Index</span>
+                  <span className="text-xs font-bold text-blue-800">🤖 AI-Assisted Risk Engine Analysis</span>
+                  <span className="text-base font-bold text-slate-900">{selected.ai_risk_score}/100 Risk Index</span>
                 </div>
                 <ul className="space-y-1">
                   {(selected.ai_factors || []).map((f: string, i: number) => (
-                    <li key={i} className="text-xs text-coal-300 flex items-start gap-1.5">
-                      <span className="text-red-400">•</span> {f}
+                    <li key={i} className="text-xs text-slate-700 flex items-start gap-1.5">
+                      <span className="text-red-500">•</span> {f}
                     </li>
                   ))}
                 </ul>
-                <p className="text-[10px] text-coal-500 mt-2 italic">
+                <p className="text-[10px] text-slate-500 mt-2 italic">
                   AI assists with risk/severity synthesis. Mine Manager decides regulatory corrective action.
                 </p>
               </div>
@@ -432,13 +437,13 @@ export default function InspectionsPage() {
                 <div className="form-label mb-2">Checklist Observations</div>
                 <div className="space-y-1 max-h-36 overflow-y-auto">
                   {selected.checklists.map((c: any) => (
-                    <div key={c.id} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs ${c.is_compliant ? 'bg-emerald-900/20' : 'bg-red-900/20'}`}>
+                    <div key={c.id} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs border ${c.is_compliant ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
                       <span>{c.is_compliant ? '✅' : '❌'}</span>
                       <div className="flex-1">
-                        <div className="text-coal-200 font-medium">{c.item_title}</div>
-                        {c.remarks && <div className="text-[10px] text-red-300 mt-0.5">{c.remarks}</div>}
+                        <div className="text-slate-800 font-medium">{c.item_title}</div>
+                        {c.remarks && <div className="text-[10px] text-red-600 mt-0.5">{c.remarks}</div>}
                       </div>
-                      <span className="text-[9px] text-coal-500">{c.category}</span>
+                      <span className="text-[9px] text-slate-400">{c.category}</span>
                     </div>
                   ))}
                 </div>
@@ -447,11 +452,11 @@ export default function InspectionsPage() {
 
             {/* MINE MANAGER REVIEW GATEWAY */}
             {isMineManager && selected.workflow_stage === 'UNDER_MINE_MANAGER_REVIEW' && (
-              <div className="border-t border-coal-800 pt-4 space-y-3">
-                <div className="text-xs font-bold text-violet-400 uppercase tracking-wide">
+              <div className="border-t border-slate-200 pt-4 space-y-3">
+                <div className="text-xs font-bold text-violet-700 uppercase tracking-wide">
                   Mine Manager Review & CAPA Decision Gateway
                 </div>
-                <p className="text-xs text-coal-400">
+                <p className="text-xs text-slate-500">
                   Validate the field officer's inspection data to generate the statutory compliance PDF report, or issue CAPAs for the flagged violations.
                 </p>
                 <textarea

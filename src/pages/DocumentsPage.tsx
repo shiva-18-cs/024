@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ScrollText, Upload, CheckCircle2, AlertTriangle, Eye, RefreshCw, FileText, Search, ShieldCheck } from 'lucide-react';
-import { documents as docsApi, mines as minesApi } from '../services/api';
+import { ScrollText, Upload, CheckCircle2, Eye, RefreshCw, FileText, Search, ShieldCheck } from 'lucide-react';
+import { documents as docsApi } from '../services/api';
 import { SectionCard, StatusBadge, LoadingState, EmptyState, Modal } from '../components/ui/UIComponents';
 
 interface DocumentItem {
@@ -44,8 +44,6 @@ export default function DocumentsPage() {
       const list = Array.isArray(res) ? res : res?.documents || [];
       setDocsList(list);
     } catch (e) {
-      console.error('Error fetching documents', e);
-      // Sample mock documents
       setDocsList([
         {
           id: 'doc-001',
@@ -140,7 +138,6 @@ export default function DocumentsPage() {
       setSelectedFile(null);
       await loadDocs();
     } catch (err: any) {
-      // In demo mode, insert a locally simulated doc
       const newSimDoc: DocumentItem = {
         id: `doc-${Date.now()}`,
         title: uploadTitle,
@@ -181,13 +178,18 @@ export default function DocumentsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-cil-blue/20 text-cil-light">
-              <ScrollText size={22} />
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">
+              Compliance Repository
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100">
+              <ScrollText size={20} />
             </span>
             Statutory Documents & AI-OCR Pipeline
           </h1>
-          <p className="text-coal-400 text-xs mt-1">
+          <p className="text-slate-500 text-sm mt-0.5">
             Automated ingestion, OCR extraction, DGMS/Statutory validation & tamper-proof compliance archiving
           </p>
         </div>
@@ -195,7 +197,7 @@ export default function DocumentsPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowUploadModal(true)}
-            className="btn-primary flex items-center gap-2 text-xs py-2 px-3 rounded-lg"
+            className="btn-primary flex items-center gap-2 text-xs"
           >
             <Upload size={14} />
             <span>Upload Statutory Document</span>
@@ -204,15 +206,15 @@ export default function DocumentsPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-coal-900 border border-coal-800 p-3 rounded-xl">
+      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-white border border-slate-200 p-3 rounded-lg shadow-card">
         <div className="relative flex-1 w-full">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-coal-500" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search documents by title, file name or certificate ref..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-coal-950 border border-coal-800 text-white text-xs rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-cil-blue"
+            className="form-input pl-9 text-xs w-full"
           />
         </div>
 
@@ -220,7 +222,7 @@ export default function DocumentsPage() {
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="bg-coal-950 border border-coal-800 text-coal-300 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-cil-blue"
+            className="form-select text-xs"
           >
             <option value="ALL">All Categories</option>
             <option value="STATUTORY_CLEARANCE">Statutory Clearance</option>
@@ -228,7 +230,7 @@ export default function DocumentsPage() {
             <option value="ENVIRONMENTAL_CTO">Environmental CTO</option>
             <option value="WAGE_REGISTER">Form B Wage Register</option>
           </select>
-          <button onClick={loadDocs} className="btn-icon">
+          <button onClick={loadDocs} className="btn-icon" title="Refresh">
             <RefreshCw size={14} />
           </button>
         </div>
@@ -244,59 +246,60 @@ export default function DocumentsPage() {
               <EmptyState message="No documents match current filters" />
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-coal-300">
-                  <thead className="bg-coal-950 text-coal-500 uppercase text-[10px] tracking-wider border-b border-coal-800">
+                <table className="data-table">
+                  <thead>
                     <tr>
-                      <th className="py-2.5 px-3">Document Title</th>
-                      <th className="py-2.5 px-3">Mine / Entity</th>
-                      <th className="py-2.5 px-3">OCR Status</th>
-                      <th className="py-2.5 px-3">AI Confidence</th>
-                      <th className="py-2.5 px-3">Governance</th>
-                      <th className="py-2.5 px-3 text-right">Actions</th>
+                      <th>Document Title</th>
+                      <th>Mine / Entity</th>
+                      <th>OCR Status</th>
+                      <th>AI Confidence</th>
+                      <th>Governance</th>
+                      <th className="text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-coal-800/60">
+                  <tbody>
                     {filteredDocs.map((doc) => {
                       const isSelected = selectedDoc?.id === doc.id;
                       return (
                         <tr
                           key={doc.id}
                           onClick={() => setSelectedDoc(doc)}
-                          className={`hover:bg-coal-800/40 cursor-pointer transition-colors ${isSelected ? 'bg-cil-blue/10 border-l-2 border-cil-blue' : ''}`}
+                          className={`cursor-pointer hover:bg-slate-50 transition-colors ${isSelected ? 'bg-blue-50 border-l-2 border-blue-600' : ''}`}
                         >
-                          <td className="py-3 px-3">
-                            <div className="font-semibold text-white truncate max-w-[200px]">{doc.title}</div>
-                            <div className="text-[10px] text-coal-500 font-mono">{doc.file_name}</div>
+                          <td>
+                            <div className="font-semibold text-slate-900 truncate max-w-[200px]">{doc.title}</div>
+                            <div className="text-[10px] text-slate-400 font-mono">{doc.file_name}</div>
                           </td>
-                          <td className="py-3 px-3">
-                            <div className="text-coal-200">{doc.mine_name || 'General CIL'}</div>
-                            <div className="text-[10px] text-coal-500">{doc.category}</div>
+                          <td>
+                            <div className="text-slate-700 text-xs font-medium">{doc.mine_name || 'General CIL'}</div>
+                            <div className="text-[10px] text-slate-400">{doc.category}</div>
                           </td>
-                          <td className="py-3 px-3">
-                            <span className="badge bg-coal-800 text-coal-300 border border-coal-700 text-[10px]">
+                          <td>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold border bg-slate-50 text-slate-600 border-slate-200">
                               {doc.ocr_status || 'READY'}
                             </span>
                           </td>
-                          <td className="py-3 px-3">
+                          <td>
                             {doc.ocr_confidence ? (
-                              <div className="flex items-center gap-1.5 font-bold text-emerald-400">
+                              <div className="flex items-center gap-1.5 font-bold text-emerald-700 text-xs">
                                 <CheckCircle2 size={12} />
                                 <span>{doc.ocr_confidence}%</span>
                               </div>
                             ) : (
-                              <span className="text-coal-600">—</span>
+                              <span className="text-slate-400">—</span>
                             )}
                           </td>
-                          <td className="py-3 px-3">
+                          <td>
                             <StatusBadge status={doc.status || 'UNDER_REVIEW'} />
                           </td>
-                          <td className="py-3 px-3 text-right">
+                          <td className="text-right">
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedDoc(doc);
                               }}
-                              className="btn-icon text-coal-400 hover:text-white"
+                              className="btn-icon"
+                              title="View Document"
                             >
                               <Eye size={14} />
                             </button>
@@ -319,20 +322,20 @@ export default function DocumentsPage() {
           >
             {selectedDoc ? (
               <div className="space-y-4 text-xs">
-                <div className="p-3 bg-coal-950 rounded-xl border border-coal-800">
-                  <div className="font-bold text-white text-sm">{selectedDoc.title}</div>
-                  <div className="text-coal-400 text-[11px] mt-0.5">{selectedDoc.category}</div>
-                  <div className="text-coal-500 text-[10px] mt-2">File: {selectedDoc.file_name}</div>
-                  <div className="text-coal-500 text-[10px]">Uploaded: {new Date(selectedDoc.created_at).toLocaleDateString()}</div>
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="font-bold text-slate-900 text-sm">{selectedDoc.title}</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">{selectedDoc.category}</div>
+                  <div className="text-slate-400 text-[10px] mt-2">File: {selectedDoc.file_name}</div>
+                  <div className="text-slate-400 text-[10px]">Uploaded: {new Date(selectedDoc.created_at).toLocaleDateString()}</div>
                 </div>
 
                 {/* AI-OCR Extracted Data Fields */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-coal-400 font-bold text-[11px]">OCR Extracted Fields</span>
+                    <span className="text-slate-600 font-bold text-[11px]">OCR Extracted Fields</span>
                     <button
                       onClick={() => handleRunOCR(selectedDoc.id)}
-                      className="text-[10px] text-cil-light hover:underline flex items-center gap-1"
+                      className="text-[10px] text-blue-700 hover:underline flex items-center gap-1"
                     >
                       <RefreshCw size={10} /> Re-analyze OCR
                     </button>
@@ -341,28 +344,28 @@ export default function DocumentsPage() {
                   {selectedDoc.extracted_data && Object.keys(selectedDoc.extracted_data).length > 0 ? (
                     <div className="space-y-1.5">
                       {Object.entries(selectedDoc.extracted_data).map(([key, val]) => (
-                        <div key={key} className="p-2.5 bg-coal-950 rounded-lg border border-coal-800 flex flex-col">
-                          <span className="text-coal-500 text-[10px] uppercase font-mono">{key}</span>
-                          <span className="text-white font-medium text-xs mt-0.5">{String(val)}</span>
+                        <div key={key} className="p-2.5 bg-white rounded-lg border border-slate-200 flex flex-col">
+                          <span className="text-slate-400 text-[10px] uppercase font-mono">{key}</span>
+                          <span className="text-slate-900 font-medium text-xs mt-0.5">{String(val)}</span>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="p-4 bg-coal-950 rounded-lg border border-coal-800 text-center text-coal-500 text-xs">
+                    <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-center text-slate-400 text-xs">
                       No extracted fields yet. Click 'Re-analyze OCR' to initiate text parser.
                     </div>
                   )}
                 </div>
 
-                <div className="p-3 bg-emerald-950/30 border border-emerald-800/40 rounded-xl text-emerald-300 text-[11px] flex items-start gap-2">
-                  <CheckCircle2 size={16} className="flex-shrink-0 mt-0.5 text-emerald-400" />
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-[11px] flex items-start gap-2">
+                  <CheckCircle2 size={16} className="flex-shrink-0 mt-0.5 text-emerald-600" />
                   <span>
                     Cryptographic signature matched against Ministry of Coal public authority root registry.
                   </span>
                 </div>
               </div>
             ) : (
-              <div className="text-coal-500 text-center py-12">
+              <div className="text-slate-400 text-center py-12">
                 Click on any document row to view statutory attributes, metadata, and OCR-extracted attributes.
               </div>
             )}
@@ -374,23 +377,23 @@ export default function DocumentsPage() {
       <Modal open={showUploadModal} onClose={() => setShowUploadModal(false)} title="Upload Statutory Document">
         <form onSubmit={handleUploadSubmit} className="space-y-4 text-xs">
           <div>
-            <label className="block text-coal-300 mb-1 font-semibold">Document Title</label>
+            <label className="form-label">Document Title</label>
             <input
               type="text"
               placeholder="e.g. DGMS Permission Order 2026"
               value={uploadTitle}
               onChange={(e) => setUploadTitle(e.target.value)}
-              className="w-full bg-coal-950 border border-coal-700 text-white rounded-lg p-2.5 focus:outline-none focus:border-cil-blue"
+              className="form-input text-xs"
               required
             />
           </div>
 
           <div>
-            <label className="block text-coal-300 mb-1 font-semibold">Statutory Category</label>
+            <label className="form-label">Statutory Category</label>
             <select
               value={uploadCategory}
               onChange={(e) => setUploadCategory(e.target.value)}
-              className="w-full bg-coal-950 border border-coal-700 text-white rounded-lg p-2.5 focus:outline-none focus:border-cil-blue"
+              className="form-select text-xs"
             >
               <option value="STATUTORY_CLEARANCE">Statutory Clearance / DGMS</option>
               <option value="LABOR_LICENSE">Contractor Labor License (Form V)</option>
@@ -401,27 +404,27 @@ export default function DocumentsPage() {
           </div>
 
           <div>
-            <label className="block text-coal-300 mb-1 font-semibold">Select File (PDF, DOCX, JPG)</label>
+            <label className="form-label">Select File (PDF, DOCX, JPG)</label>
             <input
               type="file"
               onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)}
-              className="w-full bg-coal-950 border border-coal-700 text-coal-400 rounded-lg p-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-cil-blue file:text-white hover:file:bg-cil-blue/80"
+              className="form-input text-xs file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-700 file:text-white hover:file:bg-blue-800"
               required
             />
           </div>
 
-          <div className="pt-2 flex justify-end gap-2">
+          <div className="pt-2 flex justify-end gap-2 border-t border-slate-200">
             <button
               type="button"
               onClick={() => setShowUploadModal(false)}
-              className="px-4 py-2 rounded-lg bg-coal-800 text-coal-300 hover:bg-coal-700"
+              className="btn-secondary text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={uploading}
-              className="btn-primary px-4 py-2 rounded-lg flex items-center gap-1.5"
+              className="btn-primary text-xs flex items-center gap-1.5"
             >
               {uploading ? <RefreshCw size={14} className="animate-spin" /> : <Upload size={14} />}
               <span>{uploading ? 'Uploading & Extracting...' : 'Upload & Process OCR'}</span>

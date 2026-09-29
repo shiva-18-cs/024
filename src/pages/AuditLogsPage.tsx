@@ -121,13 +121,13 @@ export default function AuditLogsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-cil-blue/20 text-cil-light">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100">
               <Activity size={22} />
             </span>
             Immutable Audit Trail & Cryptographic Governance Ledger
           </h1>
-          <p className="text-coal-400 text-xs mt-1">
+          <p className="text-slate-500 text-sm mt-0.5">
             Tamper-evident system activity log with cryptographic hashes, role actions, IP provenance & DGMS compliance audit compliance
           </p>
         </div>
@@ -135,9 +135,9 @@ export default function AuditLogsPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => alert('Audit Ledger cryptographically validated: Zero tampering detected across all blocks.')}
-            className="px-3 py-2 rounded-lg bg-emerald-950/40 border border-emerald-700/60 text-emerald-300 text-xs flex items-center gap-1.5 transition-colors"
+            className="px-3 py-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-1.5 transition-colors hover:bg-emerald-100"
           >
-            <ShieldCheck size={14} className="text-emerald-400" />
+            <ShieldCheck size={14} className="text-emerald-600" />
             <span>Verify Ledger Integrity</span>
           </button>
           <button onClick={loadLogs} className="btn-icon">
@@ -147,24 +147,24 @@ export default function AuditLogsPage() {
       </div>
 
       {/* Filter / Search Bar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-coal-900 border border-coal-800 p-3 rounded-xl">
+      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-white border border-slate-200 p-3 rounded-lg shadow-card">
         <div className="relative flex-1 w-full">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-coal-500" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search by actor name, action, entity ref or details..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-coal-950 border border-coal-800 text-white text-xs rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-cil-blue"
+            className="form-input pl-9 text-xs w-full"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Filter size={14} className="text-coal-500" />
+          <Filter size={14} className="text-slate-400" />
           <select
             value={entityFilter}
             onChange={(e) => setEntityFilter(e.target.value)}
-            className="bg-coal-950 border border-coal-800 text-coal-300 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-cil-blue"
+            className="form-select text-xs"
           >
             <option value="ALL">All Entities</option>
             <option value="INSPECTION">Inspections</option>
@@ -184,58 +184,58 @@ export default function AuditLogsPage() {
           <EmptyState message="No audit records match filters" />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-coal-300">
-              <thead className="bg-coal-950 text-coal-500 uppercase text-[10px] tracking-wider border-b border-coal-800">
+            <table className="data-table">
+              <thead>
                 <tr>
-                  <th className="py-2.5 px-3">Timestamp / IP</th>
-                  <th className="py-2.5 px-3">Actor & Role</th>
-                  <th className="py-2.5 px-3">Action Event</th>
-                  <th className="py-2.5 px-3">Target Entity</th>
-                  <th className="py-2.5 px-3">Details / Context</th>
-                  <th className="py-2.5 px-3">SHA-256 Proof</th>
+                  <th>Timestamp / IP</th>
+                  <th>Actor &amp; Role</th>
+                  <th>Action Event</th>
+                  <th>Target Entity</th>
+                  <th>Details / Context</th>
+                  <th>SHA-256 Proof</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-coal-800/60">
+              <tbody>
                 {filtered.map((log) => (
-                  <tr key={log.id} className="hover:bg-coal-800/40 transition-colors">
+                  <tr key={log.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-3">
-                      <div className="text-white font-mono text-[11px]">
+                      <div className="text-slate-800 font-mono text-[11px] font-semibold">
                         {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                       </div>
-                      <div className="text-[10px] text-coal-500">{new Date(log.timestamp).toLocaleDateString()}</div>
-                      <div className="text-[10px] text-coal-600 font-mono mt-0.5">IP: {log.ip_address}</div>
+                      <div className="text-[10px] text-slate-400">{new Date(log.timestamp).toLocaleDateString()}</div>
+                      <div className="text-[10px] text-slate-400 font-mono mt-0.5">IP: {log.ip_address}</div>
                     </td>
 
                     <td className="py-3 px-3">
-                      <div className="font-semibold text-white">{log.actor_name}</div>
-                      <span className="badge bg-coal-800 text-coal-300 border border-coal-700 text-[9px] mt-0.5 inline-block">
+                      <div className="font-semibold text-slate-900 text-xs">{log.actor_name}</div>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-100 text-slate-600 border border-slate-200 mt-0.5 inline-block">
                         {log.actor_role}
                       </span>
                     </td>
 
                     <td className="py-3 px-3">
-                      <span className="font-mono text-[11px] font-semibold text-cil-light bg-cil-blue/10 px-2 py-0.5 rounded border border-cil-blue/30">
+                      <span className="font-mono text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                         {log.action}
                       </span>
                     </td>
 
                     <td className="py-3 px-3">
-                      <div className="text-white font-mono text-[11px]">{log.entity_id}</div>
-                      <div className="text-[10px] text-coal-500">{log.entity_type}</div>
+                      <div className="text-slate-800 font-mono text-[11px] font-semibold">{log.entity_id}</div>
+                      <div className="text-[10px] text-slate-400">{log.entity_type}</div>
                     </td>
 
                     <td className="py-3 px-3 max-w-[280px]">
-                      <p className="text-coal-300 text-xs truncate leading-relaxed">{log.details || '—'}</p>
+                      <p className="text-slate-600 text-xs truncate leading-relaxed">{log.details || '—'}</p>
                     </td>
 
                     <td className="py-3 px-3">
                       {log.integrity_hash ? (
-                        <div className="flex items-center gap-1.5 text-emerald-400 font-mono text-[10px] group cursor-pointer" title={log.integrity_hash}>
+                        <div className="flex items-center gap-1.5 text-emerald-700 font-mono text-[10px] group cursor-pointer" title={log.integrity_hash}>
                           <CheckCircle2 size={12} className="flex-shrink-0" />
                           <span className="truncate max-w-[90px]">{log.integrity_hash.slice(0, 10)}...</span>
                         </div>
                       ) : (
-                        <span className="text-coal-600 font-mono text-[10px]">UNHASHED</span>
+                        <span className="text-slate-400 font-mono text-[10px]">UNHASHED</span>
                       )}
                     </td>
                   </tr>
