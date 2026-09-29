@@ -89,7 +89,7 @@ const ROLE_NAV: Record<string, NavGroup[]> = {
       label: 'Corporate Governance',
       items: [
         { path: '/corporate/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-        { path: '/gis', icon: Map, label: 'GIS Spatial Radar' },
+        { path: '/gis', icon: Map, label: 'National Compliance GIS' },
         { path: '/mines', icon: Building2, label: 'All Mines' },
         { path: '/contractors', icon: FileText, label: 'Contracts' },
         { path: '/reports', icon: FileText, label: 'Reports' },
